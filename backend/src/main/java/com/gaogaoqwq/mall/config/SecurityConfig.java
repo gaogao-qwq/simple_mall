@@ -1,8 +1,10 @@
 package com.gaogaoqwq.mall.config;
 
 import com.gaogaoqwq.mall.enums.ErrorMessage;
+import com.gaogaoqwq.mall.enums.RoleName;
+import com.gaogaoqwq.mall.filter.JwtFilter;
 import com.gaogaoqwq.mall.repository.UserRepository;
-import com.gaogaoqwq.mall.security.JwtProvider;
+import com.gaogaoqwq.mall.response.R;
 import com.gaogaoqwq.mall.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,19 +22,28 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain webFilterChain(HttpSecurity http, JwtProvider tokenProvider) throws Exception {
+    SecurityFilterChain webFilterChain(HttpSecurity http, UserService userService, JwtFilter jwtFilter) throws Exception {
         return http
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(c -> c.authenticationEntryPoint(R.authFailure()))
+                .exceptionHandling(c -> c.accessDeniedHandler(R.accessDenied()))
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v1/api-docs/**").permitAll()
+                        .requestMatchers("/v1/auth/**").permitAll()
+                        .requestMatchers("/v1/good-management/**").hasRole(RoleName.ADMIN)
+                        .requestMatchers("/v1/customer/**").hasRole(RoleName.CUSTOMER)
                 )
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

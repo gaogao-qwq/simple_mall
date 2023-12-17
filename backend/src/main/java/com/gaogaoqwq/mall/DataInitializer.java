@@ -22,8 +22,8 @@ public class DataInitializer implements CommandLineRunner {
         if (roleRepo.existsById(1L)) return;
 
         var roles = List.of(
-                Role.builder().name(RoleName.ADMIN).description("管理员").editable(false).build(),
-                Role.builder().name(RoleName.CUSTOMER).description("普通用户").editable(false).build()
+                Role.builder().name("ROLE_" + RoleName.ADMIN).description("管理员").editable(false).build(),
+                Role.builder().name("ROLE_" + RoleName.CUSTOMER).description("普通用户").editable(false).build()
         );
 
         roleRepo.saveAll(roles);
