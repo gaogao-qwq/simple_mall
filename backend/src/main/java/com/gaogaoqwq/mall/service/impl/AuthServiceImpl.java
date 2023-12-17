@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
             return R.failure(ErrorMessage.USER_EXIST);
         }
 
-        var role = roleRepo.findByName(RoleName.CUSTOMER);
+        var role = roleRepo.findByName("ROLE_" + RoleName.CUSTOMER);
         if (role.isEmpty()) {
             return R.failure(ErrorMessage.INTERNAL_SERVER_ERROR);
         }
