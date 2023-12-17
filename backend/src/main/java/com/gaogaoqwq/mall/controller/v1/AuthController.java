@@ -5,15 +5,21 @@ import com.gaogaoqwq.mall.dto.RefreshDto;
 import com.gaogaoqwq.mall.dto.RegisterDto;
 import com.gaogaoqwq.mall.response.R;
 import com.gaogaoqwq.mall.service.AuthService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
+@RestController
+@RequestMapping(value = "/v1/auth", produces = "application/json")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successful operation"),
+        @ApiResponse(responseCode = "401", description = "Authentication failed")
+})
 public class AuthController {
 
     private final AuthService authService;
