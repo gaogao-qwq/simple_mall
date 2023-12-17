@@ -10,6 +10,14 @@ public class ErrorMessage {
 
     public static final String PASSWORD_ERROR = "密码错误";
 
+    public static final String AUTHENTICATION_FAILED = "认证失败";
+
+    public static final String PERMISSION_DENIED = "权限不足";
+
+    public static final String TOKEN_NOT_EXIST = "Token不存在";
+
+    public static final String TOKEN_EXPIRED = "Token已过期";
+
     public static final String INTERNAL_SERVER_ERROR = "服务器内部错误";
 
     public static final String UNKNOWN_ERROR = "未知错误";
