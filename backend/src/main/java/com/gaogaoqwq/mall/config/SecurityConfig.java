@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain webFilterChain(HttpSecurity http, UserService userService, JwtFilter jwtFilter) throws Exception {
+    SecurityFilterChain webFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         return http
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -81,4 +81,5 @@ public class SecurityConfig {
     PasswordEncoder customPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
 }
