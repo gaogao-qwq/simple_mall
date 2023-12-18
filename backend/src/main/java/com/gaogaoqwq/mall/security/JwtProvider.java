@@ -2,12 +2,12 @@ package com.gaogaoqwq.mall.security;
 
 import com.gaogaoqwq.mall.properties.JwtProperties;
 import com.gaogaoqwq.mall.service.UserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -53,7 +53,7 @@ public class JwtProvider {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return username.equals(userDetails.getUsername());
     }
 
     public String extractUsername(String token) {
@@ -65,27 +65,16 @@ public class JwtProvider {
                 .getSubject();
     }
 
-    public UserDetails extractUserDetails(String token) {
-        String username = extractUsername(token);
-        return this.userService.loadUserByUsername(username);
-    }
-
-    public Authentication extractAuthentication(String token) {
-        UserDetails userDetails = extractUserDetails(token);
-        return new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(),
-                userDetails.getPassword(),
-                userDetails.getAuthorities());
-    }
-
-    private boolean isTokenExpired(String token) {
-        return Jwts.parser()
-                .verifyWith(this.secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration()
-                .before(new Date());
+    public boolean isTokenExpired(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(this.secretKey)
+                    .build()
+                    .parseSignedClaims(token);
+        } catch (ExpiredJwtException e) {
+            return false;
+        }
+        return true;
     }
 
 }

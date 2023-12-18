@@ -6,6 +6,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,17 +34,28 @@ public class JwtFilter extends GenericFilter {
         }
 
         // 验证 token
-        UserDetails userDetails = jwtProvider.extractUserDetails(tokenOpt.get());
+        String token = tokenOpt.get();
+        if (!jwtProvider.isTokenExpired(token)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        String username = jwtProvider.extractUsername(token);
+        UserDetails userDetails = userService.loadUserByUsername(username);
         if (!userDetails.isEnabled()) {
             chain.doFilter(request, response);
             return;
         }
-        if (!jwtProvider.validateToken(tokenOpt.get(), userDetails)) {
+        if (!jwtProvider.validateToken(token, userDetails)) {
             chain.doFilter(request, response);
             return;
         }
 
-        Authentication authentication = jwtProvider.extractAuthentication(tokenOpt.get());
+        // 授权
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails.getUsername(),
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
+        );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         chain.doFilter(request, response);
