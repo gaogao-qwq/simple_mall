@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "consumer",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "consumer (debug mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "consumer (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "consumer (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
