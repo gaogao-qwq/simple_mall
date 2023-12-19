@@ -1,5 +1,6 @@
 package com.gaogaoqwq.mall.entity;
 
+import com.gaogaoqwq.mall.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,12 +32,18 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
+
     @Column(name = "enable", nullable = false)
     private Boolean enable;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<GoodOrder> goodOrders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
