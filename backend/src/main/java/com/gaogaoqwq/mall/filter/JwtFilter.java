@@ -29,26 +29,26 @@ public class JwtFilter extends GenericFilter {
         // 提取 token
         Optional<String> tokenOpt = resolveToken((HttpServletRequest) request);
         if (tokenOpt.isEmpty()) {
+            SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
             chain.doFilter(request, response);
             return;
         }
 
-        // 验证 token
         String token = tokenOpt.get();
-        if (!jwtProvider.isTokenExpired(token)) {
+        // 校验 token
+        if (!jwtProvider.validateToken(token)) {
+            SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
             chain.doFilter(request, response);
             return;
         }
-        String username = jwtProvider.extractUsername(token);
-        UserDetails userDetails = userService.loadUserByUsername(username);
-        if (!userDetails.isEnabled()) {
+        // 验证 token
+        Optional<UserDetails> userDetailsOpt = jwtProvider.authenticateToken(token);
+        if (userDetailsOpt.isEmpty()) {
+            SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
             chain.doFilter(request, response);
             return;
         }
-        if (!jwtProvider.validateToken(token, userDetails)) {
-            chain.doFilter(request, response);
-            return;
-        }
+        UserDetails userDetails = userDetailsOpt.get();
 
         // 授权
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -57,7 +57,6 @@ public class JwtFilter extends GenericFilter {
                 userDetails.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         chain.doFilter(request, response);
     }
 

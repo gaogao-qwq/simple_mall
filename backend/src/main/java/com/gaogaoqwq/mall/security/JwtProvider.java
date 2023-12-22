@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -51,30 +52,35 @@ public class JwtProvider {
                 .compact();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return username.equals(userDetails.getUsername());
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().verifyWith(this.secretKey).build().parseSignedClaims(token);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
-    public String extractUsername(String token) {
+    public Optional<UserDetails> authenticateToken(String token) {
+        String username = extractUsername(token);
+        UserDetails userDetails;
+        try {
+            userDetails = userService.loadUserByUsername(username);
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+        if (!userDetails.isEnabled()) return Optional.empty();
+        if (!username.equals(userDetails.getUsername())) return Optional.empty();
+        return Optional.of(userDetails);
+    }
+
+    private String extractUsername(String token) {
         return Jwts.parser()
                 .verifyWith(this.secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
-    }
-
-    public boolean isTokenExpired(String token) {
-        try {
-            Jwts.parser()
-                    .verifyWith(this.secretKey)
-                    .build()
-                    .parseSignedClaims(token);
-        } catch (ExpiredJwtException e) {
-            return false;
-        }
-        return true;
     }
 
 }
