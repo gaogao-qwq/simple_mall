@@ -37,6 +37,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.6
   get_storage: ^2.1.1
+  waterfall_flow: ^3.0.3
+  loading_more_list: ^6.0.0
+  card_swiper: ^3.0.1
+  extended_image: ^8.2.0
 
 dev_dependencies:
   flutter_test:
@@ -47,7 +51,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
