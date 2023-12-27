@@ -27,8 +27,7 @@ public class GoodSubCategory {
     @JoinColumn(name = "category_id", nullable = false)
     private GoodCategory category;
 
-    @ManyToMany
-    @JoinTable(name = "goods_sub_categories")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "subCategory")
     private Collection<Good> goods;
 
 }
