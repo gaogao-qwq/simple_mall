@@ -31,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public R register(@RequestBody RegisterDto dto) {
-        return authService.register(dto.getUsername(), dto.getPassword());
+        return authService.register(dto);
     }
 
     @PostMapping("/refresh")

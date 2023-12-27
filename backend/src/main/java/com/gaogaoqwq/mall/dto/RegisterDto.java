@@ -10,8 +10,6 @@ public class RegisterDto {
 
     private String password;
 
-    private String address;
-
     private Gender gender;
 
 }
