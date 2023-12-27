@@ -1,7 +1,9 @@
 package com.gaogaoqwq.mall.service.impl;
 
+import com.gaogaoqwq.mall.dto.RegisterDto;
 import com.gaogaoqwq.mall.entity.User;
 import com.gaogaoqwq.mall.enums.ErrorMessage;
+import com.gaogaoqwq.mall.enums.Gender;
 import com.gaogaoqwq.mall.enums.RoleName;
 import com.gaogaoqwq.mall.repository.RoleRepository;
 import com.gaogaoqwq.mall.repository.UserRepository;
@@ -56,8 +58,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public R register(String username, String password) {
-        if (userRepo.existsByUsername(username)) {
+    public R register(RegisterDto dto) {
+        if (userRepo.existsByUsername(dto.getUsername())) {
             return R.failure(ErrorMessage.USER_EXIST);
         }
 
@@ -67,17 +69,19 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = User.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
+                .username(dto.getUsername())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .gender(dto.getGender())
                 .role(role.get())
                 .enable(true).build();
-        user = userRepo.save(user);
+        userRepo.save(user);
 
         // 生成 JWT
-        var authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
+        authentication = authenticationManager.authenticate(authentication);
         String accessToken = jwtProvider.generateAccessToken(authentication);
         String refreshToken = jwtProvider.generateRefreshToken(authentication);
-        AuthView view = new AuthView(username, accessToken, refreshToken);
+        AuthView view = new AuthView(dto.getUsername(), accessToken, refreshToken);
 
         return R.success(view);
     }
