@@ -21,8 +21,6 @@ import java.util.Optional;
 public class JwtFilter extends GenericFilter {
 
     private final JwtProvider jwtProvider;
-    private final UserService userService;
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
