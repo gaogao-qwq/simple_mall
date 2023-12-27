@@ -35,15 +35,16 @@ public class SecurityConfig {
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(c -> c.authenticationEntryPoint(R.authFailure()))
                 .exceptionHandling(c -> c.accessDeniedHandler(R.accessDenied()))
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v1/api-docs/**").permitAll()
                         .requestMatchers("/v1/auth/**").permitAll()
-                        .requestMatchers("/v1/good-management/**").hasRole(RoleName.ADMIN)
+                        .requestMatchers("/v1/good/**").permitAll()
                         .requestMatchers("/v1/customer/**").hasRole(RoleName.CUSTOMER)
+                        .requestMatchers("/v1/good-management/**").hasRole(RoleName.ADMIN)
                 )
-                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
