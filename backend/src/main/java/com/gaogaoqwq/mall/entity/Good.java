@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 @Data
@@ -23,16 +24,32 @@ public class Good {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "introduction", nullable = false, length = 1024)
-    private String introduction;
+    @Column(name = "description", nullable = false, length = 1024)
+    private String description;
+
+    @Column(name = "price", precision = 12, scale = 2, nullable = false)
+    private BigDecimal price;
+
+    @Column(name = "stock", nullable = false)
+    private Integer stock;
+
+    @Column(name = "preview_img_url", nullable = false)
+    private String previewImgUrl;
+
+    @OneToOne(mappedBy = "good")
+    private GoodSwiper goodSwiper;
+
+    @ManyToOne
+    @JoinColumn(name = "sub_category_id", nullable = false)
+    private GoodSubCategory subCategory;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "good")
     private Collection<GoodImage> images;
 
-    @ManyToMany(mappedBy = "goods")
-    private Collection<GoodSubCategory> subCategories;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "good")
     private Collection<GoodOrder> goodOrders;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "goods")
+    private Collection<UserCart> userCart;
 
 }
