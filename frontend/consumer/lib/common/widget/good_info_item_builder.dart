@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 Widget buildWaterfallFlowGoodInfo(BuildContext ctx, GoodInfo item, int index, {bool knowSized = true}) {
 
-  Widget image = Stack(
+  Widget imageHero = Stack(
     children: [
       ExtendedImage.network(
         item.imgUrl,
@@ -22,6 +22,7 @@ Widget buildWaterfallFlowGoodInfo(BuildContext ctx, GoodInfo item, int index, {b
         MaterialPageRoute<void>(builder: (ctx) => GoodDetailPage(
           goodId: item.id,
           previewImageUrl: item.imgUrl, 
+          imageHero: imageHero,
         ))
       ),
       child: Column(
@@ -30,7 +31,7 @@ Widget buildWaterfallFlowGoodInfo(BuildContext ctx, GoodInfo item, int index, {b
         children: [
           Hero(
             tag: "${item.imgUrl}-preview-image-hero",
-            child: image
+            child: imageHero
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

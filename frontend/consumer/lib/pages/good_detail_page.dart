@@ -8,11 +8,13 @@ import 'package:get/get.dart';
 class GoodDetailPage extends StatelessWidget {
   final int goodId;
   final String previewImageUrl;
+  final Widget imageHero;
 
   const GoodDetailPage({
     super.key,
     required this.goodId,
     required this.previewImageUrl,
+    required this.imageHero,
   });
 
   @override
@@ -30,16 +32,16 @@ class GoodDetailPage extends StatelessWidget {
         }
 
         if (snp.hasData) {
-          Widget topImage = Stack(
-            children: [
-              ExtendedImage.network(
-                previewImageUrl,
-                clearMemoryCacheIfFailed: true,
-                border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1.0),
-                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-              )
-            ],
-          );
+          // Widget topImage = Stack(
+          //   children: [
+          //     ExtendedImage.network(
+          //       previewImageUrl,
+          //       clearMemoryCacheIfFailed: true,
+          //       border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1.0),
+          //       borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+          //     )
+          //   ],
+          // );
 
           Widget detailCard = Card(
             color: Colors.orange.shade100,
@@ -95,12 +97,8 @@ class GoodDetailPage extends StatelessWidget {
             clearMemoryCacheIfFailed: true,
           )).toList();
 
-          return ListView(
+          return Column(
             children: [
-              Hero(
-                tag: "$previewImageUrl-preview-image-hero",
-                child: topImage
-              ),
               detailCard,
               ...detailImages,
             ],
@@ -169,7 +167,15 @@ class GoodDetailPage extends StatelessWidget {
         ),
         title: const Text("商品详情"),
       ),
-      body: goodDetail,
+      body: ListView(
+        children: [
+          Hero(
+            tag: "$previewImageUrl-preview-image-hero",
+            child: imageHero,
+          ),
+          goodDetail,
+        ],
+      ),
       bottomNavigationBar: bottomAppBar,
     );
   }
