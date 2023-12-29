@@ -3,7 +3,7 @@ default:
 
 run-backend:
 	cd {{justfile_directory()}}/backend/;\
-	gradle bootrun
+	./gradlew bootrun
 
 run-frontend:
 	cd {{justfile_directory()}}/frontend/consumer/;\
