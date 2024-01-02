@@ -1,7 +1,5 @@
 package com.gaogaoqwq.mall.view;
 
-import java.util.List;
-
 import com.gaogaoqwq.mall.entity.Good;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +12,7 @@ public class CustomerCartItemView {
 
     private Long goodId;
 
-    private String previewImageUrl;
+    private String previewImgUrl;
 
     private String goodName;
 
@@ -27,7 +25,7 @@ public class CustomerCartItemView {
     public static CustomerCartItemView fromGood(Good good) {
         return CustomerCartItemView.builder()
             .goodId(good.getId())
-            .previewImageUrl(good.getPreviewImgUrl())
+            .previewImgUrl(good.getPreviewImgUrl())
             .goodName(good.getName())
             .goodDescription(good.getDescription())
             .stock(good.getStock())
