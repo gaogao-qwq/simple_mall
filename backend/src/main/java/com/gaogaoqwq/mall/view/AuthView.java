@@ -9,10 +9,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthView {
 
-    public String username;
+    private String username;
 
-    public String accessToken;
+    private String accessToken;
 
-    public String refreshToken;
+    private String refreshToken;
 
 }
