@@ -2,8 +2,10 @@ import 'package:consumer/api/auth_provider.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LoginController extends GetxController {
+  final box = GetStorage();
   final ap = Get.put(AuthProvider());
   final udc = Get.put(UserDetailController());
 
@@ -19,6 +21,9 @@ class LoginController extends GetxController {
     udc.username.value = userDetail.username;
     udc.accessToken.value = userDetail.accessToken;
     udc.refreshToken.value = userDetail.refreshToken;
+    await box.write("username", userDetail.username);
+    await box.write("accessToken", userDetail.accessToken);
+    await box.write("refreshToken", userDetail.refreshToken);
     Get.back();
   }
 }
