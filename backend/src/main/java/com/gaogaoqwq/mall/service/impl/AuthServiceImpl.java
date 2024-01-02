@@ -3,7 +3,6 @@ package com.gaogaoqwq.mall.service.impl;
 import com.gaogaoqwq.mall.dto.RegisterDto;
 import com.gaogaoqwq.mall.entity.User;
 import com.gaogaoqwq.mall.enums.ErrorMessage;
-import com.gaogaoqwq.mall.enums.Gender;
 import com.gaogaoqwq.mall.enums.RoleName;
 import com.gaogaoqwq.mall.repository.RoleRepository;
 import com.gaogaoqwq.mall.repository.UserRepository;

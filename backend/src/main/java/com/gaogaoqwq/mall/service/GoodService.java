@@ -2,7 +2,6 @@ package com.gaogaoqwq.mall.service;
 
 import com.gaogaoqwq.mall.entity.Good;
 import com.gaogaoqwq.mall.entity.GoodSwiper;
-import com.gaogaoqwq.mall.view.GoodDetailView;
 
 import java.util.List;
 import java.util.Optional;
