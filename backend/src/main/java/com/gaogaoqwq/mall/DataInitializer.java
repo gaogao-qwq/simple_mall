@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -20,6 +21,7 @@ public class DataInitializer implements CommandLineRunner {
 
     private final RoleRepository roleRepo;
     private final UserRepository userRepo;
+    private final UserCartRepository userCartRepo;
     private final GoodRepository goodRepo;
     private final GoodCategoryRepository goodCategoryRepo;
     private final GoodSubCategoryRepository goodSubCategoryRepo;
@@ -31,6 +33,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         initRole();
         initUser();
+        initUserCart();
         initGoodCategory();
         initGoodSubCategory();
         initGood();
@@ -74,6 +77,16 @@ public class DataInitializer implements CommandLineRunner {
                         .build()
         );
         userRepo.saveAll(users);
+    }
+
+    private void initUserCart() {
+        if (userCartRepo.count() > 0) return;
+        List<User> users = userRepo.findAll();
+        List<UserCart> userCarts = new ArrayList<UserCart>();
+        users.forEach(u -> {
+            userCarts.add(UserCart.builder().user(u).goods(List.of()).build());
+        });
+        userCartRepo.saveAll(userCarts);
     }
 
     private void initGoodCategory() {
