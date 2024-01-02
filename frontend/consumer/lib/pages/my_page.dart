@@ -23,9 +23,10 @@ class MyPage extends StatelessWidget {
                   radius: 30,
                   backgroundImage: Image.asset("images/avatar.png").image,
                 ),
-                title: uc.isLogin() 
-                  ? Text(uc.username.value, style: const TextStyle(fontSize: 24),) 
-                  : const Text("未登录，请先登录"),
+                title: Obx(() => uc.isLogin() 
+                  ? Text(uc.username.value, style: const TextStyle(fontSize: 24)) 
+                  : const Text("未登录，请先登录")
+                ),
                 trailing: const Icon(Icons.keyboard_arrow_right),
                 onTap: () {
                   if (!uc.isLogin()) {
