@@ -41,6 +41,7 @@ dependencies:
   loading_more_list: ^6.0.0
   card_swiper: ^3.0.1
   extended_image: ^8.2.0
+  badges: ^3.1.2
 
 dev_dependencies:
   flutter_test:
