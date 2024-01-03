@@ -1,4 +1,5 @@
 import 'package:consumer/api/good_provider.dart';
+import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/auth_page.dart';
 import 'package:extended_image/extended_image.dart';
@@ -20,6 +21,7 @@ class GoodDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final udc = Get.put(UserDetailController());
+    final scc = Get.put(ShoppingCartController());
     final gp = Get.put(GoodProvider());
 
     Widget goodDetail = FutureBuilder(
@@ -132,6 +134,7 @@ class GoodDetailPage extends StatelessWidget {
                 );
                 return;
               }
+              await scc.addGoodToCart(goodId);
             },
           ),
           ElevatedButton(
