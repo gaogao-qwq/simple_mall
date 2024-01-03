@@ -1,6 +1,8 @@
 import 'package:consumer/controller/navigation_controller.dart';
+import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:badges/badges.dart' as badges;
 
 class MallNavigationBar extends StatelessWidget {
   const MallNavigationBar({super.key});
@@ -8,6 +10,8 @@ class MallNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nc = Get.put(NavigationBarController());
+    final scc = Get.put(ShoppingCartController());
+    scc.fetchCartItems();
 
     return NavigationBar(
       selectedIndex: nc.currentIndex.value,
@@ -21,8 +25,24 @@ class MallNavigationBar extends StatelessWidget {
         ),
         NavigationDestination(
           icon: Obx(() => nc.isDestinationSelected(1) 
-            ? const Icon(Icons.shopping_cart, color: Colors.orange) 
-            : const Icon(Icons.shopping_cart_outlined)
+            ? badges.Badge(
+              badgeContent: Obx(() => Text(
+                "${scc.cartList.length}",
+                style: const TextStyle(color: Colors.white)
+              )),
+              badgeAnimation: const badges.BadgeAnimation.slide(toAnimate: false),
+              showBadge: scc.cartList.isNotEmpty,
+              child: const Icon(Icons.shopping_cart, color: Colors.orange),
+            )
+            : badges.Badge(
+              badgeContent: Obx(() => Text(
+                "${scc.cartList.length}",
+                style: const TextStyle(color: Colors.white)
+              )),
+              badgeAnimation: const badges.BadgeAnimation.slide(toAnimate: false),
+              showBadge: scc.cartList.isNotEmpty,
+              child: const Icon(Icons.shopping_cart_outlined),
+            )
           ),
           label: "购物车",
         ),
