@@ -5,15 +5,13 @@ import 'package:flutter/material.dart';
 
 Widget buildWaterfallFlowGoodInfo(BuildContext ctx, GoodInfo item, int index, {bool knowSized = true}) {
 
-  Widget imageHero = Stack(
-    children: [
-      ExtendedImage.network(
-        item.imgUrl,
-        clearMemoryCacheIfFailed: true,
-        border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1.0),
-        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-      )
-    ],
+  Widget imageHero = ClipRRect(
+    borderRadius: BorderRadius.circular(12),
+    child: ExtendedImage.network(
+      item.imgUrl,
+      fit: BoxFit.cover,
+      clearMemoryCacheIfFailed: true,
+    ),
   );
 
   return Card(
