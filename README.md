@@ -51,7 +51,7 @@ flowchart LR
             role_r(["角色仓储"])
         end
     end
-    连接节点
+    %% 连接节点
     auth_c & good_c & customer_c & admin_c --- view
     view --- auth_s & good_s & customer_s & admin_s
     auth_s & good_s & customer_s & admin_s --- entity
