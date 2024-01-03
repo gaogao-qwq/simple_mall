@@ -9,7 +9,7 @@ class MyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final uc = Get.put(UserDetailController());
+    final udc = Get.put(UserDetailController());
 
     return Scaffold(
       appBar: AppBar(title: const Text("我的")),
@@ -23,13 +23,13 @@ class MyPage extends StatelessWidget {
                   radius: 30,
                   backgroundImage: Image.asset("images/avatar.png").image,
                 ),
-                title: Obx(() => uc.isLogin() 
-                  ? Text(uc.username.value, style: const TextStyle(fontSize: 24)) 
+                title: Obx(() => udc.isLogin() 
+                  ? Text(udc.username.value, style: const TextStyle(fontSize: 24)) 
                   : const Text("未登录，请先登录")
                 ),
                 trailing: const Icon(Icons.keyboard_arrow_right),
                 onTap: () {
-                  if (!uc.isLogin()) {
+                  if (!udc.isLogin()) {
                     Get.to(const AuthPage());
                   }
                 },
@@ -48,7 +48,7 @@ class MyPage extends StatelessWidget {
                 ListTile(
                   leading:const Icon(Icons.logout),
                   title: const Text("退出登录"),
-                  onTap: () {},
+                  onTap: () => udc.logout(),
                 ),
                 ListTile(
                   leading: const Icon(Icons.info),
