@@ -30,9 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
         final User user = userOpt.get();
         final Optional<Cart> userCartOpt = cartRepo.findUserCartByUserId(user.getId());
         if (userCartOpt.isEmpty()) return List.of();
-        return userCartOpt.get().getCartItems().stream().map(e -> {
-            return CustomerCartItemView.fromGood(e.getGood());
-        }).toList();
+        return userCartOpt.get().getCartItems().stream().map(CustomerCartItemView::fromCartItem).toList();
     }
 
     @Override

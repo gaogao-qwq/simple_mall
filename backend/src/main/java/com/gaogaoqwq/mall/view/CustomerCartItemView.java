@@ -1,6 +1,6 @@
 package com.gaogaoqwq.mall.view;
 
-import com.gaogaoqwq.mall.entity.Good;
+import com.gaogaoqwq.mall.entity.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,18 +18,22 @@ public class CustomerCartItemView {
 
     private String goodDescription;
 
-    private int stock;
+    private Integer stock;
 
     private String price;
 
-    public static CustomerCartItemView fromGood(Good good) {
+    private Long addDate;
+
+    public static CustomerCartItemView fromCartItem(CartItem cartItem) {
+        var good = cartItem.getGood();
         return CustomerCartItemView.builder()
             .goodId(good.getId())
             .previewImgUrl(good.getPreviewImgUrl())
             .goodName(good.getName())
             .goodDescription(good.getDescription())
             .stock(good.getStock())
-            .price(good.getPrice().toString()).build();
+            .price(good.getPrice().toString())
+            .addDate(cartItem.getAddDate().toEpochMilli()).build();
     }
 
 }
