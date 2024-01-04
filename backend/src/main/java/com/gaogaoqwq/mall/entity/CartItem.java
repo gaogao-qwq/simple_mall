@@ -30,12 +30,17 @@ public class CartItem {
     @Column(name = "add_date")
     private Instant addDate;
 
+    @Column(name = "count")
+    private Integer count;
+
     @ManyToOne
-    @JoinColumn(name = "good_id")
+    @JoinColumn(name = "good_id", unique = true)
     private Good good; 
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    public void countIncrement() { this.count++; }
 
 }
