@@ -38,11 +38,17 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Cart> cartOpt = cartRepo.findUserCartByUserId(user.getId());
         if (cartOpt.isEmpty()) return;
         final var cart = cartOpt.get();
-        cart.getCartItems().add(CartItem.builder()
-            .good(good)
-            .cart(cart)
-            .addDate(Instant.now())
-            .build());
+        cart.getCartItems().stream()
+            .filter(item -> item.getGood().equals(good))
+            .findFirst()
+            .ifPresentOrElse(
+                filteredItem -> filteredItem.countIncrement(),
+                () -> cart.getCartItems().add(CartItem.builder()
+                    .good(good)
+                    .cart(cart)
+                    .addDate(Instant.now())
+                    .count(1).build())
+            );
         cartRepo.save(cart);
     }
 
