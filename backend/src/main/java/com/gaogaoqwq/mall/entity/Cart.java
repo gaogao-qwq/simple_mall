@@ -13,8 +13,8 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_cart")
-public class UserCart {
+@Table(name = "cart")
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,8 +24,7 @@ public class UserCart {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_cart_good")
-    private Collection<Good> goods;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    private Collection<CartItem> cartItems;
 
 }

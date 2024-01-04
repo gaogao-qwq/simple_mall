@@ -49,7 +49,7 @@ public class Good {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "good")
     private Collection<GoodOrder> goodOrders;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "goods")
-    private Collection<UserCart> userCart;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "good")
+    private Collection<CartItem> cartItems;
 
 }
