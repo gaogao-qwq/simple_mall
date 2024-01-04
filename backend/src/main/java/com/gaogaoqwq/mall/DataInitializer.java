@@ -21,7 +21,7 @@ public class DataInitializer implements CommandLineRunner {
 
     private final RoleRepository roleRepo;
     private final UserRepository userRepo;
-    private final UserCartRepository userCartRepo;
+    private final CartRepository userCartRepo;
     private final GoodRepository goodRepo;
     private final GoodCategoryRepository goodCategoryRepo;
     private final GoodSubCategoryRepository goodSubCategoryRepo;
@@ -82,9 +82,9 @@ public class DataInitializer implements CommandLineRunner {
     private void initUserCart() {
         if (userCartRepo.count() > 0) return;
         List<User> users = userRepo.findAll();
-        List<UserCart> userCarts = new ArrayList<UserCart>();
+        List<Cart> userCarts = new ArrayList<Cart>();
         users.forEach(u -> {
-            userCarts.add(UserCart.builder().user(u).goods(List.of()).build());
+            userCarts.add(Cart.builder().user(u).cartItems(List.of()).build());
         });
         userCartRepo.saveAll(userCarts);
     }
