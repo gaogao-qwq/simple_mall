@@ -1,6 +1,6 @@
 package com.gaogaoqwq.mall.service.impl;
 
-import com.gaogaoqwq.mall.view.CustomerCartItemView;
+import com.gaogaoqwq.mall.view.CartItemView;
 import com.gaogaoqwq.mall.entity.Good;
 import com.gaogaoqwq.mall.entity.User;
 import com.gaogaoqwq.mall.entity.Cart;
@@ -24,13 +24,13 @@ public class CustomerServiceImpl implements CustomerService {
     private final CartRepository cartRepo;
 
     @Override
-    public List<CustomerCartItemView> getCartItemsByUsername(String username) {
+    public List<CartItemView> getCartItemsByUsername(String username) {
         Optional<User> userOpt = userRepo.findUserByUsername(username);
         if (userOpt.isEmpty() || !userOpt.get().isEnabled()) return List.of();
         final User user = userOpt.get();
         final Optional<Cart> userCartOpt = cartRepo.findUserCartByUserId(user.getId());
         if (userCartOpt.isEmpty()) return List.of();
-        return userCartOpt.get().getCartItems().stream().map(CustomerCartItemView::fromCartItem).toList();
+        return userCartOpt.get().getCartItems().stream().map(CartItemView::fromCartItem).toList();
     }
 
     @Override

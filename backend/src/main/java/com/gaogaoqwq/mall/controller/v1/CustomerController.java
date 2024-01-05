@@ -21,7 +21,7 @@ import com.gaogaoqwq.mall.response.R;
 import com.gaogaoqwq.mall.service.CustomerService;
 import com.gaogaoqwq.mall.service.GoodService;
 import com.gaogaoqwq.mall.service.UserService;
-import com.gaogaoqwq.mall.view.CustomerCartItemView;
+import com.gaogaoqwq.mall.view.CartItemView;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +39,7 @@ public class CustomerController {
     @GetMapping("/cart")
     public R getCartItems() {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        final List<CustomerCartItemView> cartItems = customerService.getCartItemsByUsername(username);
+        final List<CartItemView> cartItems = customerService.getCartItemsByUsername(username);
         return R.success(cartItems);
     }
 

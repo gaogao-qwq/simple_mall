@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class CustomerCartItemView {
+public class CartItemView {
 
     private Long goodId;
 
@@ -24,9 +24,9 @@ public class CustomerCartItemView {
 
     private Long addDate;
 
-    public static CustomerCartItemView fromCartItem(CartItem cartItem) {
+    public static CartItemView fromCartItem(CartItem cartItem) {
         var good = cartItem.getGood();
-        return CustomerCartItemView.builder()
+        return CartItemView.builder()
             .goodId(good.getId())
             .previewImgUrl(good.getPreviewImgUrl())
             .goodName(good.getName())
