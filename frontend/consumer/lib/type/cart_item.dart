@@ -5,8 +5,9 @@ class CartItem {
   String goodDescription = "";
   int stock = 0;
   String price = "";
+  int count = 0;
 
-  CartItem(this.goodId, this.previewImgUrl, this.goodName, this.goodDescription, this.stock, this.price);
+  CartItem(this.goodId, this.previewImgUrl, this.goodName, this.goodDescription, this.stock, this.price, this.count);
 
   CartItem.fromJson(Map<String, dynamic>json) {
     goodId = json["goodId"];
@@ -15,5 +16,6 @@ class CartItem {
     goodDescription = json["goodDescription"];
     stock = json["stock"];
     price = json["price"];
+    count = json["count"];
   } 
 }
