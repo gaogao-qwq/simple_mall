@@ -20,12 +20,7 @@ class LoginController extends GetxController {
     if (userDetail == null) {
       return;
     }
-    udc.username.value = userDetail.username;
-    udc.accessToken.value = userDetail.accessToken;
-    udc.refreshToken.value = userDetail.refreshToken;
-    await box.write("username", userDetail.username);
-    await box.write("accessToken", userDetail.accessToken);
-    await box.write("refreshToken", userDetail.refreshToken);
+    udc.login(userDetail);
     await scc.fetchCartItems();
     Get.back();
   }
@@ -47,9 +42,7 @@ class RegisterController extends GetxController {
     if (userDetail == null) {
       return;
     }
-    udc.username.value = userDetail.username;
-    udc.accessToken.value = userDetail.accessToken;
-    udc.refreshToken.value = userDetail.refreshToken;
+    udc.login(userDetail);
     await scc.fetchCartItems();
     Get.back();
   }

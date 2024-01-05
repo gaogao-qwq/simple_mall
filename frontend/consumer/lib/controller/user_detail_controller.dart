@@ -1,3 +1,4 @@
+import 'package:consumer/type/user_detail.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -18,6 +19,15 @@ class UserDetailController extends GetxController {
 
   bool isLogin() {
     return username.value != "" && accessToken.value != "" && refreshToken.value != "";
+  }
+
+  void login(UserDetail userDetail) {
+    username.value = userDetail.username;
+    accessToken.value = userDetail.accessToken;
+    refreshToken.value = userDetail.refreshToken;
+    box.write("username", userDetail.username);
+    box.write("accessToken", userDetail.accessToken);
+    box.write("refreshToken", userDetail.refreshToken);
   }
 
   void logout() {
