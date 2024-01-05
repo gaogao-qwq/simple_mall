@@ -1,4 +1,5 @@
 import 'package:consumer/components/mall_navigation_bar.dart';
+import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/auth_page.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final udc = Get.put(UserDetailController());
+    final scc = Get.put(ShoppingCartController());
 
     return Scaffold(
       appBar: AppBar(title: const Text("我的")),
@@ -48,7 +50,10 @@ class MyPage extends StatelessWidget {
                 ListTile(
                   leading:const Icon(Icons.logout),
                   title: const Text("退出登录"),
-                  onTap: () => udc.logout(),
+                  onTap: () {
+                    udc.logout();
+                    scc.clearCartItems();
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.info),
