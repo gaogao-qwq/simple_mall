@@ -15,12 +15,12 @@ class LoginController extends GetxController {
   var username = "".obs;
   var password = "".obs;
 
-  void login() async {
+  Future<void> login() async {
     final userDetail = await ap.login(username.value, password.value);
     if (userDetail == null) {
       return;
     }
-    udc.login(userDetail);
+    udc.saveUser(userDetail);
     await scc.fetchCartItems();
     Get.back();
   }
@@ -37,12 +37,12 @@ class RegisterController extends GetxController {
   var password = "".obs;
   var confirmPassword = "".obs;
 
-  void register() async {
+  Future<void> register() async {
     final userDetail = await ap.register(username.value, password.value, gender.value);
     if (userDetail == null) {
       return;
     }
-    udc.login(userDetail);
+    udc.saveUser(userDetail);
     await scc.fetchCartItems();
     Get.back();
   }

@@ -51,7 +51,7 @@ class MyPage extends StatelessWidget {
                   leading:const Icon(Icons.logout),
                   title: const Text("退出登录"),
                   onTap: () {
-                    udc.logout();
+                    udc.removeUser();
                     scc.clearCartItems();
                   },
                 ),

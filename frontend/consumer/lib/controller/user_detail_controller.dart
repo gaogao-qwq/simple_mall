@@ -21,7 +21,7 @@ class UserDetailController extends GetxController {
     return username.value != "" && accessToken.value != "" && refreshToken.value != "";
   }
 
-  void login(UserDetail userDetail) {
+  void saveUser(UserDetail userDetail) {
     username.value = userDetail.username;
     accessToken.value = userDetail.accessToken;
     refreshToken.value = userDetail.refreshToken;
@@ -30,7 +30,7 @@ class UserDetailController extends GetxController {
     box.write("refreshToken", userDetail.refreshToken);
   }
 
-  void logout() {
+  void removeUser() {
     box.remove("username");
     box.remove("accessToken");
     box.remove("refreshToken");
