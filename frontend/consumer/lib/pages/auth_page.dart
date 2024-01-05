@@ -31,35 +31,11 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ac = Get.put(AuthPageController());
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Obx(() => ac.currentPage.value == 0
-          ? const Text("登录")
-          : const Text("注册")
-        ),
-      ),
-      body: PageView(
-        controller: ac.pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          LoginForm(),
-          RegisterForm(),
-        ],
-      ),
-    );
-  }
-}
-
-class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final ac = Get.put(AuthPageController());
     final lc = Get.put(LoginController());
+    final rc = Get.put(RegisterController());
+    final apc = Get.put(AuthPageController());
 
-    return Center(
+    Widget loginForm = Center(
       child: Card(
         margin:const EdgeInsets.all(8),
         child: Form(
@@ -101,9 +77,9 @@ class LoginForm extends StatelessWidget {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.lightGreen[50]),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (!lc.formKey.currentState!.validate()) return;
-                      lc.login();
+                      await lc.login();
                     },
                     child: const Text("登录", style: TextStyle(fontSize: 16)),
                   ),
@@ -128,18 +104,8 @@ class LoginForm extends StatelessWidget {
         ),
       ),
     );
-  }
-}
 
-class RegisterForm extends StatelessWidget {
-  const RegisterForm({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final apc = Get.put(AuthPageController());
-    final rc = Get.put(RegisterController());
-
-    return Center(
+    Widget registerForm = Center(
       child: Card(
         margin: const EdgeInsets.all(8),
         child: Padding(
@@ -213,9 +179,9 @@ class RegisterForm extends StatelessWidget {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.lightGreen[50]),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (!rc.formKey.currentState!.validate()) return;
-                      rc.register();
+                      await rc.register();
                     },
                     child: const Text("注册", style: TextStyle(fontSize: 16)),
                   ),
@@ -238,6 +204,23 @@ class RegisterForm extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Obx(() => ac.currentPage.value == 0
+          ? const Text("登录")
+          : const Text("注册")
+        ),
+      ),
+      body: PageView(
+        controller: ac.pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          loginForm,
+          registerForm,
+        ],
       ),
     );
   }
