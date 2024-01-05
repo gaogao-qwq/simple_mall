@@ -1,6 +1,5 @@
 import 'package:consumer/api/cart_provider.dart';
 import 'package:consumer/components/mall_navigation_bar.dart';
-import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/auth_page.dart';
 import 'package:extended_image/extended_image.dart';
@@ -22,33 +21,37 @@ class CartListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100,
+      height: 150,
       child: Card(
         child: InkWell(
           onTap: () {},
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: thumbnail,
-              ),
-              const SizedBox(width: 8),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(goodName),
-                  Row(
-                    textBaseline: TextBaseline.alphabetic,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    children: [
-                      const Text("¥"),
-                      Text(goodPrice, style: const TextStyle(fontSize: 18)),
-                    ]
-                  ),
-                ],
-              ),
-            ],
+          onLongPress: () {},
+          child: Padding(
+          padding: const EdgeInsets.all(16),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: thumbnail,
+                ),
+                const SizedBox(width: 16),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(goodName),
+                    Row(
+                      textBaseline: TextBaseline.alphabetic,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      children: [
+                        const Text("¥"),
+                        Text(goodPrice, style: const TextStyle(fontSize: 18)),
+                      ]
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -110,9 +113,6 @@ class ShoppingCartPage extends StatelessWidget {
             itemBuilder: (ctx, idx) => CartListItem(
               thumbnail: ExtendedImage.network(
                 snp.data![idx].previewImgUrl,
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
                 clearMemoryCacheIfFailed: true,
               ),
               goodName: snp.data![idx].goodName,
