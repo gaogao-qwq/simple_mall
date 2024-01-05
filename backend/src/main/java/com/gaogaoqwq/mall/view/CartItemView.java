@@ -22,6 +22,8 @@ public class CartItemView {
 
     private String price;
 
+    private Integer count;
+
     private Long addDate;
 
     public static CartItemView fromCartItem(CartItem cartItem) {
@@ -33,6 +35,7 @@ public class CartItemView {
             .goodDescription(good.getDescription())
             .stock(good.getStock())
             .price(good.getPrice().toString())
+            .count(cartItem.getCount())
             .addDate(cartItem.getAddDate().toEpochMilli()).build();
     }
 
