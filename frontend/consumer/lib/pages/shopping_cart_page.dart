@@ -2,6 +2,7 @@ import 'package:consumer/api/cart_provider.dart';
 import 'package:consumer/components/mall_navigation_bar.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/auth_page.dart';
+import 'package:decimal/decimal.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,19 +10,25 @@ import 'package:get/get.dart';
 class CartListItem extends StatelessWidget {
   final ExtendedImage thumbnail;
   final String goodName;
+  final String goodDescription;
+  final int goodStock;
   final String goodPrice;
+  final int goodCount;
 
   const CartListItem({
     super.key,
     required this.thumbnail,
     required this.goodName,
+    required this.goodDescription,
+    required this.goodStock,
     required this.goodPrice,
+    required this.goodCount,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 150,
+      height: 180,
       child: Card(
         child: InkWell(
           onTap: () {},
@@ -35,20 +42,59 @@ class CartListItem extends StatelessWidget {
                   child: thumbnail,
                 ),
                 const SizedBox(width: 16),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(goodName),
-                    Row(
-                      textBaseline: TextBaseline.alphabetic,
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      children: [
-                        const Text("¥"),
-                        Text(goodPrice, style: const TextStyle(fontSize: 18)),
-                      ]
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(child: Text(
+                              goodDescription,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            const SizedBox(width: 20),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.remove)
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Get.theme.colorScheme.primary),
+                                  borderRadius: const BorderRadius.all(Radius.circular(8))
+                                ),
+                                child: Text("x$goodCount"),
+                              )
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.add)
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("单价：¥$goodPrice", style: const TextStyle(color: Colors.red)),
+                          Row(
+                            textBaseline: TextBaseline.alphabetic,
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            children: [
+                              const Text("总价：¥", style: TextStyle(color: Colors.red)),
+                              Text(
+                                "${Decimal.parse(goodPrice) * Decimal.fromInt(goodCount)}",
+                                style: const TextStyle(fontSize: 24, color: Colors.red),
+                              )
+                            ]
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -116,7 +162,10 @@ class ShoppingCartPage extends StatelessWidget {
                 clearMemoryCacheIfFailed: true,
               ),
               goodName: snp.data![idx].goodName,
-              goodPrice: snp.data![idx].price
+              goodDescription: snp.data![idx].goodDescription,
+              goodStock: snp.data![idx].stock,
+              goodPrice: snp.data![idx].price,
+              goodCount: snp.data![idx].count,
             ),
           );
         }
@@ -127,7 +176,7 @@ class ShoppingCartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("购物车")),
-      body: udc.isLogin() ? cartListView : guestPlaceholder,
+      body: Obx(() => udc.isLogin() ? cartListView : guestPlaceholder),
       bottomNavigationBar: const MallNavigationBar(),
     );
   }
