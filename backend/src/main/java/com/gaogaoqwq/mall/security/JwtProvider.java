@@ -33,12 +33,12 @@ public class JwtProvider {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateAccessToken(Authentication authentication) {
-        return createToken(authentication.getPrincipal().toString(), this.jwtProperties.getAccessTokenExpiration());
+    public String generateAccessToken(String username) {
+        return createToken(username, this.jwtProperties.getAccessTokenExpiration());
     }
 
-    public String generateRefreshToken(Authentication authentication) {
-        return createToken(authentication.getPrincipal().toString(), this.jwtProperties.getRefreshTokenExpiration());
+    public String generateRefreshToken(String username) {
+        return createToken(username, this.jwtProperties.getRefreshTokenExpiration());
     }
 
     private String createToken(String subject, Long expiration) {
