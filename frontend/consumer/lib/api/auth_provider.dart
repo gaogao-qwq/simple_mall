@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:consumer/api/api_response.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
+import 'package:consumer/domain/api_response.dart';
 import 'package:consumer/domain/user_detail.dart';
 import 'package:get/get.dart';
 

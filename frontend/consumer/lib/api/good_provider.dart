@@ -1,4 +1,4 @@
-import 'package:consumer/api/api_response.dart';
+import 'package:consumer/domain/api_response.dart';
 import 'package:consumer/domain/count.dart';
 import 'package:consumer/domain/good_detail.dart';
 import 'package:consumer/domain/good_info.dart';

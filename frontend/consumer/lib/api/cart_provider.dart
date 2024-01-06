@@ -1,5 +1,5 @@
-import 'package:consumer/api/api_response.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
+import 'package:consumer/domain/api_response.dart';
 import 'package:consumer/domain/cart_item.dart';
 import 'package:get/get.dart';
 
