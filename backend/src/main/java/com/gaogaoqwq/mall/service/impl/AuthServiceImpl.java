@@ -48,8 +48,8 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 生成 JWT
-        final String accessToken = jwtProvider.generateAccessToken(authentication);
-        final String refreshToken = jwtProvider.generateRefreshToken(authentication);
+        final String accessToken = jwtProvider.generateAccessToken(authentication.getPrincipal().toString());
+        final String refreshToken = jwtProvider.generateRefreshToken(authentication.getPrincipal().toString());
         AuthView view = new AuthView(username, accessToken, refreshToken);
 
         return R.success(view);
@@ -76,18 +76,28 @@ public class AuthServiceImpl implements AuthService {
         userRepo.save(user);
 
         // 生成 JWT
-        Authentication authentication = new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
-        authentication = authenticationManager.authenticate(authentication);
-        String accessToken = jwtProvider.generateAccessToken(authentication);
-        String refreshToken = jwtProvider.generateRefreshToken(authentication);
+        String accessToken = jwtProvider.generateAccessToken(dto.getUsername());
+        String refreshToken = jwtProvider.generateRefreshToken(dto.getUsername());
         AuthView view = new AuthView(dto.getUsername(), accessToken, refreshToken);
 
         return R.success(view);
     }
 
     @Override
-    public R refreshToken(String accessToken, String refreshToken) {
-        return R.success();
+    public R refreshToken(String refreshToken) {
+        if (!jwtProvider.validateToken(refreshToken)) {
+            return R.failure(ErrorMessage.TOKEN_EXPIRED);
+        }
+
+        var userOpt = jwtProvider.authenticateToken(refreshToken);
+        if (userOpt.isEmpty()) return R.failure(ErrorMessage.USERNAME_NOT_EXIST);
+        var user = userOpt.get();
+        if (!user.isEnabled()) return R.failure(ErrorMessage.USER_DISABLE);
+
+        final String accessToken = jwtProvider.generateAccessToken(userOpt.get().getUsername());
+        refreshToken = jwtProvider.generateRefreshToken(userOpt.get().getUsername());
+        AuthView view = new AuthView(userOpt.get().getUsername(), accessToken, refreshToken);
+        return R.success(view);
     }
 
 }
