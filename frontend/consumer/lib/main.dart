@@ -1,3 +1,5 @@
+import 'package:consumer/api/auth_provider.dart';
+import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +7,15 @@ import 'package:get_storage/get_storage.dart';
 
 void main() async {
   await GetStorage.init();
+  final udc = Get.put(UserDetailController());
+  if (udc.isLogin()) {
+    final userDetail = await Get.put(AuthProvider()).refresh(udc.refreshToken.value);
+    if (userDetail == null) {
+      udc.removeUser();
+    } else {
+      udc.saveUser(userDetail);
+    }
+  }
   runApp(const MyApp());
 }
 
