@@ -1,8 +1,8 @@
 The simple_mall source distribution contains two parts of code that
 under different license.
 
-The backend code which place in ./frontend, even if there are more
-than one software, are all distributed under the terms of the GNU GPL
+The backend code which place in ./backend, even if there are more
+than one software, are all distributed under the terms of the GNU AGPL
 version3 or later, as below.
 
 
