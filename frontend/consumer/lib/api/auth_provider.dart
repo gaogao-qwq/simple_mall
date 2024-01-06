@@ -36,4 +36,16 @@ class AuthProvider extends GetConnect {
     }
     return UserDetail.fromJson(response.data);
   }
+
+  Future<UserDetail?> refresh(String refreshToken) async {
+    var response = (await post(
+      "v1/auth/refresh",
+      {"refreshToken": refreshToken},
+      decoder: (data) => ApiResponse.fromJson(data),
+    )).body;
+    if (response == null || response.data == null) {
+      return null;
+    }
+    return UserDetail.fromJson(response.data);
+  }
 }
