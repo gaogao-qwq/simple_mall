@@ -36,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public R refresh(@RequestBody RefreshDto dto) {
-        return authService.refreshToken(dto.getAccessToken(), dto.getRefreshToken());
+        return authService.refreshToken(dto.getRefreshToken());
     }
 
 }

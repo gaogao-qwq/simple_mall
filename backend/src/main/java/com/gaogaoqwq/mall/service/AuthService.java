@@ -9,6 +9,6 @@ public interface AuthService {
 
     R register(RegisterDto dto);
 
-    R refreshToken(String accessToken, String refreshToken);
+    R refreshToken(String refreshToken);
 
 }
