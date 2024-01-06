@@ -1,5 +1,5 @@
-import 'package:consumer/api/cart_provider.dart';
 import 'package:consumer/components/mall_navigation_bar.dart';
+import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/auth_page.dart';
 import 'package:decimal/decimal.dart';
@@ -8,25 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartListItem extends StatelessWidget {
-  final ExtendedImage thumbnail;
-  final String goodName;
-  final String goodDescription;
-  final int goodStock;
-  final String goodPrice;
-  final int goodCount;
+  final int idx;
 
   const CartListItem({
     super.key,
-    required this.thumbnail,
-    required this.goodName,
-    required this.goodDescription,
-    required this.goodStock,
-    required this.goodPrice,
-    required this.goodCount,
+    required this.idx,
   });
 
   @override
   Widget build(BuildContext context) {
+    final scc = Get.put(ShoppingCartController());
+
     return SizedBox(
       height: 180,
       child: Card(
@@ -39,7 +31,11 @@ class CartListItem extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: thumbnail,
+                  child: Obx(() => ExtendedImage.network(
+                    scc.cartList[idx].previewImgUrl,
+                    fit: BoxFit.cover,
+                    clearMemoryCacheIfFailed: true,
+                  )),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -48,15 +44,17 @@ class CartListItem extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            Expanded(child: Text(
-                              goodDescription,
-                              softWrap: false,
-                              overflow: TextOverflow.ellipsis,
-                            )),
-                            const SizedBox(width: 20),
+                            Expanded(
+                              child: Obx(() => Text(
+                                scc.cartList[idx].goodDescription,
+                                softWrap: false,
+                                overflow: TextOverflow.ellipsis,
+                              )),
+                            ),
+                            const SizedBox(width: 10),
                             IconButton(
                               onPressed: () {},
-                              icon: const Icon(Icons.remove)
+                              icon: const Icon(Icons.remove),
                             ),
                             InkWell(
                               onTap: () {},
@@ -64,14 +62,14 @@ class CartListItem extends StatelessWidget {
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Get.theme.colorScheme.primary),
-                                  borderRadius: const BorderRadius.all(Radius.circular(8))
+                                  borderRadius: const BorderRadius.all(Radius.circular(8)),
                                 ),
-                                child: Text("x$goodCount"),
-                              )
+                                child: Obx(() => Text("x${scc.cartList[idx].count}")),
+                              ),
                             ),
                             IconButton(
                               onPressed: () {},
-                              icon: const Icon(Icons.add)
+                              icon: const Icon(Icons.add),
                             ),
                           ],
                         ),
@@ -79,17 +77,20 @@ class CartListItem extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("单价：¥$goodPrice", style: const TextStyle(color: Colors.red)),
+                          Obx(() => Text(
+                            "单价：¥${scc.cartList[idx].price}",
+                            style: const TextStyle(color: Colors.red)
+                          )),
                           Row(
                             textBaseline: TextBaseline.alphabetic,
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             children: [
                               const Text("总价：¥", style: TextStyle(color: Colors.red)),
-                              Text(
-                                "${Decimal.parse(goodPrice) * Decimal.fromInt(goodCount)}",
+                              Obx(() => Text(
+                                "${Decimal.parse(scc.cartList[idx].price) * Decimal.fromInt(scc.cartList[idx].count)}",
                                 style: const TextStyle(fontSize: 24, color: Colors.red),
-                              )
-                            ]
+                              )),
+                            ],
                           ),
                         ],
                       ),
@@ -111,7 +112,8 @@ class ShoppingCartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final udc = Get.put(UserDetailController());
-    final cp = Get.put(CartProvider());
+    // final cp = Get.put(CartProvider());
+    final scc = Get.put(ShoppingCartController());
 
     Widget guestPlaceholder = Center(
       child: Column(
@@ -136,7 +138,7 @@ class ShoppingCartPage extends StatelessWidget {
     );
 
     Widget cartListView = FutureBuilder(
-      future: cp.getCartItems(),
+      future: scc.fetchCartItems(),
       builder: (ctx, snp) {
         if (snp.hasError) {
           return const Center(child: Text("获取购物车信息时出错"));
@@ -156,17 +158,7 @@ class ShoppingCartPage extends StatelessWidget {
           }
           return ListView.builder(
             itemCount: snp.data!.length,
-            itemBuilder: (ctx, idx) => CartListItem(
-              thumbnail: ExtendedImage.network(
-                snp.data![idx].previewImgUrl,
-                clearMemoryCacheIfFailed: true,
-              ),
-              goodName: snp.data![idx].goodName,
-              goodDescription: snp.data![idx].goodDescription,
-              goodStock: snp.data![idx].stock,
-              goodPrice: snp.data![idx].price,
-              goodCount: snp.data![idx].count,
-            ),
+            itemBuilder: (ctx, idx) => CartListItem(idx: idx),
           );
         }
 

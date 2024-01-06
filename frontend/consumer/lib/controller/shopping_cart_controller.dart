@@ -11,8 +11,9 @@ class ShoppingCartController extends GetxController {
     cartList.clear();
   }
 
-  Future<void> fetchCartItems() async {
+  Future<List<CartItem>> fetchCartItems() async {
     cartList.value = await cp.getCartItems();
+    return cartList;
   }
 
   Future<void> addGoodToCart(int goodId) async {
