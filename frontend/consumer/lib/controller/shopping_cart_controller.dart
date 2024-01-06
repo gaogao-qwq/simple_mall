@@ -1,5 +1,5 @@
 import 'package:consumer/api/cart_provider.dart';
-import 'package:consumer/type/cart_item.dart';
+import 'package:consumer/domain/cart_item.dart';
 import 'package:get/get.dart';
 
 class ShoppingCartController extends GetxController {

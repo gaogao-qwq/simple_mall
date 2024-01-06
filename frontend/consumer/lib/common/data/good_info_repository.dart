@@ -1,5 +1,5 @@
 import 'package:consumer/api/good_provider.dart';
-import 'package:consumer/type/good_info.dart';
+import 'package:consumer/domain/good_info.dart';
 import 'package:get/get.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 

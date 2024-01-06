@@ -1,8 +1,8 @@
 import 'package:consumer/api/api_response.dart';
-import 'package:consumer/type/count.dart';
-import 'package:consumer/type/good_detail.dart';
-import 'package:consumer/type/good_info.dart';
-import 'package:consumer/type/good_swiper.dart';
+import 'package:consumer/domain/count.dart';
+import 'package:consumer/domain/good_detail.dart';
+import 'package:consumer/domain/good_info.dart';
+import 'package:consumer/domain/good_swiper.dart';
 import 'package:get/get.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 

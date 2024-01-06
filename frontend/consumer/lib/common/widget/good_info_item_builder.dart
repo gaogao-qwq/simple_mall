@@ -1,5 +1,5 @@
+import 'package:consumer/domain/good_info.dart';
 import 'package:consumer/pages/good_detail_page.dart';
-import 'package:consumer/type/good_info.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
