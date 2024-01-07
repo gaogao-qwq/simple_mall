@@ -55,7 +55,7 @@ public class CustomerController {
         return R.success();
     }
 
-    @DeleteMapping("cart")
+    @DeleteMapping("/cart")
     public R removeGoodFromCart(@RequestParam(name = "good_id") Long goodId) {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User)userService.loadUserByUsername(username);
