@@ -5,6 +5,8 @@ import com.gaogaoqwq.mall.enums.ErrorMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -59,7 +61,7 @@ public class R {
     }
 
     public static AccessDeniedHandler accessDenied() {
-        return (HttpServletRequest request, HttpServletResponse response, org.springframework.security.access.AccessDeniedException accessDeniedException) -> {
+        return (HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) -> {
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write(new ObjectMapper().writeValueAsString(
