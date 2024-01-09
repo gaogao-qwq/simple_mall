@@ -10,6 +10,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class CartItemView {
 
+    private String id;
+
     private Long goodId;
 
     private String previewImgUrl;
@@ -21,7 +23,7 @@ public class CartItemView {
     private Integer stock;
 
     private String price;
-
+    
     private Integer count;
 
     private Long addDate;
@@ -29,6 +31,7 @@ public class CartItemView {
     public static CartItemView fromCartItem(CartItem cartItem) {
         var good = cartItem.getGood();
         return CartItemView.builder()
+            .id(cartItem.getId())
             .goodId(good.getId())
             .previewImgUrl(good.getPreviewImgUrl())
             .goodName(good.getName())
