@@ -18,6 +18,8 @@ public class ErrorMessage {
 
     public static final String TOKEN_EXPIRED = "Token已过期";
 
+    public static final String CART_ITEM_NOT_EXIST = "购物车中不存在商品";
+
     public static final String INTERNAL_SERVER_ERROR = "服务器内部错误";
 
     public static final String UNKNOWN_ERROR = "未知错误";
