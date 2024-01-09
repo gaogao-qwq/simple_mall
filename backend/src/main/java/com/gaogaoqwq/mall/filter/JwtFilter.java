@@ -1,11 +1,9 @@
 package com.gaogaoqwq.mall.filter;
 
 import com.gaogaoqwq.mall.security.JwtProvider;
-import com.gaogaoqwq.mall.service.UserService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Optional;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class JwtFilter extends GenericFilter {
