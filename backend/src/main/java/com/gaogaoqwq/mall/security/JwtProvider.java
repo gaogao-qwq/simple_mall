@@ -2,13 +2,10 @@ package com.gaogaoqwq.mall.security;
 
 import com.gaogaoqwq.mall.properties.JwtProperties;
 import com.gaogaoqwq.mall.service.UserService;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +14,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
