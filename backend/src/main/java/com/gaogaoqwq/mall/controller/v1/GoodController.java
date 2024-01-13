@@ -1,5 +1,6 @@
 package com.gaogaoqwq.mall.controller.v1;
 
+import com.gaogaoqwq.mall.enums.ErrorMessage;
 import com.gaogaoqwq.mall.response.R;
 import com.gaogaoqwq.mall.service.GoodService;
 import com.gaogaoqwq.mall.view.CountView;
@@ -23,26 +24,37 @@ public class GoodController {
         if (size.isEmpty()) size = Optional.of(10);
         var goods = goodService.getGoodByPage(page, size.get());
         var views = goods.stream().map(GoodInfoView::fromGood).toList();
-        return R.success(views);
+        return R.defaultBuilder()
+            .data(views)
+            .build();
     }
 
     @GetMapping("/count")
     public R goodCount() {
-        return R.success(new CountView(goodService.getGoodCount()));
+        return R.defaultBuilder()
+            .data(new CountView(goodService.getGoodCount()))
+            .build();
     }
 
     @GetMapping("/swiper")
     public R goodSwiper() {
         var goodSwiper = goodService.getGoodSwiper();
         var views = goodSwiper.stream().map(GoodSwiperView::fromGoodSwiper).toList();
-        return R.success(views);
+        return R.defaultBuilder()
+            .data(views)
+            .build();
     }
 
     @GetMapping("/detail/{id}")
     public R goodDetail(@PathVariable Long id) {
         var good = goodService.getGoodById(id);
-        return good.map(value -> R.success(GoodDetailView.fromGood(value)))
-                .orElseGet(() -> R.failure("商品不存在"));
+        return good.map(value -> R.defaultBuilder()
+                    .data(GoodDetailView.fromGood(value))
+                    .build())
+                .orElseGet(() -> R.defaultBuilder()
+                    .success(false)
+                    .message(ErrorMessage.GOOD_NOT_EXIST)
+                    .build());
     }
 
 }

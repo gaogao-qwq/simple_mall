@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gaogaoqwq.mall.entity.Good;
 import com.gaogaoqwq.mall.entity.User;
+import com.gaogaoqwq.mall.enums.ErrorMessage;
 import com.gaogaoqwq.mall.response.R;
 import com.gaogaoqwq.mall.service.CustomerService;
 import com.gaogaoqwq.mall.service.GoodService;
@@ -40,8 +41,8 @@ public class CustomerController {
     @GetMapping("/cart")
     public R getCartItems() {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        final List<CartItemView> cartItems = customerService.getCartItemsByUsername(username);
-        return R.success(cartItems);
+        final List<CartItemView> cartItemViews = customerService.getCartItemsByUsername(username);
+        return R.defaultBuilder().data(cartItemViews).build();
     }
 
     @PutMapping("/cart")
@@ -50,10 +51,10 @@ public class CustomerController {
         final User user = (User)userService.loadUserByUsername(username);
         Optional<Good> goodOpt = goodService.getGoodById(goodId);
         if (goodOpt.isEmpty()) {
-            return R.failure();
+            return R.defaultBuilder().success(false).message(ErrorMessage.GOOD_NOT_EXIST).build();
         }
         customerService.addGoodToCart(goodOpt.get(), user);
-        return R.success();
+        return R.defaultBuilder().build();
     }
 
     @PutMapping("/cart-item/{id}")
@@ -61,7 +62,7 @@ public class CustomerController {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User)userService.loadUserByUsername(username);
         customerService.setCartItemCountById(id, count, user);
-        return R.success();
+        return R.defaultBuilder().build();
     }
 
     @DeleteMapping("/cart")
@@ -69,7 +70,7 @@ public class CustomerController {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User)userService.loadUserByUsername(username);
         customerService.removeGoodFromCart(goodId, user);
-        return R.success();
+        return R.defaultBuilder().build();
     }
 
 }

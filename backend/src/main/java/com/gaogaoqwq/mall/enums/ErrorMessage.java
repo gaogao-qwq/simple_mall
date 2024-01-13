@@ -18,7 +18,11 @@ public class ErrorMessage {
 
     public static final String TOKEN_EXPIRED = "Token已过期";
 
+    public static final String GOOD_NOT_EXIST = "商品不存在";
+
     public static final String CART_ITEM_NOT_EXIST = "购物车中不存在商品";
+
+    public static final String API_NOT_FOUND = "该 URL 不存在接口";
 
     public static final String INTERNAL_SERVER_ERROR = "服务器内部错误";
 

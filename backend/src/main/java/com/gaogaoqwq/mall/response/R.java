@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gaogaoqwq.mall.enums.ErrorMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -12,6 +15,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class R {
 
     private Boolean success;
@@ -24,28 +30,13 @@ public class R {
 
     private Object data;
 
-    public static R success() {
-        return new R(true);
-    }
-
-    public static R success(String msg) {
-        return new R(true).setMessage(msg);
-    }
-
-    public static R success(Object obj) {
-        return new R(true).setData(obj);
-    }
-
-    public static R failure() {
-        return new R(false);
-    }
-
-    public static R failure(String msg) {
-        return new R(false).setMessage(msg);
-    }
-
-    public static R failure(Object obj) {
-        return new R(false).setData(obj);
+    public static RBuilder defaultBuilder() {
+        return R.builder()
+            .success(true)
+            .code(HttpServletResponse.SC_OK)
+            .message("调用成功")
+            .timestamp(System.currentTimeMillis())
+            .data(null);
     }
 
     public static AuthenticationEntryPoint authFailure() {
@@ -53,9 +44,13 @@ public class R {
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(new ObjectMapper().writeValueAsString(
-                    new R(false)
-                            .setCode(HttpServletResponse.SC_UNAUTHORIZED)
-                            .setMessage(ErrorMessage.AUTHENTICATION_FAILED)
+                R.builder()
+                    .success(false)
+                    .code(HttpServletResponse.SC_UNAUTHORIZED)
+                    .message(ErrorMessage.AUTHENTICATION_FAILED)
+                    .timestamp(System.currentTimeMillis())
+                    .data(null)
+                    .build()
             ));
         };
     }
@@ -65,44 +60,15 @@ public class R {
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write(new ObjectMapper().writeValueAsString(
-                    new R(false)
-                            .setCode(HttpServletResponse.SC_FORBIDDEN)
-                            .setMessage(ErrorMessage.PERMISSION_DENIED)
+                R.builder()
+                    .success(false)
+                    .code(HttpServletResponse.SC_FORBIDDEN)
+                    .message(ErrorMessage.PERMISSION_DENIED)
+                    .timestamp(System.currentTimeMillis())
+                    .data(null)
+                    .build()
             ));
         };
-    }
-
-    private R setSuccess(Boolean success) {
-        this.success = success;
-        return this;
-    }
-
-    private R setCode(Integer code) {
-        this.code = code;
-        return this;
-    }
-
-    private R setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    private R setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-        return this;
-    }
-
-    private R setData(Object obj) {
-        this.data = obj;
-        return this;
-    }
-
-    private R(boolean ok) {
-        this.success = ok;
-        this.code = ok ? 200 : 500;
-        this.message = ok ? "调用成功" : "调用失败";
-        this.timestamp = System.currentTimeMillis();
-        this.data = null;
     }
 
 }
