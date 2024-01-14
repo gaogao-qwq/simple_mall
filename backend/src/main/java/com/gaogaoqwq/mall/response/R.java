@@ -30,11 +30,20 @@ public class R {
 
     private Object data;
 
-    public static RBuilder defaultBuilder() {
+    public static RBuilder successBuilder() {
         return R.builder()
             .success(true)
             .code(HttpServletResponse.SC_OK)
             .message("调用成功")
+            .timestamp(System.currentTimeMillis())
+            .data(null);
+    }
+
+    public static RBuilder failureBuilder() {
+        return R.builder()
+            .success(true)
+            .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+            .message("调用失败")
             .timestamp(System.currentTimeMillis())
             .data(null);
     }

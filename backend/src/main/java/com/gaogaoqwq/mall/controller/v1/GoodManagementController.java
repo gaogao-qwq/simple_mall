@@ -17,7 +17,7 @@ public class GoodManagementController {
 
     @GetMapping("/good-list")
     public R goodList() {
-        return R.defaultBuilder().build();
+        return R.successBuilder().build();
     }
 
 }

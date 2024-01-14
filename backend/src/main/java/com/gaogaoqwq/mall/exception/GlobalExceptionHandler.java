@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<R> handleNoResourceFoundException(NoResourceFoundException e) {
         log.info("Handled exception: {}", e.getClass().getName());
-        return new ResponseEntity<>(R.defaultBuilder()
+        return new ResponseEntity<>(R.successBuilder()
                 .success(false)
                 .message(ErrorMessage.API_NOT_FOUND)
                 .code(HttpServletResponse.SC_NOT_FOUND)
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<R> handleException(Exception e) {
         log.warn("Unhandled exception response: {}", e.getClass().getName());
-        return new ResponseEntity<>(R.defaultBuilder()
+        return new ResponseEntity<>(R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
                 .message(ErrorMessage.INTERNAL_SERVER_ERROR)

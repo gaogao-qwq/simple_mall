@@ -24,14 +24,14 @@ public class GoodController {
         if (size.isEmpty()) size = Optional.of(10);
         var goods = goodService.getGoodByPage(page, size.get());
         var views = goods.stream().map(GoodInfoView::fromGood).toList();
-        return R.defaultBuilder()
+        return R.successBuilder()
             .data(views)
             .build();
     }
 
     @GetMapping("/count")
     public R goodCount() {
-        return R.defaultBuilder()
+        return R.successBuilder()
             .data(new CountView(goodService.getGoodCount()))
             .build();
     }
@@ -40,7 +40,7 @@ public class GoodController {
     public R goodSwiper() {
         var goodSwiper = goodService.getGoodSwiper();
         var views = goodSwiper.stream().map(GoodSwiperView::fromGoodSwiper).toList();
-        return R.defaultBuilder()
+        return R.successBuilder()
             .data(views)
             .build();
     }
@@ -48,10 +48,10 @@ public class GoodController {
     @GetMapping("/detail/{id}")
     public R goodDetail(@PathVariable Long id) {
         var good = goodService.getGoodById(id);
-        return good.map(value -> R.defaultBuilder()
+        return good.map(value -> R.successBuilder()
                     .data(GoodDetailView.fromGood(value))
                     .build())
-                .orElseGet(() -> R.defaultBuilder()
+                .orElseGet(() -> R.successBuilder()
                     .success(false)
                     .message(ErrorMessage.GOOD_NOT_EXIST)
                     .build());

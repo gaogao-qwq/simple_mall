@@ -42,7 +42,7 @@ public class CustomerController {
     public R getCartItems() {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final List<CartItemView> cartItemViews = customerService.getCartItemsByUsername(username);
-        return R.defaultBuilder().data(cartItemViews).build();
+        return R.successBuilder().data(cartItemViews).build();
     }
 
     @PutMapping("/cart")
@@ -51,10 +51,10 @@ public class CustomerController {
         final User user = (User)userService.loadUserByUsername(username);
         Optional<Good> goodOpt = goodService.getGoodById(goodId);
         if (goodOpt.isEmpty()) {
-            return R.defaultBuilder().success(false).message(ErrorMessage.GOOD_NOT_EXIST).build();
+            return R.successBuilder().success(false).message(ErrorMessage.GOOD_NOT_EXIST).build();
         }
         customerService.addGoodToCart(goodOpt.get(), user);
-        return R.defaultBuilder().build();
+        return R.successBuilder().build();
     }
 
     @PutMapping("/cart-item/{id}")
@@ -62,7 +62,7 @@ public class CustomerController {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User)userService.loadUserByUsername(username);
         customerService.setCartItemCountById(id, count, user);
-        return R.defaultBuilder().build();
+        return R.successBuilder().build();
     }
 
     @DeleteMapping("/cart")
@@ -70,7 +70,7 @@ public class CustomerController {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User)userService.loadUserByUsername(username);
         customerService.removeGoodFromCart(goodId, user);
-        return R.defaultBuilder().build();
+        return R.successBuilder().build();
     }
 
 }

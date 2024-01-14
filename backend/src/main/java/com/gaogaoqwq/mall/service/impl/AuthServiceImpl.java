@@ -40,25 +40,25 @@ public class AuthServiceImpl implements AuthService {
         try {
             authentication = authenticationManager.authenticate(authentication);
         } catch (UsernameNotFoundException e) {
-            return R.defaultBuilder()
+            return R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_UNAUTHORIZED)
                 .message(ErrorMessage.USERNAME_NOT_EXIST)
                 .build();
         } catch (DisabledException e) {
-            return R.defaultBuilder()
+            return R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_FORBIDDEN)
                 .message(ErrorMessage.USER_DISABLE)
                 .build();
         } catch (BadCredentialsException e) {
-            return R.defaultBuilder()
+            return R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_UNAUTHORIZED)
                 .message(ErrorMessage.PASSWORD_ERROR)
                 .build();
         } catch (Exception e) {
-            return R.defaultBuilder()
+            return R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
                 .message(ErrorMessage.UNKNOWN_ERROR)
@@ -70,14 +70,14 @@ public class AuthServiceImpl implements AuthService {
         final String refreshToken = jwtProvider.generateRefreshToken(authentication.getPrincipal().toString());
         AuthView view = new AuthView(username, accessToken, refreshToken);
 
-        return R.defaultBuilder().data(view).build();
+        return R.successBuilder().data(view).build();
     }
 
     @Override
     @Transactional
     public R register(RegisterDto dto) {
         if (userRepo.existsByUsername(dto.getUsername())) {
-            return R.defaultBuilder()
+            return R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_CONFLICT)
                 .message(ErrorMessage.USER_EXIST)
@@ -86,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
 
         var role = roleRepo.findByName("ROLE_" + RoleName.CUSTOMER);
         if (role.isEmpty()) {
-            return R.defaultBuilder()
+            return R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
                 .message(ErrorMessage.INTERNAL_SERVER_ERROR)
@@ -106,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtProvider.generateRefreshToken(dto.getUsername());
         AuthView view = new AuthView(dto.getUsername(), accessToken, refreshToken);
 
-        return R.defaultBuilder()
+        return R.successBuilder()
             .data(view)
             .build();
     }
@@ -114,7 +114,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public R refreshToken(String refreshToken) {
         if (!jwtProvider.validateToken(refreshToken)) {
-            return R.defaultBuilder()
+            return R.successBuilder()
                 .success(false)
                 .code(HttpServletResponse.SC_UNAUTHORIZED)
                 .message(ErrorMessage.AUTHENTICATION_FAILED)
@@ -122,13 +122,13 @@ public class AuthServiceImpl implements AuthService {
         }
 
         var userOpt = jwtProvider.authenticateToken(refreshToken);
-        if (userOpt.isEmpty()) return R.defaultBuilder()
+        if (userOpt.isEmpty()) return R.successBuilder()
             .success(false)
             .code(HttpServletResponse.SC_UNAUTHORIZED)
             .message(ErrorMessage.USERNAME_NOT_EXIST)
             .build();
         var user = userOpt.get();
-        if (!user.isEnabled()) return R.defaultBuilder()
+        if (!user.isEnabled()) return R.successBuilder()
             .success(false)
             .message(ErrorMessage.USER_DISABLE)
             .build();
@@ -136,7 +136,7 @@ public class AuthServiceImpl implements AuthService {
         final String accessToken = jwtProvider.generateAccessToken(userOpt.get().getUsername());
         refreshToken = jwtProvider.generateRefreshToken(userOpt.get().getUsername());
         AuthView view = new AuthView(userOpt.get().getUsername(), accessToken, refreshToken);
-        return R.defaultBuilder()
+        return R.successBuilder()
             .data(view)
             .build();
     }
