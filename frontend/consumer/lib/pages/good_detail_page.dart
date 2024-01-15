@@ -9,13 +9,11 @@ import 'package:get/get.dart';
 class GoodDetailPage extends StatelessWidget {
   final int goodId;
   final String previewImageUrl;
-  final Widget imageHero;
 
   const GoodDetailPage({
     super.key,
     required this.goodId,
     required this.previewImageUrl,
-    required this.imageHero,
   });
 
   @override
@@ -34,17 +32,6 @@ class GoodDetailPage extends StatelessWidget {
         }
 
         if (snp.hasData) {
-          // Widget topImage = Stack(
-          //   children: [
-          //     ExtendedImage.network(
-          //       previewImageUrl,
-          //       clearMemoryCacheIfFailed: true,
-          //       border: Border.all(color: Colors.grey.withOpacity(0.4), width: 1.0),
-          //       borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-          //     )
-          //   ],
-          // );
-
           Widget detailCard = Card(
             color: Colors.orange.shade100,
             shadowColor: null,
@@ -174,7 +161,15 @@ class GoodDetailPage extends StatelessWidget {
         children: [
           Hero(
             tag: "$previewImageUrl-preview-image-hero",
-            child: imageHero,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: ExtendedImage.network(
+                previewImageUrl,
+                fit: BoxFit.cover,
+                clearMemoryCacheIfFailed: true,
+              ),
+            ),
+
           ),
           goodDetail,
         ],

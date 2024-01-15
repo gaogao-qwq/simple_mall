@@ -4,23 +4,12 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 Widget buildWaterfallFlowGoodInfo(BuildContext ctx, GoodInfo item, int index, {bool knowSized = true}) {
-
-  Widget imageHero = ClipRRect(
-    borderRadius: BorderRadius.circular(12),
-    child: ExtendedImage.network(
-      item.imgUrl,
-      fit: BoxFit.cover,
-      clearMemoryCacheIfFailed: true,
-    ),
-  );
-
   return Card(
     child: InkWell(
       onTap: () => Navigator.of(ctx).push(
         MaterialPageRoute<void>(builder: (ctx) => GoodDetailPage(
           goodId: item.id,
           previewImageUrl: item.imgUrl, 
-          imageHero: imageHero,
         ))
       ),
       child: Column(
@@ -29,7 +18,14 @@ Widget buildWaterfallFlowGoodInfo(BuildContext ctx, GoodInfo item, int index, {b
         children: [
           Hero(
             tag: "${item.imgUrl}-preview-image-hero",
-            child: imageHero
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: ExtendedImage.network(
+                item.imgUrl,
+                fit: BoxFit.cover,
+                clearMemoryCacheIfFailed: true,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
