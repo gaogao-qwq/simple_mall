@@ -8,8 +8,9 @@ import 'package:get_storage/get_storage.dart';
 void main() async {
   await GetStorage.init();
   final udc = Get.put(UserDetailController());
+  final ap = Get.put(AuthProvider());
   if (udc.isLogin()) {
-    final userDetail = await Get.put(AuthProvider()).refresh(udc.refreshToken.value);
+    final userDetail = await ap.refresh(udc.refreshToken.value);
     if (userDetail == null) {
       udc.removeUser();
     } else {
