@@ -95,7 +95,8 @@ class CartListItem extends StatelessWidget {
                             children: [
                               const Text("总价：¥", style: TextStyle(color: Colors.red)),
                               Obx(() => Text(
-                                "${Decimal.parse(scc.cartList[idx].price) * Decimal.fromInt(scc.cartList[idx].count)}",
+                                (Decimal.parse(scc.cartList[idx].price) * 
+                                Decimal.fromInt(scc.cartList[idx].count)).toStringAsFixed(2),
                                 style: const TextStyle(fontSize: 24, color: Colors.red),
                               )),
                             ],
