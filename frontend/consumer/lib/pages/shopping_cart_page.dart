@@ -2,6 +2,7 @@ import 'package:consumer/components/mall_navigation_bar.dart';
 import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/auth_page.dart';
+import 'package:consumer/pages/good_detail_page.dart';
 import 'package:decimal/decimal.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -23,19 +24,26 @@ class CartListItem extends StatelessWidget {
       height: 180,
       child: Card(
         child: InkWell(
-          onTap: () {},
-          onLongPress: () {},
+          onTap: () {
+            Get.to(GoodDetailPage(
+              goodId: scc.cartList[idx].goodId,
+              previewImageUrl: scc.cartList[idx].previewImgUrl,
+            ));
+          },
           child: Padding(
           padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Obx(() => ExtendedImage.network(
-                    scc.cartList[idx].previewImgUrl,
-                    fit: BoxFit.cover,
-                    clearMemoryCacheIfFailed: true,
-                  )),
+                Hero(
+                  tag: "${scc.cartList[idx].previewImgUrl}-preview-image-hero", 
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Obx(() => ExtendedImage.network(
+                      scc.cartList[idx].previewImgUrl,
+                      fit: BoxFit.cover,
+                      clearMemoryCacheIfFailed: true,
+                    )),
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
