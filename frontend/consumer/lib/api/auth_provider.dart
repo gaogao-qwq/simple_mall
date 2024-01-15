@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/domain/api_response.dart';
 import 'package:consumer/domain/user_detail.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthProvider extends GetConnect {
@@ -39,7 +40,7 @@ class AuthProvider extends GetConnect {
 
   Future<UserDetail?> refresh(String refreshToken) async {
     var response = (await post(
-      "v1/auth/refresh",
+      "/v1/auth/refresh",
       {"refreshToken": refreshToken},
       decoder: (data) => ApiResponse.fromJson(data),
     )).body;
