@@ -1,4 +1,5 @@
 import 'package:consumer/controller/auth_controller.dart';
+import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -34,6 +35,7 @@ class AuthPage extends StatelessWidget {
     final lc = Get.put(LoginController());
     final rc = Get.put(RegisterController());
     final apc = Get.put(AuthPageController());
+    final scc = Get.put(ShoppingCartController());
 
     Widget loginForm = Center(
       child: Card(
@@ -80,6 +82,7 @@ class AuthPage extends StatelessWidget {
                     onPressed: () async {
                       if (!lc.formKey.currentState!.validate()) return;
                       await lc.login();
+                      await scc.fetchCartItems();
                     },
                     child: const Text("登录", style: TextStyle(fontSize: 16)),
                   ),
@@ -182,6 +185,7 @@ class AuthPage extends StatelessWidget {
                     onPressed: () async {
                       if (!rc.formKey.currentState!.validate()) return;
                       await rc.register();
+                      await scc.fetchCartItems();
                     },
                     child: const Text("注册", style: TextStyle(fontSize: 16)),
                   ),

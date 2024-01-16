@@ -1,14 +1,36 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:consumer/api/good_provider.dart';
-import 'package:consumer/common/data/good_info_repository.dart';
-import 'package:consumer/common/widget/good_info_item_builder.dart';
 import 'package:consumer/components/mall_navigation_bar.dart';
 import 'package:consumer/domain/good_info.dart';
+import 'package:consumer/pages/good_detail_page.dart';
 import 'package:consumer/pages/search_page.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_more_list/loading_more_list.dart';
+
+class GoodInfoRepository extends LoadingMoreBase<GoodInfo> {
+  final gp = Get.put(GoodProvider());
+  int page = 0;
+  int size = 10;
+  bool _hasMore = true;
+
+  @override
+  bool get hasMore => _hasMore;
+
+  @override
+  Future<bool> loadData([bool isLoadMoreAction = false]) async {
+    if (!_hasMore) return false;
+    var goodCount = await gp.getCount();
+    var goodInfos = await gp.getGoods(page, size);
+    for (var e in goodInfos) {
+      add(e);
+    }
+    page++;
+    _hasMore = goodCount > page * size;
+    return true;
+  }
+}
 
 class GoodWaterfallController extends GetxController {
   var itemCount = 10.obs;
@@ -38,7 +60,6 @@ class HomePage extends StatelessWidget {
             child: Icon(Icons.close, semanticLabel: "未知错误")
           );
         }
-
         if (snp.hasData) {
           return Swiper(
             loop: true,
@@ -81,10 +102,55 @@ class HomePage extends StatelessWidget {
               ),
           );
         }
-
         return const CircularProgressIndicator(semanticsLabel: "载入商品 banner 图中",);
       }
     );
+
+    Widget buildWaterfallFlowGoodInfo(BuildContext ctx,
+        GoodInfo item, int index, {bool knowSized = true}) {
+      return Card(
+        child: InkWell(
+          onTap: () => Navigator.of(ctx).push(
+            MaterialPageRoute<void>(builder: (ctx) => GoodDetailPage(
+              goodId: item.id,
+              previewImageUrl: item.imgUrl, 
+            ))
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Hero(
+                tag: "${item.imgUrl}-preview-image-hero",
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: ExtendedImage.network(
+                    item.imgUrl,
+                    fit: BoxFit.cover,
+                    clearMemoryCacheIfFailed: true,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(item.name, style: const TextStyle(fontSize: 16)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("￥${item.price}", style: const TextStyle(fontSize: 16)),
+                        Text("库存：${item.stock}")
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
