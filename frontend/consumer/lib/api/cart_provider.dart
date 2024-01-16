@@ -42,4 +42,12 @@ class CartProvider extends GetConnect {
       decoder: (data) => ApiResponse.fromJson(data),
     )).body;
   }
+
+  Future<ApiResponse?> setCartItemCount(String cartItemId, int count) async {
+    return (await put(
+      "/v1/customer/cart-item/$cartItemId?count=$count",
+      null,
+      decoder: (data) => ApiResponse.fromJson(data),
+    )).body;
+  }
 }

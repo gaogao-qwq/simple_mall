@@ -58,4 +58,18 @@ class ShoppingCartController extends GetxController {
       );
     }
   }
+
+  Future<void> setGoodCountInCart(String cartItemId, int count) async {
+    var response = await cp.setCartItemCount(cartItemId, count);
+    if (response == null) {
+      Get.rawSnackbar(title: "Oops", message: "更改购物车中商品数量失败");
+      return;
+    }
+    if (!response.success) {
+      Get.rawSnackbar(title: "Oops", message: response.message);
+      return;
+    }
+    cartList.firstWhere((e) => e.id == cartItemId).count = count;
+    cartList.refresh();
+  }
 }

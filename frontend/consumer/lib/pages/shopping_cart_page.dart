@@ -61,7 +61,8 @@ class CartListItem extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () => scc.setGoodCountInCart(
+                                  scc.cartList[idx].id, scc.cartList[idx].count - 1),
                               icon: const Icon(Icons.remove),
                             ),
                             InkWell(
@@ -76,7 +77,8 @@ class CartListItem extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () => scc.setGoodCountInCart(
+                                  scc.cartList[idx].id, scc.cartList[idx].count + 1),
                               icon: const Icon(Icons.add),
                             ),
                           ],
