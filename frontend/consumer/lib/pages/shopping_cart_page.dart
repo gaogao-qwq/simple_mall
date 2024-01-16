@@ -6,6 +6,7 @@ import 'package:consumer/pages/good_detail_page.dart';
 import 'package:decimal/decimal.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class CartListItem extends StatelessWidget {
@@ -19,17 +20,17 @@ class CartListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scc = Get.put(ShoppingCartController());
+    final formKey = GlobalKey<FormState>();
+    String dialogCount = "";
 
     return SizedBox(
       height: 180,
       child: Card(
         child: InkWell(
-          onTap: () {
-            Get.to(GoodDetailPage(
-              goodId: scc.cartList[idx].goodId,
-              previewImageUrl: scc.cartList[idx].previewImgUrl,
-            ));
-          },
+          onTap: () => Get.to(GoodDetailPage(
+            goodId: scc.cartList[idx].goodId,
+            previewImageUrl: scc.cartList[idx].previewImgUrl,
+          )),
           child: Padding(
           padding: const EdgeInsets.all(16),
             child: Row(
@@ -66,7 +67,43 @@ class CartListItem extends StatelessWidget {
                               icon: const Icon(Icons.remove),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                dialogCount = scc.cartList[idx].count.toString();
+                                Get.defaultDialog(
+                                  title: "请输入商品数量",
+                                  contentPadding: const EdgeInsets.all(20),
+                                  content: Form(
+                                    key: formKey,
+                                    child: TextFormField(
+                                      initialValue: scc.cartList[idx].count.toString(),
+                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      keyboardType: TextInputType.number,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: "商品数量"
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) return "数量不能为空";
+                                        if (int.tryParse(value) == null) return "请输入有效数字";
+                                        return null;
+                                      },
+                                      onChanged: (value) => dialogCount = value,
+                                    ),
+                                  ), 
+                                  confirm: TextButton(
+                                    onPressed: () {
+                                      if (!formKey.currentState!.validate()) return;
+                                      scc.setGoodCountInCart(scc.cartList[idx].id, int.parse(dialogCount));
+                                      Get.back();
+                                    },
+                                    child: const Text("确认")
+                                  ),
+                                  cancel: TextButton(
+                                    onPressed: () => Get.back(),
+                                    child: const Text("取消")
+                                  ),
+                                );
+                              },
                               child: Container(
                                 padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
