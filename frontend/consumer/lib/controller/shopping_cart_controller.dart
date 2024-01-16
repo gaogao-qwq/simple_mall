@@ -7,6 +7,12 @@ class ShoppingCartController extends GetxController {
 
   final cartList = <CartItem>[].obs;
 
+  @override
+  void onInit() async {
+    cartList.value = await cp.getCartItems();
+    super.onInit();
+  }
+
   void clearCartItems() {
     cartList.clear();
   }
