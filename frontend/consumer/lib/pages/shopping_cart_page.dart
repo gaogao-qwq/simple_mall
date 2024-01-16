@@ -160,7 +160,6 @@ class ShoppingCartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final udc = Get.put(UserDetailController());
-    // final cp = Get.put(CartProvider());
     final scc = Get.put(ShoppingCartController());
 
     Widget guestPlaceholder = Center(
