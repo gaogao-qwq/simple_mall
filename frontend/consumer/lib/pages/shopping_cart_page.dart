@@ -35,19 +35,24 @@ class CartListItem extends StatelessWidget {
           padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                Hero(
-                  tag: "${scc.cartList[idx].previewImgUrl}-preview-image-hero", 
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Obx(() => ExtendedImage.network(
-                      scc.cartList[idx].previewImgUrl,
-                      fit: BoxFit.cover,
-                      clearMemoryCacheIfFailed: true,
-                    )),
+                Expanded(
+                  flex: 1,
+                  child: Hero(
+                    tag: "${scc.cartList[idx].previewImgUrl}-preview-image-hero", 
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Obx(() => ExtendedImage.network(
+                        scc.cartList[idx].previewImgUrl,
+                        shape: BoxShape.rectangle,
+                        fit: BoxFit.cover,
+                        clearMemoryCacheIfFailed: true,
+                      )),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
+                  flex: 2,
                   child: Column(
                     children: [
                       Expanded(
