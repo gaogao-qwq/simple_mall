@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+// Horrible indent, might fix in future?
 class CartListItem extends StatelessWidget {
   final int idx;
 
@@ -74,9 +75,8 @@ class CartListItem extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 dialogCount = scc.cartList[idx].count.toString();
-                                Get.defaultDialog(
-                                  title: "请输入商品数量",
-                                  contentPadding: const EdgeInsets.all(20),
+                                Get.dialog(AlertDialog(
+                                  title: const Text("请输入商品数量"),
                                   content: Form(
                                     key: formKey,
                                     child: TextFormField(
@@ -94,20 +94,22 @@ class CartListItem extends StatelessWidget {
                                       },
                                       onChanged: (value) => dialogCount = value,
                                     ),
-                                  ), 
-                                  confirm: TextButton(
-                                    onPressed: () {
-                                      if (!formKey.currentState!.validate()) return;
-                                      scc.setGoodCountInCart(scc.cartList[idx].id, int.parse(dialogCount));
-                                      Get.back();
-                                    },
-                                    child: const Text("确认")
                                   ),
-                                  cancel: TextButton(
-                                    onPressed: () => Get.back(),
-                                    child: const Text("取消")
-                                  ),
-                                );
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Get.back(),
+                                      child: const Text("取消")
+                                    ),
+                                    FilledButton(
+                                      onPressed: () {
+                                        if (!formKey.currentState!.validate()) return;
+                                        scc.setGoodCountInCart(scc.cartList[idx].id, int.parse(dialogCount));
+                                        Get.back();
+                                      },
+                                      child: const Text("确认")
+                                    ),
+                                  ],
+                                ));
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(6),
