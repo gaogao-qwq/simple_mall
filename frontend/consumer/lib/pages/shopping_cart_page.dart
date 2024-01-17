@@ -36,6 +36,10 @@ class CartListItem extends StatelessWidget {
           padding: const EdgeInsets.all(16),
             child: Row(
               children: [
+                Obx(() => Checkbox(
+                  value: scc.selected[idx],
+                  onChanged: (value) => scc.selected[idx] = value!,
+                )),
                 Expanded(
                   flex: 1,
                   child: Hero(
@@ -57,95 +61,94 @@ class CartListItem extends StatelessWidget {
                   child: Column(
                     children: [
                       Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Obx(() => Text(
-                                scc.cartList[idx].goodDescription,
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                              )),
-                            ),
-                            const SizedBox(width: 10),
-                            IconButton(
-                              onPressed: () => scc.setGoodCountInCart(
-                                  scc.cartList[idx].id, scc.cartList[idx].count - 1),
-                              icon: const Icon(Icons.remove),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                dialogCount = scc.cartList[idx].count.toString();
-                                Get.dialog(AlertDialog(
-                                  title: const Text("请输入商品数量"),
-                                  content: Form(
-                                    key: formKey,
-                                    child: TextFormField(
-                                      initialValue: scc.cartList[idx].count.toString(),
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                      keyboardType: TextInputType.number,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: "商品数量"
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) return "数量不能为空";
-                                        if (int.tryParse(value) == null) return "请输入有效数字";
-                                        return null;
-                                      },
-                                      onChanged: (value) => dialogCount = value,
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Get.back(),
-                                      child: const Text("取消")
-                                    ),
-                                    FilledButton(
-                                      onPressed: () {
-                                        if (!formKey.currentState!.validate()) return;
-                                        scc.setGoodCountInCart(scc.cartList[idx].id, int.parse(dialogCount));
-                                        Get.back();
-                                      },
-                                      child: const Text("确认")
-                                    ),
-                                  ],
-                                ));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Get.theme.colorScheme.primary),
-                                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                ),
-                                child: Obx(() => Text("x${scc.cartList[idx].count}")),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => scc.setGoodCountInCart(
-                                  scc.cartList[idx].id, scc.cartList[idx].count + 1),
-                              icon: const Icon(Icons.add),
-                            ),
-                          ],
-                        ),
+                        child: Obx(() => Text(
+                          scc.cartList[idx].goodDescription,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                        )),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Obx(() => Text(
-                            "单价：¥${scc.cartList[idx].price}",
-                            style: const TextStyle(color: Colors.red)
-                          )),
-                          Row(
-                            textBaseline: TextBaseline.alphabetic,
-                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                            children: [
-                              const Text("总价：¥", style: TextStyle(color: Colors.red)),
-                              Obx(() => Text(
-                                (Decimal.parse(scc.cartList[idx].price) * 
-                                Decimal.fromInt(scc.cartList[idx].count)).toStringAsFixed(2),
-                                style: const TextStyle(fontSize: 24, color: Colors.red),
-                              )),
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Obx(() => Text(
+                                  "单价：¥${scc.cartList[idx].price}",
+                                  style: const TextStyle(color: Colors.red)
+                                )),
+                                Row(
+                                  textBaseline: TextBaseline.alphabetic,
+                                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                                  children: [
+                                    const Text("总价：¥", style: TextStyle(color: Colors.red)),
+                                    Obx(() => Text(
+                                      (Decimal.parse(scc.cartList[idx].price) * 
+                                      Decimal.fromInt(scc.cartList[idx].count)).toStringAsFixed(2),
+                                      style: const TextStyle(fontSize: 24, color: Colors.red),
+                                    )),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => scc.setGoodCountInCart(
+                                scc.cartList[idx].id, scc.cartList[idx].count - 1),
+                            icon: const Icon(Icons.remove),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              dialogCount = scc.cartList[idx].count.toString();
+                              Get.dialog(AlertDialog(
+                                title: const Text("请输入商品数量"),
+                                content: Form(
+                                  key: formKey,
+                                  child: TextFormField(
+                                    initialValue: scc.cartList[idx].count.toString(),
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: "商品数量"
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) return "数量不能为空";
+                                      if (int.tryParse(value) == null) return "请输入有效数字";
+                                      return null;
+                                    },
+                                    onChanged: (value) => dialogCount = value,
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Get.back(),
+                                    child: const Text("取消")
+                                  ),
+                                  FilledButton(
+                                    onPressed: () {
+                                      if (!formKey.currentState!.validate()) return;
+                                      scc.setGoodCountInCart(scc.cartList[idx].id, int.parse(dialogCount));
+                                      Get.back();
+                                    },
+                                    child: const Text("确认")
+                                  ),
+                                ],
+                              ));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Get.theme.colorScheme.primary),
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                              ),
+                              child: Obx(() => Text("x${scc.cartList[idx].count}")),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => scc.setGoodCountInCart(
+                                scc.cartList[idx].id, scc.cartList[idx].count + 1),
+                            icon: const Icon(Icons.add),
                           ),
                         ],
                       ),
