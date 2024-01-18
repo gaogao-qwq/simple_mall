@@ -1,5 +1,6 @@
 import 'package:consumer/api/cart_provider.dart';
 import 'package:consumer/domain/cart_item.dart';
+import 'package:decimal/decimal.dart';
 import 'package:get/get.dart';
 
 class ShoppingCartController extends GetxController {
@@ -11,6 +12,27 @@ class ShoppingCartController extends GetxController {
   void onInit() async {
     cartList.value = await cp.getCartItems();
     super.onInit();
+  }
+
+  Decimal get totalPrice {
+    return cartList.where((e) => e.selected == true)
+        .map((e) => Decimal.tryParse(e.price)! * Decimal.fromInt(e.count))
+        .fold(Decimal.zero, (prev, curr) => prev + curr);
+  }
+
+  bool get isSelectAll => cartList.every((e) => e.selected == true); 
+
+  void toggleSelect(int index, bool select) {
+    cartList[index].selected = select;
+    cartList.refresh();
+  }
+
+  void toggleSelectAll() {
+    bool isSelect = !isSelectAll;
+    for (var e in cartList) {
+      e.selected = isSelect;
+    }
+    cartList.refresh();
   }
 
   void clearCartItems() {

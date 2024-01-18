@@ -37,8 +37,8 @@ class CartListItem extends StatelessWidget {
             child: Row(
               children: [
                 Obx(() => Checkbox(
-                  value: scc.selected[idx],
-                  onChanged: (value) => scc.selected[idx] = value!,
+                  value: scc.cartList[idx].selected,
+                  onChanged: (value) => scc.toggleSelect(idx, value!),
                 )),
                 Expanded(
                   flex: 1,
@@ -85,7 +85,8 @@ class CartListItem extends StatelessWidget {
                                     Obx(() => Text(
                                       (Decimal.parse(scc.cartList[idx].price) * 
                                       Decimal.fromInt(scc.cartList[idx].count)).toStringAsFixed(2),
-                                      style: const TextStyle(fontSize: 24, color: Colors.red),
+                                      textScaler: const TextScaler.linear(1.75),
+                                      style: const TextStyle(color: Colors.red)
                                     )),
                                   ],
                                 ),
@@ -185,7 +186,7 @@ class ShoppingCartPage extends StatelessWidget {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("去登录", style: TextStyle(fontSize: 16)),
+                Text("去登录", textScaler: TextScaler.linear(2)),
                 Icon(Icons.login),
               ],
             )
@@ -200,7 +201,6 @@ class ShoppingCartPage extends StatelessWidget {
         if (snp.hasError) {
           return const Center(child: Text("获取购物车信息时出错"));
         }
-
         if (snp.hasData) {
           if (snp.data!.isEmpty) {
             return const Center(
@@ -213,19 +213,81 @@ class ShoppingCartPage extends StatelessWidget {
               ),
             );
           }
-          return ListView.builder(
-            itemCount: snp.data!.length,
-            itemBuilder: (ctx, idx) => CartListItem(idx: idx),
+          return ListView(
+            children: [
+              ...List.generate(snp.data!.length, (idx) => CartListItem(idx: idx)),
+              const SizedBox(height: 128),
+            ],
           );
         }
-
         return const Center(child: CircularProgressIndicator(semanticsLabel: "加载购物车信息中"));
       },
     );
 
+    Widget cartWidget = Stack(
+      children: [
+        cartListView,
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Card(
+            margin: const EdgeInsets.all(0),
+            color: Get.theme.colorScheme.surface.withOpacity(0.9),
+            shape: const RoundedRectangleBorder(
+              side: BorderSide.none,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12)
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Obx(() => Checkbox(
+                          value: scc.isSelectAll,
+                          onChanged: (value) => scc.toggleSelectAll(),
+                        )),
+                        const Text("全选"),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    textBaseline: TextBaseline.alphabetic,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    children: [
+                      Obx(() => Text("已选${scc.cartList.where((v) => v.selected == true).length}件，合计：")),
+                      const Text("¥", style: TextStyle(color: Colors.red)),
+                      Obx(() => Text(
+                        scc.totalPrice.toStringAsFixed(2),
+                        textScaler: const TextScaler.linear(2),
+                        style: const TextStyle(color: Colors.red),
+                      )),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.square(64),
+                    ),
+                    onPressed: () {},
+                    child: const Text("结算", textScaler: TextScaler.linear(1.25))
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+
     return Scaffold(
       appBar: AppBar(title: const Text("购物车")),
-      body: Obx(() => udc.isLogin() ? cartListView : guestPlaceholder),
+      body: Obx(() => udc.isLogin() ? cartWidget : guestPlaceholder),
       bottomNavigationBar: const MallNavigationBar(),
     );
   }
