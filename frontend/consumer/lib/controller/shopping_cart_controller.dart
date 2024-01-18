@@ -6,23 +6,19 @@ class ShoppingCartController extends GetxController {
   final cp = Get.put(CartProvider());
 
   final cartList = <CartItem>[].obs;
-  final selected = <bool>[].obs;
 
   @override
   void onInit() async {
     cartList.value = await cp.getCartItems();
-    selected.value = List.generate(cartList.length, (_) => false);
     super.onInit();
   }
 
   void clearCartItems() {
     cartList.clear();
-    selected.clear();
   }
 
   Future<List<CartItem>> fetchCartItems() async {
     cartList.value = await cp.getCartItems();
-    selected.value = List.generate(cartList.length, (_) => false);
     return cartList;
   }
 

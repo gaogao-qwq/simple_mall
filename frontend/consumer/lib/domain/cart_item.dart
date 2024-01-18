@@ -7,6 +7,7 @@ class CartItem {
   int stock = 0;
   String price = "";
   int count = 0;
+  bool selected = false;
 
   CartItem(this.id, this.goodId, this.previewImgUrl, this.goodName, this.goodDescription, this.stock, this.price, this.count);
 
