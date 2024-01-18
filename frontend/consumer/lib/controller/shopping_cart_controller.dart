@@ -17,6 +17,7 @@ class ShoppingCartController extends GetxController {
 
   void clearCartItems() {
     cartList.clear();
+    selected.clear();
   }
 
   Future<List<CartItem>> fetchCartItems() async {
