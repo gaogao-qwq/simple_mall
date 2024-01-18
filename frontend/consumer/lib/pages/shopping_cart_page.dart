@@ -115,7 +115,9 @@ class CartListItem extends StatelessWidget {
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) return "数量不能为空";
-                                      if (int.tryParse(value) == null) return "请输入有效数字";
+                                      var count = int.tryParse(value);
+                                      if (count == null) return "请输入有效数字";
+                                      if (count <= 0) return "商品数量至少为1";
                                       return null;
                                     },
                                     onChanged: (value) => dialogCount = value,
@@ -274,7 +276,10 @@ class ShoppingCartPage extends StatelessWidget {
                     style: FilledButton.styleFrom(
                       minimumSize: const Size.square(64),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // TODO: Implement purchase logic
+                      throw UnimplementedError("Unimplemented purchase logic");
+                    },
                     child: const Text("结算", textScaler: TextScaler.linear(1.25))
                   ),
                 ],

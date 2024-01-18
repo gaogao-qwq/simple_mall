@@ -88,6 +88,7 @@ class ShoppingCartController extends GetxController {
   }
 
   Future<void> setGoodCountInCart(String cartItemId, int count) async {
+    if (count <= 0) return;
     var response = await cp.setCartItemCount(cartItemId, count);
     if (response == null) {
       Get.rawSnackbar(title: "Oops", message: "更改购物车中商品数量失败");
