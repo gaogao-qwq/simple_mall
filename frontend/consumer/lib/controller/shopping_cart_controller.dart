@@ -14,11 +14,9 @@ class ShoppingCartController extends GetxController {
     super.onInit();
   }
 
-  Decimal get totalPrice {
-    return cartList.where((e) => e.selected == true)
+  Decimal get totalPrice => cartList.where((e) => e.selected == true)
         .map((e) => Decimal.tryParse(e.price)! * Decimal.fromInt(e.count))
         .fold(Decimal.zero, (prev, curr) => prev + curr);
-  }
 
   bool get isSelectAll => cartList.every((e) => e.selected == true); 
 
