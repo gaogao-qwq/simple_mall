@@ -3,6 +3,7 @@ import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/auth_page.dart';
 import 'package:consumer/pages/good_detail_page.dart';
+import 'package:consumer/pages/purchase_page.dart';
 import 'package:decimal/decimal.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -188,7 +189,7 @@ class ShoppingCartPage extends StatelessWidget {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("去登录", textScaler: TextScaler.linear(2)),
+                Text("去登录"),
                 Icon(Icons.login),
               ],
             )
@@ -277,8 +278,7 @@ class ShoppingCartPage extends StatelessWidget {
                       minimumSize: const Size.square(64),
                     ),
                     onPressed: () {
-                      // TODO: Implement purchase logic
-                      throw UnimplementedError("Unimplemented purchase logic");
+                      Get.to(const PurchasePage());
                     },
                     child: const Text("结算", textScaler: TextScaler.linear(1.25))
                   ),
