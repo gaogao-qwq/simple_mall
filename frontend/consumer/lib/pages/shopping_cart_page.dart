@@ -43,17 +43,14 @@ class CartListItem extends StatelessWidget {
                 )),
                 Expanded(
                   flex: 1,
-                  child: Hero(
-                    tag: "${scc.cartList[idx].previewImgUrl}-preview-image-hero", 
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Obx(() => ExtendedImage.network(
-                        scc.cartList[idx].previewImgUrl,
-                        shape: BoxShape.rectangle,
-                        fit: BoxFit.cover,
-                        clearMemoryCacheIfFailed: true,
-                      )),
-                    ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Obx(() => ExtendedImage.network(
+                      scc.cartList[idx].previewImgUrl,
+                      shape: BoxShape.rectangle,
+                      fit: BoxFit.cover,
+                      clearMemoryCacheIfFailed: true,
+                    )),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -198,33 +195,22 @@ class ShoppingCartPage extends StatelessWidget {
       ),
     );
 
-    Widget cartListView = FutureBuilder(
-      future: scc.fetchCartItems(),
-      builder: (ctx, snp) {
-        if (snp.hasError) {
-          return const Center(child: Text("获取购物车信息时出错"));
-        }
-        if (snp.hasData) {
-          if (snp.data!.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.shopping_cart_outlined),
-                  Text("购物车里空空如也"),
-                ],
-              ),
-            );
-          }
-          return ListView(
+    Widget cartListView = Obx(() => scc.cartList.isEmpty
+      ? const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ...List.generate(snp.data!.length, (idx) => CartListItem(idx: idx)),
-              const SizedBox(height: 128),
+              Icon(Icons.shopping_cart_outlined),
+              Text("购物车里空空如也"),
             ],
-          );
-        }
-        return const Center(child: CircularProgressIndicator(semanticsLabel: "加载购物车信息中"));
-      },
+          ),
+        )
+      : ListView(
+          children: [
+            ...List.generate(scc.cartList.length, (idx) => CartListItem(idx: idx)),
+            const SizedBox(height: 128),
+          ],
+        )
     );
 
     Widget cartWidget = Stack(
