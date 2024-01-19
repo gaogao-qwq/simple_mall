@@ -82,7 +82,6 @@ class AuthPage extends StatelessWidget {
                     onPressed: () async {
                       if (!lc.formKey.currentState!.validate()) return;
                       await lc.login();
-                      await scc.fetchCartItems();
                     },
                     child: const Text("登录", style: TextStyle(fontSize: 16)),
                   ),
