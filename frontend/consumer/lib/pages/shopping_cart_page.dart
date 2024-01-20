@@ -29,6 +29,7 @@ class CartListItem extends StatelessWidget {
       height: 180,
       child: Card(
         child: InkWell(
+          onLongPress: () => scc.toggleSelect(idx, !scc.cartList[idx].selected),
           onTap: () => Get.to(GoodDetailPage(
             goodId: scc.cartList[idx].goodId,
             previewImageUrl: scc.cartList[idx].previewImgUrl,
