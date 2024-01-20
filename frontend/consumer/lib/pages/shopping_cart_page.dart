@@ -46,12 +46,12 @@ class CartListItem extends StatelessWidget {
                   flex: 1,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Obx(() => ExtendedImage.network(
+                    child: ExtendedImage.network(
                       scc.cartList[idx].previewImgUrl,
                       shape: BoxShape.rectangle,
                       fit: BoxFit.cover,
                       clearMemoryCacheIfFailed: true,
-                    )),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),
