@@ -60,6 +60,7 @@ class CartListItem extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Obx(() => Text(
