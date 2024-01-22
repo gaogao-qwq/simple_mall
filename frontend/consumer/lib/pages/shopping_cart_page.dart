@@ -221,13 +221,14 @@ class ShoppingCartPage extends StatelessWidget {
       children: [
         cartListView,
         Positioned(
-          bottom: 8,
-          left: 8,
-          right: 8,
+          bottom: 12,
+          left: 12,
+          right: 12,
           child: ClipRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
               child: Card(
+                margin: const EdgeInsets.all(0),
                 color: Get.theme.colorScheme.surface.withOpacity(0.8),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
