@@ -217,64 +217,67 @@ class ShoppingCartPage extends StatelessWidget {
         )
     );
 
-    Widget cartWidget = Stack(
-      children: [
-        cartListView,
-        Positioned(
-          bottom: 12,
-          left: 12,
-          right: 12,
-          child: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
-              child: Card(
-                margin: const EdgeInsets.all(0),
-                color: Get.theme.colorScheme.surface.withOpacity(0.8),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
+    Widget cartBar = Positioned(
+      bottom: 12,
+      left: 12,
+      right: 12,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+          child: Card(
+            margin: const EdgeInsets.all(0),
+            color: Get.theme.colorScheme.surface.withOpacity(0.8),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Obx(() => Checkbox(
+                          value: scc.isSelectAll,
+                          onChanged: (value) => scc.toggleSelectAll(),
+                        )),
+                        const Text("全选"),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    textBaseline: TextBaseline.alphabetic,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
                     children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Obx(() => Checkbox(
-                              value: scc.isSelectAll,
-                              onChanged: (value) => scc.toggleSelectAll(),
-                            )),
-                            const Text("全选"),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        textBaseline: TextBaseline.alphabetic,
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        children: [
-                          Obx(() => Text("已选${scc.cartList.where((v) => v.selected == true).length}件，合计：")),
-                          const Text("¥", style: TextStyle(color: Colors.red)),
-                          Obx(() => Text(
-                            scc.totalPrice.toStringAsFixed(2),
-                            textScaler: const TextScaler.linear(2),
-                            style: const TextStyle(color: Colors.red),
-                          )),
-                        ],
-                      ),
-                      const SizedBox(width: 8),
-                      FilledButton(
-                        style: FilledButton.styleFrom(
-                          minimumSize: const Size.square(52),
-                        ),
-                        onPressed: () {
-                          Get.to(const PurchasePage());
-                        },
-                        child: const Text("结算", textScaler: TextScaler.linear(1.25))
-                      ),
+                      Obx(() => Text("已选${scc.cartList.where((v) => v.selected == true).length}件，合计：")),
+                      const Text("¥", style: TextStyle(color: Colors.red)),
+                      Obx(() => Text(
+                        scc.totalPrice.toStringAsFixed(2),
+                        textScaler: const TextScaler.linear(2),
+                        style: const TextStyle(color: Colors.red),
+                      )),
                     ],
                   ),
-                ),
+                  const SizedBox(width: 8),
+                  FilledButton(
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.square(52),
+                    ),
+                    onPressed: () {
+                      Get.to(const PurchasePage());
+                    },
+                    child: const Text("结算", textScaler: TextScaler.linear(1.25))
+                  ),
+                ],
               ),
             ),
           ),
         ),
+      ),
+    );
+
+    Widget cartWidget = Stack(
+      children: [
+        cartListView,
+        cartBar,
       ],
     );
 
