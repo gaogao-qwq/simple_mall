@@ -45,6 +45,9 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<GoodOrder> goodOrders;
 
+    @ManyToMany(mappedBy = "users")
+    private Collection<Address> addresses;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Stream.of(this.role.getName())
