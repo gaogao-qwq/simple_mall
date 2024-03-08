@@ -14,6 +14,10 @@ java {
 
 eclipse {
     synchronizationTasks("generateFactoryPathFile")
+    classpath {
+        downloadJavadoc = true
+        downloadSources = true
+    }
 }
 
 repositories {
@@ -21,16 +25,24 @@ repositories {
 }
 
 dependencies {
+	// spring boot core starter
+	implementation 'org.springframework.boot:spring-boot-starter'
+	// spring data with jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// spring data redis with lettuce
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	// spring boot security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+	// spring boot web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+	// spring boot actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	// spring boot test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     // mysql connector
     implementation 'com.mysql:mysql-connector-j:8.2.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-autoconfigure:3.2.0'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    // Java JWT
+    // java jWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-gson:0.12.3'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
@@ -39,7 +51,7 @@ dependencies {
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    // SpringDoc
+    // springdoc
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     testImplementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.3.0'
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.19'
