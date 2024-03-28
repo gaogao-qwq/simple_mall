@@ -3,10 +3,8 @@ import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class LoginController extends GetxController {
-  final box = GetStorage();
   final ap = Get.put(AuthProvider());
   final udc = Get.put(UserDetailController());
   final scc = Get.put(ShoppingCartController());
