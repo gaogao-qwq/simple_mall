@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,18 +59,21 @@ public class DataInitializer implements CommandLineRunner {
                         .username("root")
                         .password(passwordEncoder.encode("root"))
                         .gender(Gender.MALE)
+                        .createDate(Date.valueOf("2023-12-31"))
                         .role(adminRole)
                         .enable(true).build(),
                 User.builder()
                         .username("user1")
                         .password(passwordEncoder.encode("user1"))
                         .gender(Gender.MALE)
+                        .createDate(Date.valueOf("2024-02-21"))
                         .role(customerRole)
                         .enable(true).build(),
                 User.builder()
                         .username("user2")
                         .password(passwordEncoder.encode("user2"))
                         .gender(Gender.FEMALE)
+                        .createDate(Date.valueOf("2023-01-14"))
                         .role(customerRole)
                         .enable(true)
                         .build()

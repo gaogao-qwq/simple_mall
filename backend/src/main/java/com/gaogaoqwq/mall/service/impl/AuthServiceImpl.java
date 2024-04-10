@@ -40,34 +40,32 @@ public class AuthServiceImpl implements AuthService {
         try {
             authentication = authenticationManager.authenticate(authentication);
         } catch (UsernameNotFoundException e) {
-            return R.successBuilder()
-                .success(false)
-                .code(HttpServletResponse.SC_UNAUTHORIZED)
-                .message(ErrorMessage.USERNAME_NOT_EXIST)
-                .build();
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_UNAUTHORIZED)
+                    .message(ErrorMessage.USERNAME_NOT_EXIST)
+                    .build();
         } catch (DisabledException e) {
-            return R.successBuilder()
-                .success(false)
-                .code(HttpServletResponse.SC_FORBIDDEN)
-                .message(ErrorMessage.USER_DISABLE)
-                .build();
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_FORBIDDEN)
+                    .message(ErrorMessage.USER_DISABLE)
+                    .build();
         } catch (BadCredentialsException e) {
-            return R.successBuilder()
-                .success(false)
-                .code(HttpServletResponse.SC_UNAUTHORIZED)
-                .message(ErrorMessage.PASSWORD_ERROR)
-                .build();
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_UNAUTHORIZED)
+                    .message(ErrorMessage.PASSWORD_ERROR)
+                    .build();
         } catch (Exception e) {
-            return R.successBuilder()
-                .success(false)
-                .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                .message(ErrorMessage.UNKNOWN_ERROR)
-                .build();
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .message(ErrorMessage.UNKNOWN_ERROR)
+                    .build();
         }
 
         // 生成 JWT
-        final String accessToken = jwtProvider.generateAccessToken(authentication.getPrincipal().toString());
-        final String refreshToken = jwtProvider.generateRefreshToken(authentication.getPrincipal().toString());
+        final String accessToken = jwtProvider.generateAccessToken(
+                authentication.getPrincipal().toString());
+        final String refreshToken = jwtProvider.generateRefreshToken(
+                authentication.getPrincipal().toString());
         AuthView view = new AuthView(username, accessToken, refreshToken);
 
         return R.successBuilder().data(view).build();
@@ -77,20 +75,18 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public R register(RegisterDto dto) {
         if (userRepo.existsByUsername(dto.getUsername())) {
-            return R.successBuilder()
-                .success(false)
-                .code(HttpServletResponse.SC_CONFLICT)
-                .message(ErrorMessage.USER_EXIST)
-                .build();
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_CONFLICT)
+                    .message(ErrorMessage.USER_EXIST)
+                    .build();
         }
 
         var role = roleRepo.findByName("ROLE_" + RoleName.CUSTOMER);
         if (role.isEmpty()) {
-            return R.successBuilder()
-                .success(false)
-                .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                .message(ErrorMessage.INTERNAL_SERVER_ERROR)
-                .build();
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                    .message(ErrorMessage.INTERNAL_SERVER_ERROR)
+                    .build();
         }
 
         User user = User.builder()
@@ -107,38 +103,40 @@ public class AuthServiceImpl implements AuthService {
         AuthView view = new AuthView(dto.getUsername(), accessToken, refreshToken);
 
         return R.successBuilder()
-            .data(view)
-            .build();
+                .data(view)
+                .build();
     }
 
     @Override
     public R refreshToken(String refreshToken) {
         if (!jwtProvider.validateToken(refreshToken)) {
-            return R.successBuilder()
-                .success(false)
-                .code(HttpServletResponse.SC_UNAUTHORIZED)
-                .message(ErrorMessage.AUTHENTICATION_FAILED)
-                .build();
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_UNAUTHORIZED)
+                    .message(ErrorMessage.AUTHENTICATION_FAILED)
+                    .build();
         }
 
         var userOpt = jwtProvider.authenticateToken(refreshToken);
-        if (userOpt.isEmpty()) return R.successBuilder()
-            .success(false)
-            .code(HttpServletResponse.SC_UNAUTHORIZED)
-            .message(ErrorMessage.USERNAME_NOT_EXIST)
-            .build();
+        if (userOpt.isEmpty()) {
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_UNAUTHORIZED)
+                    .message(ErrorMessage.USERNAME_NOT_EXIST)
+                    .build();
+        }
         var user = userOpt.get();
-        if (!user.isEnabled()) return R.successBuilder()
-            .success(false)
-            .message(ErrorMessage.USER_DISABLE)
-            .build();
+        if (!user.isEnabled()) {
+            return R.failureBuilder()
+                    .code(HttpServletResponse.SC_UNAUTHORIZED)
+                    .message(ErrorMessage.USER_DISABLE)
+                    .build();
+        }
 
         final String accessToken = jwtProvider.generateAccessToken(userOpt.get().getUsername());
         refreshToken = jwtProvider.generateRefreshToken(userOpt.get().getUsername());
         AuthView view = new AuthView(userOpt.get().getUsername(), accessToken, refreshToken);
         return R.successBuilder()
-            .data(view)
-            .build();
+                .data(view)
+                .build();
     }
 
 }

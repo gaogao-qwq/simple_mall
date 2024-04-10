@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Date;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,6 +38,10 @@ public class User implements UserDetails {
 
     @Column(name = "enable", nullable = false)
     private Boolean enable;
+
+    @Column(name = "create_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date createDate;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
