@@ -1,0 +1,6 @@
+{
+	"loginButton": "登录"
+	"@loginButton": {
+		"description": "登录按钮文本"
+	}
+}
