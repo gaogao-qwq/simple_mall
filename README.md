@@ -1,6 +1,6 @@
 # 基于 Spring 和 Flutter 的前后端分离电商平台
 
-![cover]("./screenshot/cover.png")
+![cover](./screenshot/cover.png)
 
 ## 项目架构
 
