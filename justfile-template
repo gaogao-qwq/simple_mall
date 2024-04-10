@@ -1,0 +1,35 @@
+default:
+	just --list
+
+run-backend:
+	cd {{justfile_directory()}}/backend;\
+	./gradlew bootrun
+
+run-management-frontend:
+	cd {{justfile_directory()}}/frontend/management;\
+	fvm flutter run -d chrome
+
+run-customer-frontend:
+	cd {{justfile_directory()}}/frontend/consumer;\
+	fvm flutter run -d chrome
+
+
+build-backend:
+	cd {{justfile_directory()}}/backend;\
+	gradle bootJar
+
+build-customer-frontend:
+	cd {{justfile_directory()}}/frontend/consumer;\
+	fvm flutter build web --release --dart-define=API_URI=http://localhost:8080
+
+build-management-frontend:
+	cd {{justfile_directory()}}/frontend/management;\
+	fvm flutter build web --release --dart-define=API_URI=http://localhost:8080
+
+sync:
+	cd {{justfile_directory()}}/frontend/consumer;\
+	fvm flutter pub get
+	cd {{justfile_directory()}}/frontend/management;\
+	fvm flutter pub get
+	cd {{justfile_directory()}}/backend;\
+	./gradlew build
