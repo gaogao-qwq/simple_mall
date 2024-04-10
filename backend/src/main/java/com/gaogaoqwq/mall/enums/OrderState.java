@@ -10,7 +10,8 @@ public enum OrderState {
 
     AWAIT_RECEIPT("等待收货"),
 
-    ORDER_DONE("交易完成");
+    ORDER_COMPLETE("交易完成");
+
     private final String name;
 
     OrderState(String name) {

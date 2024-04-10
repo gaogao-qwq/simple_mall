@@ -3,6 +3,7 @@ package com.gaogaoqwq.mall.entity;
 import java.util.Collection;
 
 import com.gaogaoqwq.mall.dto.AddressDto;
+import com.gaogaoqwq.mall.enums.Province;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +30,7 @@ public class Address {
     private String phoneNumber;
 
     @Column(name = "province")
-    private String province;
+    private Province province;
 
     @Column(name = "detail")
     private String detail;
