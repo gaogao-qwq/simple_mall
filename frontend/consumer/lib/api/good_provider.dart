@@ -3,6 +3,7 @@ import 'package:consumer/domain/count.dart';
 import 'package:consumer/domain/good_detail.dart';
 import 'package:consumer/domain/good_info.dart';
 import 'package:consumer/domain/good_swiper.dart';
+import 'package:consumer/env.dart';
 import 'package:get/get.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 
@@ -11,7 +12,7 @@ class GoodProvider extends GetConnect {
 
   @override
   void onInit() {
-    httpClient.baseUrl = 'http://localhost:8080';
+    httpClient.baseUrl = Env.apiUri;
     httpClient.addRequestModifier<dynamic>((request) {
       if (ac.accessToken.isEmpty) return request;
       request.headers['Authorization'] = 'Bearer ${ac.accessToken}';

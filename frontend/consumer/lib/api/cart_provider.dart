@@ -1,6 +1,7 @@
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/domain/api_response.dart';
 import 'package:consumer/domain/cart_item.dart';
+import 'package:consumer/env.dart';
 import 'package:get/get.dart';
 
 class CartProvider extends GetConnect {
@@ -9,7 +10,7 @@ class CartProvider extends GetConnect {
 
   @override
   void onInit() {
-    httpClient.baseUrl = 'http://localhost:8080';
+    httpClient.baseUrl = Env.apiUri;
     httpClient.addRequestModifier<dynamic>((request) {
       if (udc.accessToken.isEmpty) return request;
       request.headers['Authorization'] = 'Bearer ${udc.accessToken}';
