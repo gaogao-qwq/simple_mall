@@ -1,5 +1,18 @@
 package com.gaogaoqwq.mall.service.impl;
 
+import java.time.Instant;
+import java.util.Date;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.gaogaoqwq.mall.dto.RegisterDto;
 import com.gaogaoqwq.mall.entity.User;
 import com.gaogaoqwq.mall.enums.ErrorMessage;
@@ -13,15 +26,6 @@ import com.gaogaoqwq.mall.view.AuthView;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -94,8 +98,16 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .gender(dto.getGender())
                 .role(role.get())
+                .createDate(Date.from(Instant.now()))
                 .enable(true).build();
-        userRepo.save(user);
+        try {
+            userRepo.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.failureBuilder()
+                    .message(e.getMessage())
+                    .build();
+        }
 
         // 生成 JWT
         String accessToken = jwtProvider.generateAccessToken(dto.getUsername());
