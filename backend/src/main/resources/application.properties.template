@@ -19,11 +19,22 @@ server.tomcat.accept-count=100
 server.tomcat.max-connections=8192
 
 # jwt configs
-jwt.properties.secret-key=_rAxls@kp-gCc3f[xSqCX4h%j6zy0xL
+jwt.properties.secret-key=placeholder
 # access token expiration: 7 days
 jwt.properties.access-token-expiration=604800000
 # refresh token expiration: 14 days
 jwt.properties.refresh-token-expiration=1209600000
+
+cos.properties.secret-id=placeholder
+cos.properties.secret-key=placeholder
+# https://cloud.tencent.com/document/product/436/6224
+cos.properties.region=placeholder
+cos.properties.bucket-name=placeholder
+
+minio.properties.access-key=placeholder
+minio.properties.secret-key=placeholder
+minio.properties.bucket-name=placeholder
+minio.properties.end-point=placeholder
 
 #SpringDoc configs
 springdoc.swagger-ui.path=/swagger-ui.html
