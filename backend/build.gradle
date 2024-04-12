@@ -55,6 +55,10 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     testImplementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.3.0'
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.19'
+	// Tencent COS sdk
+	implementation 'com.qcloud:cos_api:5.6.210'
+	// Minio sdk
+	implementation 'io.minio:minio:8.5.9'
 }
 
 tasks.named('test') {
