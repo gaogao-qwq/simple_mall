@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,15 +34,18 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Builder.Default
     @Column(name = "gender", nullable = false)
-    private Gender gender;
+    private Gender gender = Gender.MALE;
 
+    @Builder.Default
     @Column(name = "enable", nullable = false)
-    private Boolean enable;
+    private Boolean enable = true;
 
+    @Builder.Default
     @Column(name = "create_date", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date createDate;
+    private Date createDate = Date.from(Instant.now());
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
