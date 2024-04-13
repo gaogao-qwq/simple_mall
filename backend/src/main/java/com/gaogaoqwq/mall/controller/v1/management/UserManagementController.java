@@ -1,4 +1,4 @@
-package com.gaogaoqwq.mall.controller.v1;
+package com.gaogaoqwq.mall.controller.v1.management;
 
 import java.util.Optional;
 
