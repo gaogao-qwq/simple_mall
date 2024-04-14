@@ -31,20 +31,18 @@ class ManagementApp extends StatelessWidget {
     final udc = Get.put(UserDetailController());
 
     return GetMaterialApp(
+      title: "简商管理系统",
       home: Obx(() => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        transitionBuilder: (child, animation) =>
-          SlideTransition(
-            position: Tween(
-              begin: const Offset(-1, 0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          ),
-        child: udc.isLogin
-          ? const HomePage()
-          : const AuthPage(),
-      )),
+            duration: const Duration(milliseconds: 500),
+            transitionBuilder: (child, animation) => SlideTransition(
+              position: Tween(
+                begin: const Offset(-1, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+            child: udc.isLogin ? const HomePage() : const AuthPage(),
+          )),
       locale: const Locale("zh", "CN"),
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -52,20 +50,15 @@ class ManagementApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale("en", "US"),
-        Locale("zh", "CN")
-      ],
+      supportedLocales: const [Locale("en", "US"), Locale("zh", "CN")],
       theme: ThemeData(
-        colorSchemeSeed: Colors.indigo,
-        useMaterial3: true,
-        brightness: Brightness.light
-      ),
+          colorSchemeSeed: Colors.indigo,
+          useMaterial3: true,
+          brightness: Brightness.light),
       darkTheme: ThemeData(
-        colorSchemeSeed: Colors.indigo,
-        useMaterial3: true,
-        brightness: Brightness.dark
-      ),
+          colorSchemeSeed: Colors.indigo,
+          useMaterial3: true,
+          brightness: Brightness.dark),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
     );
