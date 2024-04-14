@@ -16,6 +16,7 @@ class LoginController extends GetxController {
   Future<void> login() async {
     final userDetail = await ap.login(username.value, password.value);
     if (userDetail == null) {
+      Get.snackbar("Oops", "登录失败");
       return;
     }
     udc.saveUser(userDetail);
@@ -38,6 +39,7 @@ class RegisterController extends GetxController {
   Future<void> register() async {
     final userDetail = await ap.register(username.value, password.value, gender.value);
     if (userDetail == null) {
+      Get.snackbar("Oops", "注册失败");
       return;
     }
     udc.saveUser(userDetail);
