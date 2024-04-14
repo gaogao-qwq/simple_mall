@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 const navigations = [HomePage(), ShoppingCartPage(), MyPage()];
 
-class NavigationBarController extends GetxController {
+class NavigationController extends GetxController {
   var currentIndex = 0.obs;
 
   void changeIndex(int index) {

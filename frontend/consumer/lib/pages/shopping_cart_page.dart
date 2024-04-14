@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:consumer/components/mall_navigation_bar.dart';
+import 'package:consumer/components/mall_navigation_rail.dart';
 import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
+import 'package:consumer/enum/layout_size.dart';
 import 'package:consumer/pages/auth_page.dart';
 import 'package:consumer/pages/good_detail_page.dart';
 import 'package:consumer/pages/purchase_page.dart';
@@ -37,13 +39,13 @@ class CartListItem extends StatelessWidget {
             previewImageUrl: scc.cartList[idx].previewImgUrl,
           )),
           child: Padding(
-          padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               children: [
                 Obx(() => Checkbox(
-                  value: scc.cartList[idx].selected,
-                  onChanged: (value) => scc.toggleSelect(idx, value!),
-                )),
+                      value: scc.cartList[idx].selected,
+                      onChanged: (value) => scc.toggleSelect(idx, value!),
+                    )),
                 Expanded(
                   flex: 1,
                   child: ClipRRect(
@@ -64,10 +66,10 @@ class CartListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Obx(() => Text(
-                          scc.cartList[idx].goodDescription,
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                        )),
+                              scc.cartList[idx].goodDescription,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                            )),
                       ),
                       Row(
                         children: [
@@ -75,21 +77,25 @@ class CartListItem extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Obx(() => Text(
-                                  "单价：¥${scc.cartList[idx].price}",
-                                  style: const TextStyle(color: Colors.red)
-                                )),
+                                Obx(() => Text("单价：¥${scc.cartList[idx].price}",
+                                    style: const TextStyle(color: Colors.red))),
                                 Row(
                                   textBaseline: TextBaseline.alphabetic,
-                                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
                                   children: [
-                                    const Text("总价：¥", style: TextStyle(color: Colors.red)),
+                                    const Text("总价：¥",
+                                        style: TextStyle(color: Colors.red)),
                                     Obx(() => Text(
-                                      (Decimal.parse(scc.cartList[idx].price) * 
-                                      Decimal.fromInt(scc.cartList[idx].count)).toStringAsFixed(2),
-                                      textScaler: const TextScaler.linear(1.75),
-                                      style: const TextStyle(color: Colors.red)
-                                    )),
+                                        (Decimal.parse(
+                                                    scc.cartList[idx].price) *
+                                                Decimal.fromInt(
+                                                    scc.cartList[idx].count))
+                                            .toStringAsFixed(2),
+                                        textScaler:
+                                            const TextScaler.linear(1.75),
+                                        style: const TextStyle(
+                                            color: Colors.red))),
                                   ],
                                 ),
                               ],
@@ -97,7 +103,8 @@ class CartListItem extends StatelessWidget {
                           ),
                           IconButton(
                             onPressed: () => scc.setGoodCountInCart(
-                                scc.cartList[idx].id, scc.cartList[idx].count - 1),
+                                scc.cartList[idx].id,
+                                scc.cartList[idx].count - 1),
                             icon: const Icon(Icons.remove),
                           ),
                           InkWell(
@@ -108,15 +115,19 @@ class CartListItem extends StatelessWidget {
                                 content: Form(
                                   key: formKey,
                                   child: TextFormField(
-                                    initialValue: scc.cartList[idx].count.toString(),
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    initialValue:
+                                        scc.cartList[idx].count.toString(),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: "商品数量"
-                                    ),
+                                        border: OutlineInputBorder(),
+                                        labelText: "商品数量"),
                                     validator: (value) {
-                                      if (value == null || value.isEmpty) return "数量不能为空";
+                                      if (value == null || value.isEmpty) {
+                                        return "数量不能为空";
+                                      }
                                       var count = int.tryParse(value);
                                       if (count == null) return "请输入有效数字";
                                       if (count <= 0) return "商品数量至少为1";
@@ -127,32 +138,38 @@ class CartListItem extends StatelessWidget {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => Get.back(),
-                                    child: const Text("取消")
-                                  ),
+                                      onPressed: () => Get.back(),
+                                      child: const Text("取消")),
                                   FilledButton(
-                                    onPressed: () {
-                                      if (!formKey.currentState!.validate()) return;
-                                      scc.setGoodCountInCart(scc.cartList[idx].id, int.parse(dialogCount));
-                                      Get.back();
-                                    },
-                                    child: const Text("确认")
-                                  ),
+                                      onPressed: () {
+                                        if (!formKey.currentState!.validate()) {
+                                          return;
+                                        }
+                                        scc.setGoodCountInCart(
+                                            scc.cartList[idx].id,
+                                            int.parse(dialogCount));
+                                        Get.back();
+                                      },
+                                      child: const Text("确认")),
                                 ],
                               ));
                             },
                             child: Container(
                               padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
-                                border: Border.all(color: Get.theme.colorScheme.primary),
-                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                border: Border.all(
+                                    color: Get.theme.colorScheme.primary),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(8)),
                               ),
-                              child: Obx(() => Text("x${scc.cartList[idx].count}")),
+                              child: Obx(
+                                  () => Text("x${scc.cartList[idx].count}")),
                             ),
                           ),
                           IconButton(
                             onPressed: () => scc.setGoodCountInCart(
-                                scc.cartList[idx].id, scc.cartList[idx].count + 1),
+                                scc.cartList[idx].id,
+                                scc.cartList[idx].count + 1),
                             icon: const Icon(Icons.add),
                           ),
                         ],
@@ -186,36 +203,35 @@ class ShoppingCartPage extends StatelessWidget {
           const Text("请先登录后再查看购物车"),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () => Get.to(const AuthPage()),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("去登录"),
-                Icon(Icons.login),
-              ],
-            )
-          )
+              onPressed: () => Get.to(const AuthPage()),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("去登录"),
+                  Icon(Icons.login),
+                ],
+              ))
         ],
       ),
     );
 
     Widget cartListView = Obx(() => scc.cartList.isEmpty
-      ? const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        ? const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.shopping_cart_outlined),
+                Text("购物车里空空如也"),
+              ],
+            ),
+          )
+        : ListView(
             children: [
-              Icon(Icons.shopping_cart_outlined),
-              Text("购物车里空空如也"),
+              ...List.generate(
+                  scc.cartList.length, (idx) => CartListItem(idx: idx)),
+              const SizedBox(height: 128),
             ],
-          ),
-        )
-      : ListView(
-          children: [
-            ...List.generate(scc.cartList.length, (idx) => CartListItem(idx: idx)),
-            const SizedBox(height: 128),
-          ],
-        )
-    );
+          ));
 
     Widget cartBar = Positioned(
       bottom: 12,
@@ -236,9 +252,9 @@ class ShoppingCartPage extends StatelessWidget {
                     child: Row(
                       children: [
                         Obx(() => Checkbox(
-                          value: scc.isSelectAll,
-                          onChanged: (value) => scc.toggleSelectAll(),
-                        )),
+                              value: scc.isSelectAll,
+                              onChanged: (value) => scc.toggleSelectAll(),
+                            )),
                         const Text("全选"),
                       ],
                     ),
@@ -247,25 +263,26 @@ class ShoppingCartPage extends StatelessWidget {
                     textBaseline: TextBaseline.alphabetic,
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     children: [
-                      Obx(() => Text("已选${scc.cartList.where((v) => v.selected == true).length}件，合计：")),
+                      Obx(() => Text(
+                          "已选${scc.cartList.where((v) => v.selected == true).length}件，合计：")),
                       const Text("¥", style: TextStyle(color: Colors.red)),
                       Obx(() => Text(
-                        scc.totalPrice.toStringAsFixed(2),
-                        textScaler: const TextScaler.linear(2),
-                        style: const TextStyle(color: Colors.red),
-                      )),
+                            scc.totalPrice.toStringAsFixed(2),
+                            textScaler: const TextScaler.linear(2),
+                            style: const TextStyle(color: Colors.red),
+                          )),
                     ],
                   ),
                   const SizedBox(width: 8),
                   FilledButton(
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size.square(52),
-                    ),
-                    onPressed: () {
-                      Get.to(const PurchasePage());
-                    },
-                    child: const Text("结算", textScaler: TextScaler.linear(1.25))
-                  ),
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.square(52),
+                      ),
+                      onPressed: () {
+                        Get.to(const PurchasePage());
+                      },
+                      child: const Text("结算",
+                          textScaler: TextScaler.linear(1.25))),
                 ],
               ),
             ),
@@ -283,8 +300,17 @@ class ShoppingCartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text("购物车")),
-      body: Obx(() => udc.isLogin() ? cartWidget : guestPlaceholder),
-      bottomNavigationBar: const MallNavigationBar(),
+      body: context.width <= LayoutSize.mobile.maxWidth
+          ? Obx(() => udc.isLogin() ? cartWidget : guestPlaceholder)
+          : Row(children: [
+              const MallNavigationRail(),
+              Expanded(
+                  child:
+                      Obx(() => udc.isLogin() ? cartWidget : guestPlaceholder))
+            ]),
+      bottomNavigationBar: context.width <= LayoutSize.mobile.maxWidth
+        ? const MallNavigationBar()
+        : null,
     );
   }
 }

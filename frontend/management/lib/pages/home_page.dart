@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
 
     final title = Obx(() => AnimatedSwitcher(
       duration: const Duration(milliseconds: 150),
-      transitionBuilder: (child, animation) => 
+      transitionBuilder: (child, animation) =>
         SlideTransition(
           position: Tween(
             begin: const Offset(0, -1),

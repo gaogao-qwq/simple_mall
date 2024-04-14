@@ -46,44 +46,24 @@ class ShoppingCartController extends GetxController {
   Future<void> addGoodToCart(int goodId) async {
     var response = await cp.addItemToCart(goodId);
     if (response == null) {
-      Get.snackbar(
-        "Oops",
-        "加入购物车失败",
-        duration: const Duration(seconds: 2),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.rawSnackbar(title: "Oops", message: "加入购物车失败");
       return;
     }
     if (!response.success) {
-      Get.snackbar(
-        "Oops",
-        response.message,
-        duration: const Duration(seconds: 2),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.rawSnackbar(title: "Oops", message: response.message);
     }
     await fetchCartItems();
-    Get.snackbar("操作成功", "商品已加入购物车");
+    Get.rawSnackbar(title: "操作成功", message: "商品已加入购物车");
   }
 
   Future<void> removeGoodFromCart(int goodId) async {
     var response = await cp.removeItemFromCart(goodId);
     if (response == null) {
-      Get.snackbar(
-        "Oops",
-        "移除购物车失败",
-        duration: const Duration(seconds: 2),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.rawSnackbar(title: "Oops", message: "移除购物车失败");
       return;
     }
     if (!response.success) {
-      Get.snackbar(
-        "Oops",
-        response.message,
-        duration: const Duration(seconds: 2),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.rawSnackbar(title: "Oops", message: response.message);
     }
   }
 
