@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +25,6 @@ public class Cart {
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    private Collection<CartItem> cartItems;
+    private List<CartItem> cartItems;
 
 }
