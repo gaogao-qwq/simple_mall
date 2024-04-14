@@ -1,6 +1,18 @@
 default:
 	just --list
 
+sync:
+	cd {{justfile_directory()}}/frontend/consumer;\
+	fvm flutter pub get
+	cd {{justfile_directory()}}/frontend/management;\
+	fvm flutter pub get
+	cd {{justfile_directory()}}/backend;\
+	./gradlew build
+
+deploy: deploy-customer-frontend deploy-management-frontend
+
+build: build-backend build-customer-frontend build-management-frontend
+
 run-backend:
 	cd {{justfile_directory()}}/backend;\
 	./gradlew bootrun
@@ -12,7 +24,6 @@ run-management-frontend:
 run-customer-frontend:
 	cd {{justfile_directory()}}/frontend/consumer;\
 	fvm flutter run -d chrome
-
 
 build-backend:
 	cd {{justfile_directory()}}/backend;\
@@ -26,10 +37,8 @@ build-management-frontend:
 	cd {{justfile_directory()}}/frontend/management;\
 	fvm flutter build web --release --dart-define=API_URI=http://localhost:8080
 
-sync:
-	cd {{justfile_directory()}}/frontend/consumer;\
-	fvm flutter pub get
-	cd {{justfile_directory()}}/frontend/management;\
-	fvm flutter pub get
-	cd {{justfile_directory()}}/backend;\
-	./gradlew build
+deploy-customer-frontend:
+	rsync -rvucP {{justfile_directory()}}/frontend/consumer/build/web/* [HOST]:/var/www/simple_mall/customer
+
+deploy-management-frontend:
+	rsync -rvucP {{justfile_directory()}}/frontend/management/build/web/* [HOST]:/var/www/simple_mall/management
