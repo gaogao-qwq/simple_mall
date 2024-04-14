@@ -14,11 +14,12 @@ class ShoppingCartController extends GetxController {
     super.onInit();
   }
 
-  Decimal get totalPrice => cartList.where((e) => e.selected == true)
-        .map((e) => Decimal.tryParse(e.price)! * Decimal.fromInt(e.count))
-        .fold(Decimal.zero, (prev, curr) => prev + curr);
+  Decimal get totalPrice => cartList
+      .where((e) => e.selected == true)
+      .map((e) => Decimal.tryParse(e.price)! * Decimal.fromInt(e.count))
+      .fold(Decimal.zero, (prev, curr) => prev + curr);
 
-  bool get isSelectAll => cartList.every((e) => e.selected == true); 
+  bool get isSelectAll => cartList.every((e) => e.selected == true);
 
   void toggleSelect(int index, bool select) {
     cartList[index].selected = select;
@@ -62,6 +63,7 @@ class ShoppingCartController extends GetxController {
       );
     }
     await fetchCartItems();
+    Get.snackbar("操作成功", "商品已加入购物车");
   }
 
   Future<void> removeGoodFromCart(int goodId) async {

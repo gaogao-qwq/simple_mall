@@ -11,6 +11,7 @@ import com.gaogaoqwq.mall.view.GoodDetailView;
 import com.gaogaoqwq.mall.view.GoodInfoView;
 import com.gaogaoqwq.mall.view.GoodSwiperView;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/good", produces = "application/json")
+@Slf4j
 public class GoodController {
 
     final private GoodService goodService;
@@ -91,19 +93,16 @@ public class GoodController {
 
         try {
             view.setPreviewImgUrl(minioService.getObjectUrl(view.getPreviewImgUrl()));
-        } catch (Exception e) {
+            view.setDetailImgUrl(view.getDetailImgUrl().stream()
+                    .map(e -> minioService.getObjectUrl(e))
+                    .toList());
+        } catch (Exception ex) {
+            ex.printStackTrace();
             view.setPreviewImgUrl(String.valueOf(""));
+            view.setDetailImgUrl(view.getDetailImgUrl().stream()
+                    .map(e -> String.valueOf(""))
+                    .toList());
         }
-
-        view.setDetailImgUrl(
-                view.getDetailImgUrl().stream().map(e -> {
-                    try {
-                        return minioService.getObjectUrl(e);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        return String.valueOf("");
-                    }
-                }).toList());
 
         return R.successBuilder()
                 .data(view)
