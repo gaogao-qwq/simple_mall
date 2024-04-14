@@ -16,10 +16,14 @@ flowchart LR
     subgraph backend[后端]
     end
     db[(MySQL 数据库)]
+    redis[(Redis 缓存)]
+    oos[(MinIO/AWS/COS 对象存储)]
     %% 连接节点
-    customer_frontend -- HTTP --- backend
-    admin_frontend -- HTTP --- backend
-    backend -- Hibernate --- db
+    customer_frontend -- Http --- backend
+    admin_frontend -- Http --- backend
+    backend -- JPA/Hibernate --- db
+    backend -- Jedis --- redis
+    backend -- http --- oos
 ```
 
 ### 后端架构
@@ -103,27 +107,22 @@ flowchart LR
 
 ## 如何运行
 
-> 在编译前请确保当前环境中已经有如下工具链：OpenJDK 17, FVM, MySQL, Chrome/Chromium
+> 在编译前请确保当前环境中已经有如下工具链：OpenJDK 17, FVM, MySQL, Chrome/Chromium, MinIO(可选)
+
+所有调试，构建，部署脚本均置于项目根目录 `justfile-template` 中，若想使用 `just` 改善生活质量，
+请先将 `justfile-template` 重命名为 `justfile` 后自行根据目前环境更改脚本。
 
 ### [Just](https://github.com/casey/just/tree/master)（推荐）
 
 ```bash
-just run-backend    # Debug 模式运行后端
-just run-frontend   # Debug 模式运行前端（Web）
+mv justfile-template justfile     # 根据环境更改脚本内容
+just run-backend                  # Debug 模式运行后端
+just run-customer-frontend        # Debug 模式运行商城前端
+just run-management-frontend      # Debug 模式运行管理系统前端
 ```
 
-### 手动执行
-
-运行后端
+## 如何构建并部署
 
 ```bash
-cd backend
-gradle bootrun
-```
-
-运行前端
-
-```bash
-cd frontend/consumer
-flutter run -d chrome
+just build deploy
 ```
