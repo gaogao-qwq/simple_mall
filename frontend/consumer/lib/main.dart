@@ -1,5 +1,5 @@
 import 'package:consumer/api/auth_provider.dart';
-import 'package:consumer/controller/app_settings_controller.dart';
+import 'package:consumer/controller/app_setting_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/pages/home_page.dart';
 import 'package:flutter/material.dart';
