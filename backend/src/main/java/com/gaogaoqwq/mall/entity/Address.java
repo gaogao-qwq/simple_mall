@@ -34,8 +34,8 @@ public class Address {
     private String detail;
 
     @ManyToOne
-    @JoinTable(name = "user_address")
-    private User users;
+    @JoinColumn(name = "user", nullable = false)
+    private User user;
 
     public static Address fromAddressDto(AddressDto addressDto) {
         return Address.builder()
