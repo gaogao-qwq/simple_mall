@@ -1,7 +1,5 @@
 package com.gaogaoqwq.mall.entity;
 
-import java.util.Collection;
-
 import com.gaogaoqwq.mall.dto.AddressDto;
 import com.gaogaoqwq.mall.enums.Province;
 
@@ -35,9 +33,9 @@ public class Address {
     @Column(name = "detail")
     private String detail;
 
-    @ManyToMany
+    @ManyToOne
     @JoinTable(name = "user_address")
-    private Collection<User> users;
+    private User users;
 
     public static Address fromAddressDto(AddressDto addressDto) {
         return Address.builder()

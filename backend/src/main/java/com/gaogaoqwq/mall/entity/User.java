@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 import java.time.Instant;
+import java.util.List;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,10 +53,10 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<GoodOrder> goodOrders;
+    private List<GoodOrder> goodOrders;
 
-    @ManyToMany(mappedBy = "users")
-    private Collection<Address> addresses;
+    @OneToMany(mappedBy = "users")
+    private List<Address> addresses;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
