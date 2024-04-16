@@ -75,10 +75,7 @@ class AuthPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.lightGreen[50]),
-                    ),
+                  child: FilledButton(
                     onPressed: () async {
                       if (!lc.formKey.currentState!.validate()) return;
                       await lc.login();
@@ -90,10 +87,7 @@ class AuthPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.teal[50]),
-                    ),
+                  child: FilledButton(
                     onPressed: () {
                       ac.nextPage();
                     },
@@ -177,10 +171,7 @@ class AuthPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.lightGreen[50]),
-                    ),
+                  child: FilledButton(
                     onPressed: () async {
                       if (!rc.formKey.currentState!.validate()) return;
                       await rc.register();
@@ -193,10 +184,7 @@ class AuthPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.teal[50]),
-                    ),
+                  child: FilledButton(
                     onPressed: () {
                       apc.previousPage();
                     },
