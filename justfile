@@ -1,3 +1,5 @@
+set dotenv-load
+
 default:
 	just --list
 
@@ -31,14 +33,14 @@ build-backend:
 
 build-customer-frontend:
 	cd {{justfile_directory()}}/frontend/consumer;\
-	fvm flutter build web --release --dart-define=API_URI=http://localhost:8080
+	fvm flutter build web --release --dart-define=API_URI=$API_URI
 
 build-management-frontend:
 	cd {{justfile_directory()}}/frontend/management;\
-	fvm flutter build web --release --dart-define=API_URI=http://localhost:8080
+	fvm flutter build web --release --dart-define=API_URI=$API_URI
 
 deploy-customer-frontend:
-	rsync -rvucP {{justfile_directory()}}/frontend/consumer/build/web/* [HOST]:/var/www/simple_mall/customer
+	rsync -rvucP {{justfile_directory()}}/frontend/consumer/build/web/* $PRODUCTION_HOST:/var/www/simple_mall/customer
 
 deploy-management-frontend:
-	rsync -rvucP {{justfile_directory()}}/frontend/management/build/web/* [HOST]:/var/www/simple_mall/management
+	rsync -rvucP {{justfile_directory()}}/frontend/management/build/web/* $PRODUCTION_HOST:/var/www/simple_mall/management
