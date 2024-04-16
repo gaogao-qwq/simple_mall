@@ -46,8 +46,7 @@ class CartListItem extends StatelessWidget {
                       value: scc.cartList[idx].selected,
                       onChanged: (value) => scc.toggleSelect(idx, value!),
                     )),
-                Expanded(
-                  flex: 1,
+                SizedBox.square(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: ExtendedImage.network(
