@@ -21,10 +21,9 @@ class GoodProvider extends GetConnect {
   }
 
   Future<List<GoodInfo>> getGoods(int page, int size) async {
-    var response = (await get(
-      "/v1/good/list?page=$page&size=$size",
-      decoder: (data) => ApiResponse.fromJson(data)
-    )).body;
+    var response = (await get("/v1/good/list?page=$page&size=$size",
+            decoder: (data) => ApiResponse.fromJson(data)))
+        .body;
     if (response == null || response.data == null) {
       return [];
     }
@@ -32,10 +31,9 @@ class GoodProvider extends GetConnect {
   }
 
   Future<int> getCount() async {
-    var response = (await get(
-      "/v1/good/count",
-      decoder: (data) => ApiResponse.fromJson(data)
-    )).body;
+    var response = (await get("/v1/good/count",
+            decoder: (data) => ApiResponse.fromJson(data)))
+        .body;
     if (response == null || response.data == null) {
       return 0;
     }
@@ -43,10 +41,9 @@ class GoodProvider extends GetConnect {
   }
 
   Future<GoodDetail?> getDetail(int id) async {
-    var response = (await get(
-      "/v1/good/detail/$id",
-      decoder: (data) => ApiResponse.fromJson(data)
-    )).body;
+    var response = (await get("/v1/good/detail/$id",
+            decoder: (data) => ApiResponse.fromJson(data)))
+        .body;
     if (response == null || response.data == null) {
       return null;
     }
@@ -54,10 +51,9 @@ class GoodProvider extends GetConnect {
   }
 
   Future<List<GoodSwiper>> getSwiper() async {
-    var response = (await get(
-      "/v1/good/swiper",
-      decoder: (data) => ApiResponse.fromJson(data)
-    )).body;
+    var response = (await get("/v1/good/swiper",
+            decoder: (data) => ApiResponse.fromJson(data)))
+        .body;
     if (response == null || response.data == null) {
       return [];
     }

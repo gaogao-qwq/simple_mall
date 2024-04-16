@@ -19,10 +19,9 @@ class CartProvider extends GetConnect {
   }
 
   Future<List<CartItem>> getCartItems() async {
-    var response = (await get(
-      "/v1/customer/cart",
-      decoder: (data) => ApiResponse.fromJson(data)
-    )).body;
+    var response = (await get("/v1/customer/cart",
+            decoder: (data) => ApiResponse.fromJson(data)))
+        .body;
     if (response == null || response.data == null) {
       return [];
     }
@@ -30,10 +29,9 @@ class CartProvider extends GetConnect {
   }
 
   Future<ApiResponse?> removeItemFromCart(int goodId) async {
-    return (await delete(
-      "/v1/customer/cart?good_id=$goodId",
-      decoder: (data) => ApiResponse.fromJson(data)
-    )).body;
+    return (await delete("/v1/customer/cart?good_id=$goodId",
+            decoder: (data) => ApiResponse.fromJson(data)))
+        .body;
   }
 
   Future<ApiResponse?> addItemToCart(int goodId) async {
@@ -41,7 +39,8 @@ class CartProvider extends GetConnect {
       "/v1/customer/cart?good_id=$goodId",
       null,
       decoder: (data) => ApiResponse.fromJson(data),
-    )).body;
+    ))
+        .body;
   }
 
   Future<ApiResponse?> setCartItemCount(String cartItemId, int count) async {
@@ -49,6 +48,7 @@ class CartProvider extends GetConnect {
       "/v1/customer/cart-item/$cartItemId?count=$count",
       null,
       decoder: (data) => ApiResponse.fromJson(data),
-    )).body;
+    ))
+        .body;
   }
 }
