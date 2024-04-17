@@ -1,5 +1,15 @@
 package com.gaogaoqwq.mall.enums;
 
+import java.util.List;
+import java.util.Optional;
+
+import com.gaogaoqwq.mall.exception.ProvinceNotFoundException;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Province {
     NULL(0, "NULL"),
     BEIJING(110000, "北京市"),
@@ -39,18 +49,15 @@ public enum Province {
 
     private Integer code;
 
-    private final String fullName;
+    private String fullName;
 
-    Province(int code, String fullName) {
-        this.code = code;
-        this.fullName = fullName;
+    public static Province fromCode(int code) throws ProvinceNotFoundException {
+        Optional<Province> opt = List.of(Province.values()).stream()
+                .filter(e -> e.code.equals(code))
+                .findFirst();
+        if (opt.isEmpty())
+            throw new ProvinceNotFoundException(code);
+        return opt.get();
     }
 
-    public String getFullName() {
-        return this.fullName;
-    };
-
-    public int getCode() {
-        return this.code;
-    }
 }

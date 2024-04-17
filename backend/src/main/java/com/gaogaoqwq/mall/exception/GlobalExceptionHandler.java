@@ -20,23 +20,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<R> handleNoResourceFoundException(NoResourceFoundException e) {
         log.info("Handled exception: {}", e.getClass().getName());
-        return new ResponseEntity<>(R.successBuilder()
-                .success(false)
+        return new ResponseEntity<>(R.failureBuilder()
                 .message(ErrorMessage.API_NOT_FOUND)
                 .code(HttpServletResponse.SC_NOT_FOUND)
                 .build(),
-            HttpStatus.NOT_FOUND);
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProvinceNotFoundException.class)
+    public ResponseEntity<R> handleProvinceNotFoundException(ProvinceNotFoundException e) {
+        log.info("Handled exception: {}", e.getClass().getName());
+        return new ResponseEntity<>(R.failureBuilder()
+                .message(e.getMessage())
+                .code(HttpServletResponse.SC_NOT_FOUND)
+                .build(),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<R> handleException(Exception e) {
-        log.warn("Unhandled exception response: {}", e.getClass().getName());
-        return new ResponseEntity<>(R.successBuilder()
-                .success(false)
+        log.warn("Unhandled {}: {}", e.getClass().getName(), e.getMessage());
+        return new ResponseEntity<>(R.failureBuilder()
                 .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
                 .message(ErrorMessage.INTERNAL_SERVER_ERROR)
                 .build(),
-            HttpStatus.INTERNAL_SERVER_ERROR);
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
