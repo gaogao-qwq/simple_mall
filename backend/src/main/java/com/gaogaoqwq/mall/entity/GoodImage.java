@@ -16,7 +16,7 @@ public class GoodImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String uuid;
+    private String id;
 
     @Column
     private String imageUrl;

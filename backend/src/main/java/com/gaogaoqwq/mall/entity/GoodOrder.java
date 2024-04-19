@@ -1,5 +1,7 @@
 package com.gaogaoqwq.mall.entity;
 
+import com.gaogaoqwq.mall.enums.OrderState;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +18,11 @@ public class GoodOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String uuid;
+    private String id;
 
-    @Column(name = "state_value")
-    private int state;
+    @Builder.Default
+    @Column(name = "state_value", nullable = false)
+    private OrderState state = OrderState.AWAIT_PAYMENT;
 
     @ManyToOne
     @JoinColumn(name = "good_id", nullable = false)

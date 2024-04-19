@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -43,13 +43,13 @@ public class Good {
     @JoinColumn(name = "sub_category_id", nullable = false)
     private GoodSubCategory subCategory;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "good")
-    private Collection<GoodImage> images;
+    @OneToMany(mappedBy = "good", cascade = CascadeType.ALL)
+    private List<GoodImage> images;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "good")
-    private Collection<GoodOrder> goodOrders;
+    @OneToMany(mappedBy = "good", cascade = CascadeType.ALL)
+    private List<GoodOrder> goodOrders;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "good")
-    private Collection<CartItem> cartItems;
+    @OneToMany(mappedBy = "good", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<CartItem> cartItems;
 
 }

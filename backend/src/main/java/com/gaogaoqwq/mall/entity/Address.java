@@ -19,7 +19,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String uuid;
+    private String id;
 
     @Column(name = "recipient")
     private String recipient;
@@ -33,14 +33,20 @@ public class Address {
     @Column(name = "detail")
     private String detail;
 
-    @ManyToOne
+    @OneToOne(mappedBy = "defaultAddress", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private User defaultUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user", nullable = false)
     private User user;
 
     public static Address fromAddressDto(AddressDto addressDto) {
         return Address.builder()
-        .recipient(addressDto.getRecipient())
-        .build();
+                .recipient(addressDto.getRecipient())
+                .phoneNumber(addressDto.getPhoneNumber())
+                .province(Province.fromCode(addressDto.getProvinceCode()))
+                .detail(addressDto.getDetail())
+                .build();
     }
 
 }

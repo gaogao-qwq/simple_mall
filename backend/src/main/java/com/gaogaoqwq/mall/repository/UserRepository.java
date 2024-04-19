@@ -29,6 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void toggleUserEnableById(Boolean enable, Long id);
 
     @Modifying
+    @Transactional
     @Query("delete from User u where u.enable = false")
     void deleteDisabledUser();
 
