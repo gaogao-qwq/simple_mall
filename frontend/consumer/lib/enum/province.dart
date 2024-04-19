@@ -1,5 +1,4 @@
 enum Province {
-  nil(code: 0, fullname: "null"),
   beijing(code: 110000, fullname: "北京市"),
   tianjin(code: 120000, fullname: "天津市"),
   hebei(code: 130000, fullname: "河北省"),
