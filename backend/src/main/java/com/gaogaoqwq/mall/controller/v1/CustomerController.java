@@ -1,9 +1,5 @@
 package com.gaogaoqwq.mall.controller.v1;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -11,21 +7,29 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gaogaoqwq.mall.dto.AddressDto;
 import com.gaogaoqwq.mall.entity.CartItem;
 import com.gaogaoqwq.mall.entity.Good;
 import com.gaogaoqwq.mall.entity.User;
-import com.gaogaoqwq.mall.enums.ErrorMessage;
+import com.gaogaoqwq.mall.exception.GoodNotFoundException;
 import com.gaogaoqwq.mall.response.R;
 import com.gaogaoqwq.mall.service.CustomerService;
 import com.gaogaoqwq.mall.service.GoodService;
 import com.gaogaoqwq.mall.service.UserService;
 import com.gaogaoqwq.mall.service.impl.MinioServiceImpl;
+import com.gaogaoqwq.mall.view.AddressView;
 import com.gaogaoqwq.mall.view.CartItemView;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,12 +47,12 @@ public class CustomerController {
 
     @GetMapping("/cart")
     public R getCartItems() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<CartItem> cartItems = customerService.getCartItemsByUsername(username);
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        List<CartItem> cartItems = customerService.getCartItems(user);
 
         List<CartItemView> views = cartItems.stream()
-                .map(CartItemView::fromCartItem)
-                .toList();
+                .map(CartItemView::fromCartItem).toList();
         views = views.stream().map(e -> {
             try {
                 e.setPreviewImgUrl(minioService.getObjectUrl(e.getPreviewImgUrl()));
@@ -59,9 +63,24 @@ public class CustomerController {
             return e;
         }).toList();
 
-        return R.successBuilder()
-                .data(views)
-                .build();
+        return R.successBuilder().data(views).build();
+    }
+
+    @GetMapping("/addresses")
+    public R getAddresses() {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        List<AddressView> views = user.getAddresses().stream()
+                .map(AddressView::fromAddress).toList();
+        return R.successBuilder().data(views).build();
+    }
+
+    @GetMapping("current-address")
+    public R getCurrentAddress() {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        AddressView view = AddressView.fromAddress(user.getDefaultAddress());
+        return R.successBuilder().data(view).build();
     }
 
     @PutMapping("/cart")
@@ -70,7 +89,7 @@ public class CustomerController {
         final User user = (User) userService.loadUserByUsername(username);
         Optional<Good> goodOpt = goodService.getGoodById(goodId);
         if (goodOpt.isEmpty()) {
-            return R.successBuilder().success(false).message(ErrorMessage.GOOD_NOT_EXIST).build();
+            throw new GoodNotFoundException(goodId);
         }
         customerService.addGoodToCart(goodOpt.get(), user);
         return R.successBuilder().build();
@@ -80,15 +99,31 @@ public class CustomerController {
     public R setCartItemCount(@PathVariable String id, @RequestParam(name = "count") Integer count) {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User) userService.loadUserByUsername(username);
-        customerService.setCartItemCountById(id, count, user);
+        customerService.setCartItemCount(id, count, user);
+        return R.successBuilder().build();
+    }
+
+    @PostMapping("/address")
+    public R addAddress(@RequestBody AddressDto dto) {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        customerService.addAddress(user, dto);
         return R.successBuilder().build();
     }
 
     @DeleteMapping("/cart")
-    public R removeGoodFromCart(@RequestParam(name = "good_id") Long goodId) {
+    public R RemoveCartItem(@RequestParam(name = "cart_item_id") String cartItemId) {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User) userService.loadUserByUsername(username);
-        customerService.removeGoodFromCart(goodId, user);
+        customerService.removeCartItem(user, cartItemId);
+        return R.successBuilder().build();
+    }
+
+    @DeleteMapping("/address")
+    public R removeAddress(@RequestParam(name = "address_id") String addressId) {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        customerService.removeAddress(user, addressId);
         return R.successBuilder().build();
     }
 
