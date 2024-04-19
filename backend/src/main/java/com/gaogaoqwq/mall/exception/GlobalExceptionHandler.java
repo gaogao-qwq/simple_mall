@@ -27,19 +27,22 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ProvinceNotFoundException.class)
-    public ResponseEntity<R> handleProvinceNotFoundException(ProvinceNotFoundException e) {
+
+    @ExceptionHandler(MallException.class)
+    public ResponseEntity<R> handleMallException(MallException e) {
         log.info("Handled exception: {}", e.getClass().getName());
         return new ResponseEntity<>(R.failureBuilder()
                 .message(e.getMessage())
-                .code(HttpServletResponse.SC_NOT_FOUND)
+                .code(e.getStatusCode().value())
                 .build(),
-                HttpStatus.NOT_FOUND);
+                e.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<R> handleException(Exception e) {
-        log.warn("Unhandled {}: {}", e.getClass().getName(), e.getMessage());
+        new RuntimeException("");
+        log.warn("Unhandled {}: {}.", e.getClass().getName(), e.getMessage());
+        e.printStackTrace();
         return new ResponseEntity<>(R.failureBuilder()
                 .code(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
                 .message(ErrorMessage.INTERNAL_SERVER_ERROR)

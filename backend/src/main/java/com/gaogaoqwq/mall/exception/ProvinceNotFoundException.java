@@ -1,18 +1,12 @@
 package com.gaogaoqwq.mall.exception;
 
-import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-@Getter
-public class ProvinceNotFoundException extends RuntimeException {
-
-    private final Integer code;
-
-    private final String message;
+public class ProvinceNotFoundException extends MallException {
 
     public ProvinceNotFoundException(Integer code) {
-        this.code = code;
-        this.message = String.valueOf("Province not found by given code: ")
-                .concat(String.valueOf(code).concat("."));
+        super(String.valueOf("Province not found by given code: ")
+                .concat(String.valueOf(code)).concat("."), HttpStatus.NOT_FOUND);
     }
 
 }
