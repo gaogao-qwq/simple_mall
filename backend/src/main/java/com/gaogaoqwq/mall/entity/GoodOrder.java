@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +26,11 @@ public class GoodOrder {
     @Builder.Default
     @Column(name = "state_value", nullable = false)
     private OrderState state = OrderState.AWAIT_PAYMENT;
+
+    @Builder.Default
+    @Column(name = "create_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date createDate = Date.from(Instant.now());
 
     @ManyToOne
     @JoinColumn(name = "good_id", nullable = false)
