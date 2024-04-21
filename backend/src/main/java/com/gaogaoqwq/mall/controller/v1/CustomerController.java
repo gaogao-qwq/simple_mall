@@ -75,8 +75,8 @@ public class CustomerController {
         return R.successBuilder().data(views).build();
     }
 
-    @GetMapping("current-address")
-    public R getCurrentAddress() {
+    @GetMapping("/default-address")
+    public R getDefaultAddress() {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User) userService.loadUserByUsername(username);
         AddressView view = AddressView.fromAddress(user.getDefaultAddress());
@@ -100,6 +100,14 @@ public class CustomerController {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
         final User user = (User) userService.loadUserByUsername(username);
         customerService.setCartItemCount(id, count, user);
+        return R.successBuilder().build();
+    }
+
+    @PutMapping("/default-address")
+    public R setDefaultAddress(@RequestParam(name = "address_id") String addressId) {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        customerService.setDefaultAddress(user, addressId);
         return R.successBuilder().build();
     }
 
