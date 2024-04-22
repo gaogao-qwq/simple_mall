@@ -111,7 +111,7 @@ flowchart LR
 > 在编译前请确保当前环境中已经有如下工具链：OpenJDK 17, FVM, MySQL, Chrome/Chromium, MinIO(可选)
 
 所有调试，构建，部署脚本均置于项目根目录 `justfile` 中，若想使用 `just` 改善生活质量，
-请先将 `.env-template` 重命名为 `.env` 后自行根据目前环境更改脚本。
+请先将 `.env-template` 重命名为 `.env` 后自行根据目前环境更改环境变量。
 
 ### [Just](https://github.com/casey/just/tree/master)（推荐）
 
