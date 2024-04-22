@@ -23,7 +23,9 @@ public class CartItemView {
     private Integer stock;
 
     private String price;
-    
+
+    private Integer purchaseLimit;
+
     private Integer count;
 
     private Long addDate;
@@ -38,6 +40,7 @@ public class CartItemView {
             .goodDescription(good.getDescription())
             .stock(good.getStock())
             .price(good.getPrice().toString())
+            .purchaseLimit(good.getPurchaseLimit())
             .count(cartItem.getCount())
             .addDate(cartItem.getAddDate().toEpochMilli()).build();
     }

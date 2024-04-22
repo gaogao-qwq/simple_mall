@@ -30,6 +30,10 @@ public class Good {
     @Column(name = "price", precision = 12, scale = 2, nullable = false)
     private BigDecimal price;
 
+    @Builder.Default
+    @Column(name = "purchase_limit", nullable = false)
+    private Integer purchaseLimit = 1;
+
     @Column(name = "stock", nullable = false)
     private Integer stock;
 

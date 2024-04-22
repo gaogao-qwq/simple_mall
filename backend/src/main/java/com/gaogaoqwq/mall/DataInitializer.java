@@ -2,6 +2,7 @@ package com.gaogaoqwq.mall;
 
 import com.gaogaoqwq.mall.entity.*;
 import com.gaogaoqwq.mall.enums.Gender;
+import com.gaogaoqwq.mall.enums.OrderState;
 import com.gaogaoqwq.mall.enums.RoleName;
 import com.gaogaoqwq.mall.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class DataInitializer implements CommandLineRunner {
     private final GoodSubCategoryRepository goodSubCategoryRepo;
     private final GoodSwiperRepository goodSwiperRepo;
     private final GoodImageRepository goodImageRepo;
+    private final GoodOrderRepository goodOrderRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -38,6 +40,7 @@ public class DataInitializer implements CommandLineRunner {
         initGood();
         initGoodSwiper();
         initGoodImage();
+        initGoodOrder();
     }
 
     private void initRole() {
@@ -156,13 +159,16 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(1999.99))
                         .subCategory(airConditioner)
                         .previewImgUrl("goods/ac1.jpg")
-                        .stock(1000).build(),
+                        .stock(1000)
+                        .purchaseLimit(5)
+                        .build(),
                 Good.builder()
                         .name("美的空调")
                         .description("美的（Midea）正1.5匹 变频冷暖 壁挂式 家用空调挂机 KFR-35GW/WDAA3@")
                         .price(BigDecimal.valueOf(1799.00))
                         .subCategory(airConditioner)
                         .previewImgUrl("goods/ac2.jpg")
+                        .purchaseLimit(5)
                         .stock(2000).build(),
                 Good.builder()
                         .name("小米冰箱")
@@ -191,6 +197,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(6999.00))
                         .subCategory(computer)
                         .previewImgUrl("goods/laptop1.jpg")
+                        .purchaseLimit(2)
                         .stock(500).build(),
                 Good.builder()
                         .name("雷神游戏本")
@@ -198,6 +205,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(5999.00))
                         .subCategory(computer)
                         .previewImgUrl("goods/laptop2.jpeg")
+                        .purchaseLimit(2)
                         .stock(300).build(),
                 Good.builder()
                         .name("小米14Pro")
@@ -205,6 +213,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(5499.00))
                         .subCategory(phone)
                         .previewImgUrl("goods/phone1.jpg")
+                        .purchaseLimit(2)
                         .stock(1100).build(),
                 Good.builder()
                         .name("平板电视1")
@@ -212,6 +221,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(1999.00))
                         .subCategory(tv)
                         .previewImgUrl("goods/tv1.png")
+                        .purchaseLimit(4)
                         .stock(700).build(),
                 Good.builder()
                         .name("男装1")
@@ -219,6 +229,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(899.00))
                         .subCategory(menClothes)
                         .previewImgUrl("goods/men_cloth1.jpg")
+                        .purchaseLimit(10)
                         .stock(900).build(),
                 Good.builder()
                         .name("男装2")
@@ -226,6 +237,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(799.00))
                         .subCategory(menClothes)
                         .previewImgUrl("goods/men_cloth2.jpg")
+                        .purchaseLimit(10)
                         .stock(600).build(),
                 Good.builder()
                         .name("女装1")
@@ -233,6 +245,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(699.00))
                         .subCategory(womenClothes)
                         .previewImgUrl("goods/women_cloth1.jpg")
+                        .purchaseLimit(10)
                         .stock(1000).build(),
                 Good.builder()
                         .name("女装2")
@@ -240,6 +253,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(599.00))
                         .subCategory(womenClothes)
                         .previewImgUrl("goods/women_cloth1.jpg")
+                        .purchaseLimit(10)
                         .stock(2300).build(),
                 Good.builder()
                         .name("百利甜酒原味利口酒")
@@ -247,6 +261,7 @@ public class DataInitializer implements CommandLineRunner {
                         .price(BigDecimal.valueOf(99.00))
                         .subCategory(drink)
                         .previewImgUrl("goods/liqueur1.jpg")
+                        .purchaseLimit(100)
                         .stock(2130).build()
         );
         goodRepo.saveAll(goods);
@@ -302,6 +317,50 @@ public class DataInitializer implements CommandLineRunner {
                         .build()
         );
         goodImageRepo.saveAll(goodImages);
+    }
+
+    void initGoodOrder() {
+        if (goodOrderRepo.count() > 0) return;
+
+        var goodOrders = List.of(
+            GoodOrder.builder()
+            .good(goodRepo.getReferenceById(1L))
+            .state(OrderState.ORDER_COMPLETE)
+            .user(userRepo.getReferenceById(2L))
+            .build(),
+            GoodOrder.builder()
+            .good(goodRepo.getReferenceById(2L))
+            .state(OrderState.ORDER_COMPLETE)
+            .user(userRepo.getReferenceById(2L))
+            .build(),
+            GoodOrder.builder()
+            .good(goodRepo.getReferenceById(3L))
+            .state(OrderState.ORDER_COMPLETE)
+            .user(userRepo.getReferenceById(2L))
+            .build(),
+            GoodOrder.builder()
+            .good(goodRepo.getReferenceById(4L))
+            .state(OrderState.ORDER_COMPLETE)
+            .user(userRepo.getReferenceById(2L))
+            .build(),
+            GoodOrder.builder()
+            .good(goodRepo.getReferenceById(5L))
+            .state(OrderState.ORDER_COMPLETE)
+            .user(userRepo.getReferenceById(3L))
+            .build(),
+            GoodOrder.builder()
+            .good(goodRepo.getReferenceById(6L))
+            .state(OrderState.ORDER_COMPLETE)
+            .user(userRepo.getReferenceById(3L))
+            .build(),
+            GoodOrder.builder()
+            .good(goodRepo.getReferenceById(7L))
+            .state(OrderState.AWAIT_DELIVERY)
+            .user(userRepo.getReferenceById(3L))
+            .build()
+        );
+
+        goodOrderRepo.saveAll(goodOrders);
     }
 
 }
