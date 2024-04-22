@@ -66,7 +66,7 @@ class CartListItem extends StatelessWidget {
     List<Widget> goodCountSelector = [
       IconButton(
         onPressed: () => scc.setGoodCountInCart(
-            scc.cartList[idx].id, scc.cartList[idx].count - 1),
+            scc.cartList[idx], scc.cartList[idx].count - 1),
         icon: const Icon(Icons.remove),
       ),
       InkWell(
@@ -88,7 +88,7 @@ class CartListItem extends StatelessWidget {
                   }
                   var count = int.tryParse(value);
                   if (count == null) return "请输入有效数字";
-                  if (count <= 0) return "商品数量至少为1";
+                  if (count < 0) return "商品数量至少为0";
                   return null;
                 },
                 onChanged: (value) => dialogCount = value,
@@ -101,8 +101,12 @@ class CartListItem extends StatelessWidget {
                     if (!formKey.currentState!.validate()) {
                       return;
                     }
-                    scc.setGoodCountInCart(
-                        scc.cartList[idx].id, int.parse(dialogCount));
+                    if (int.parse(dialogCount) == 0) {
+                      scc.removeGoodFromCart(scc.cartList[idx].id);
+                    } else {
+                      scc.setGoodCountInCart(
+                          scc.cartList[idx], int.parse(dialogCount));
+                    }
                     Get.back();
                   },
                   child: const Text("确认")),
@@ -120,7 +124,7 @@ class CartListItem extends StatelessWidget {
       ),
       IconButton(
         onPressed: () => scc.setGoodCountInCart(
-            scc.cartList[idx].id, scc.cartList[idx].count + 1),
+            scc.cartList[idx], scc.cartList[idx].count + 1),
         icon: const Icon(Icons.add),
       ),
     ];
