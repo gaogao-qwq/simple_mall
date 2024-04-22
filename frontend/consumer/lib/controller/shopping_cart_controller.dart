@@ -92,6 +92,10 @@ class ShoppingCartController extends GetxController {
       ));
       return;
     }
+    if (count > cartItem.purchaseLimit) {
+      Get.rawSnackbar(title: "Oops", message: "商品数量超过该商品单次限购数量");
+      return;
+    }
     var response = await cp.setCartItemCount(cartItem.id, count);
     if (response == null) {
       Get.rawSnackbar(title: "Oops", message: "更改购物车中商品数量失败");

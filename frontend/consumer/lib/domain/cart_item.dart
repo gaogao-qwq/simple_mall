@@ -1,24 +1,38 @@
 class CartItem {
-  String id = "";
-  int goodId = 0;
-  String previewImgUrl = "";
-  String goodName = "";
-  String goodDescription = "";
-  int stock = 0;
-  String price = "";
-  int count = 0;
+  String id;
+  int goodId;
+  String previewImgUrl;
+  String goodName;
+  String goodDescription;
+  int stock;
+  String price;
+  int count;
+  int purchaseLimit;
   bool selected = false;
+  DateTime addDate;
 
-  CartItem(this.id, this.goodId, this.previewImgUrl, this.goodName, this.goodDescription, this.stock, this.price, this.count);
+  CartItem(
+      {required this.id,
+      required this.goodId,
+      required this.previewImgUrl,
+      required this.goodName,
+      required this.goodDescription,
+      required this.stock,
+      required this.price,
+      required this.count,
+      required this.purchaseLimit,
+      required this.addDate});
 
-  CartItem.fromJson(Map<String, dynamic>json) {
-    id = json["id"];
-    goodId = json["goodId"];
-    previewImgUrl = json["previewImgUrl"];
-    goodName = json["goodName"];
-    goodDescription = json["goodDescription"];
-    stock = json["stock"];
-    price = json["price"];
-    count = json["count"];
-  }
+  factory CartItem.fromJson(Map<String, dynamic> json) => CartItem(
+        id: json["id"],
+        goodId: json["goodId"],
+        previewImgUrl: json["previewImgUrl"],
+        goodName: json["goodName"],
+        goodDescription: json["goodDescription"],
+        stock: json["stock"],
+        price: json["price"],
+        count: json["count"],
+        purchaseLimit: json["purchaseLimit"],
+        addDate: DateTime.fromMillisecondsSinceEpoch(json["addDate"] as int),
+      );
 }

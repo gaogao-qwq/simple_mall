@@ -89,6 +89,9 @@ class CartListItem extends StatelessWidget {
                   var count = int.tryParse(value);
                   if (count == null) return "请输入有效数字";
                   if (count < 0) return "商品数量至少为0";
+                  if (count > scc.cartList[idx].purchaseLimit) {
+                    return "商品数量不得大于限购数量";
+                  }
                   return null;
                 },
                 onChanged: (value) => dialogCount = value,
@@ -101,12 +104,8 @@ class CartListItem extends StatelessWidget {
                     if (!formKey.currentState!.validate()) {
                       return;
                     }
-                    if (int.parse(dialogCount) == 0) {
-                      scc.removeGoodFromCart(scc.cartList[idx].id);
-                    } else {
-                      scc.setGoodCountInCart(
-                          scc.cartList[idx], int.parse(dialogCount));
-                    }
+                    scc.setGoodCountInCart(
+                        scc.cartList[idx], int.parse(dialogCount));
                     Get.back();
                   },
                   child: const Text("确认")),
