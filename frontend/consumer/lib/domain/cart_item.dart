@@ -20,5 +20,5 @@ class CartItem {
     stock = json["stock"];
     price = json["price"];
     count = json["count"];
-  } 
+  }
 }

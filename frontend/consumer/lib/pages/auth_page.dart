@@ -39,7 +39,7 @@ class AuthPage extends StatelessWidget {
 
     Widget loginForm = Center(
       child: Card(
-        margin:const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Form(
           key: lc.formKey,
           child: Padding(
@@ -47,14 +47,17 @@ class AuthPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("登录",style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                const Text("登录",
+                    style:
+                        TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 48),
                 TextFormField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "用户名",
                   ),
-                  validator: (value) => value == null || value.isEmpty ? "请输入用户名" : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? "请输入用户名" : null,
                   onChanged: (value) {
                     lc.username.value = value;
                   },
@@ -66,7 +69,8 @@ class AuthPage extends StatelessWidget {
                     border: OutlineInputBorder(),
                     labelText: "密码",
                   ),
-                  validator: (value) => value == null || value.isEmpty ? "请输入密码" : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? "请输入密码" : null,
                   onChanged: (value) {
                     lc.password.value = value;
                   },
@@ -91,7 +95,8 @@ class AuthPage extends StatelessWidget {
                     onPressed: () {
                       ac.nextPage();
                     },
-                    child: const Text("没有账号？去注册", style: TextStyle(fontSize: 16)),
+                    child:
+                        const Text("没有账号？去注册", style: TextStyle(fontSize: 16)),
                   ),
                 )
               ],
@@ -111,14 +116,17 @@ class AuthPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("注册", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                const Text("注册",
+                    style:
+                        TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 48),
                 TextFormField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "用户名",
                   ),
-                  validator: (value) => value == null || value.isEmpty ? "请输入用户名" : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? "请输入用户名" : null,
                   onChanged: (value) {
                     rc.username.value = value;
                   },
@@ -188,7 +196,8 @@ class AuthPage extends StatelessWidget {
                     onPressed: () {
                       apc.previousPage();
                     },
-                    child: const Text("已有账号？去登录", style: TextStyle(fontSize: 16)),
+                    child:
+                        const Text("已有账号？去登录", style: TextStyle(fontSize: 16)),
                   ),
                 )
               ],
@@ -200,10 +209,8 @@ class AuthPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => ac.currentPage.value == 0
-          ? const Text("登录")
-          : const Text("注册")
-        ),
+        title: Obx(() =>
+            ac.currentPage.value == 0 ? const Text("登录") : const Text("注册")),
       ),
       body: PageView(
         controller: ac.pageController,
