@@ -18,6 +18,7 @@ import com.gaogaoqwq.mall.exception.CartNotFoundException;
 import com.gaogaoqwq.mall.repository.AddressRepository;
 import com.gaogaoqwq.mall.repository.CartItemRepository;
 import com.gaogaoqwq.mall.repository.CartRepository;
+import com.gaogaoqwq.mall.repository.UserRepository;
 import com.gaogaoqwq.mall.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CartRepository cartRepo;
     private final CartItemRepository cartItemRepo;
     private final AddressRepository addressRepo;
+    private final UserRepository userRepo;
 
     @Override
     public List<CartItem> getCartItems(User user) {
@@ -102,14 +104,17 @@ public class CustomerServiceImpl implements CustomerService {
         if (addresses.isEmpty()) {
             throw new AddressNotFoundException(addressId);
         }
-        if (addresses.get(0).getDefaultUser() != null &&
-                user.getAddresses().size() > 1) {
-            Address addr = user.getAddresses().stream()
-                    .filter(e -> !e.getId().equals(addressId))
-                    .toList().get(0);
-            addr.setDefaultUser(user);
-            addressRepo.save(addr);
+        if (user.getDefaultAddress() != null) {
+            if (user.getAddresses().size() > 1) {
+                Address addr = user.getAddresses().stream()
+                        .filter(e -> !e.getId().equals(addressId))
+                        .toList().get(0);
+                user.setDefaultAddress(addr);
+            } else {
+                user.setDefaultAddress(null);
+            }
         }
+        userRepo.save(user);
         addressRepo.deleteById(addressId);
     }
 
@@ -120,12 +125,8 @@ public class CustomerServiceImpl implements CustomerService {
         if (addresses.isEmpty()) {
             throw new AddressNotFoundException(addressId);
         }
-        Optional.of(user.getDefaultAddress()).ifPresent(e -> {
-            e.setDefaultUser(null);
-            addressRepo.save(e);
-        });
-        addresses.get(0).setDefaultUser(user);
-        addressRepo.save(addresses.get(0));
+        user.setDefaultAddress(addresses.get(0));
+        userRepo.save(user);
     }
 
     @Override
