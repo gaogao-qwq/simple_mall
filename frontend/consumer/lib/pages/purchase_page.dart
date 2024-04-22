@@ -12,7 +12,8 @@ class PurchasePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scc = Get.put(ShoppingCartController());
-    final selectedCartItem = scc.cartList.where((e) => e.selected == true).toList();
+    final selectedCartItem =
+        scc.cartList.where((e) => e.selected == true).toList();
 
     Widget purchaseGoddListView = ListView.builder(
       itemCount: selectedCartItem.length,
@@ -23,8 +24,7 @@ class PurchasePage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                Expanded(
-                  flex: 1,
+                SizedBox.square(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: ExtendedImage.network(
@@ -36,35 +36,34 @@ class PurchasePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 16),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          selectedCartItem[idx].goodDescription,
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        selectedCartItem[idx].goodDescription,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      Row(
-                        textBaseline: TextBaseline.alphabetic,
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        children: [
-                          Text("¥${selectedCartItem[idx].price} x ${selectedCartItem[idx].count} = "),
-                          const Text("¥", style: TextStyle(color: Colors.red)),
-                          const SizedBox(width: 2),
-                          Text(
-                            (Decimal.parse(selectedCartItem[idx].price)
-                              * Decimal.fromInt(selectedCartItem[idx].count)).toStringAsFixed(2),
-                            style: const TextStyle(color: Colors.red),
-                            textScaler: const TextScaler.linear(1.75),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      textBaseline: TextBaseline.alphabetic,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      children: [
+                        Text(
+                            "¥${selectedCartItem[idx].price} x ${selectedCartItem[idx].count} = "),
+                        const Text("¥", style: TextStyle(color: Colors.red)),
+                        const SizedBox(width: 2),
+                        Text(
+                          (Decimal.parse(selectedCartItem[idx].price) *
+                                  Decimal.fromInt(selectedCartItem[idx].count))
+                              .toStringAsFixed(2),
+                          style: const TextStyle(color: Colors.red),
+                          textScaler: const TextScaler.linear(1.75),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -74,47 +73,46 @@ class PurchasePage extends StatelessWidget {
     );
 
     Widget purchaseBar = Positioned(
-      left: 12,
-      right: 12,
-      bottom: 12,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
-          child: Card(
-            margin: const EdgeInsets.all(0),
-            color: Get.theme.colorScheme.surface.withOpacity(0.8),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                textBaseline: TextBaseline.alphabetic,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                children: [
-                  Text("共${selectedCartItem.length}件，合计："),
-                  const Text("¥", style: TextStyle(color: Colors.red)),
-                  const SizedBox(width: 2),
-                  Text(
-                    "${selectedCartItem.map((e) => Decimal.parse(e.price) * Decimal.fromInt(e.count))
-                      .fold(Decimal.fromInt(0), (prev, curr) => prev + curr)}",
-                    style: const TextStyle(color: Colors.red),
-                    textScaler: const TextScaler.linear(2),
-                  ),
-                  const SizedBox(width: 8),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size.square(52), 
+        left: 12,
+        right: 12,
+        bottom: 12,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+            child: Card(
+              margin: const EdgeInsets.all(0),
+              color: Get.theme.colorScheme.surface.withOpacity(0.8),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  textBaseline: TextBaseline.alphabetic,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  children: [
+                    Text("共${selectedCartItem.length}件，合计："),
+                    const Text("¥", style: TextStyle(color: Colors.red)),
+                    const SizedBox(width: 2),
+                    Text(
+                      "${selectedCartItem.map((e) => Decimal.parse(e.price) * Decimal.fromInt(e.count)).fold(Decimal.fromInt(0), (prev, curr) => prev + curr)}",
+                      style: const TextStyle(color: Colors.red),
+                      textScaler: const TextScaler.linear(2),
                     ),
-                    onPressed: () {},
-                    child: const Text("提交订单", textScaler: TextScaler.linear(1.5)),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    FilledButton(
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.square(52),
+                      ),
+                      onPressed: () {},
+                      child: const Text("提交订单",
+                          textScaler: TextScaler.linear(1.5)),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      )
-    );
+        ));
 
     Widget purchaseWidget = Stack(
       children: [
