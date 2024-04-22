@@ -28,8 +28,8 @@ class CartProvider extends GetConnect {
     return (response.data as List).map((e) => CartItem.fromJson(e)).toList();
   }
 
-  Future<ApiResponse?> removeItemFromCart(int goodId) async {
-    return (await delete("/v1/customer/cart?good_id=$goodId",
+  Future<ApiResponse?> removeItemFromCart(String cartItemId) async {
+    return (await delete("/v1/customer/cart?cart_item_id=$cartItemId",
             decoder: (data) => ApiResponse.fromJson(data)))
         .body;
   }
