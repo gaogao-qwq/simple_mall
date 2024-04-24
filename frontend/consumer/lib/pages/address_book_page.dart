@@ -31,7 +31,7 @@ class AddressBookPage extends StatelessWidget {
                     Text("管理收货地址")
                   ],
                 ),
-                onTap: () => addrc.isSelectMode.value = true,
+                onTap: () => addrc.setSelectMode(true),
               ),
             ]);
 
@@ -60,50 +60,62 @@ class AddressBookPage extends StatelessWidget {
             ]);
 
     Widget addressListView = Obx(() => Column(
-        children: List.generate(
+          children: List.generate(
             addrc.addresses.length,
             (idx) => Card(
-                  child: ListTile(
-                      leading: addrc.isSelectMode.value
-                          ? Obx(() => Checkbox(
-                                value: addrc.addresses[idx].selected,
-                                onChanged: (value) =>
-                                    addrc.toggleAddressSelect(idx, value!),
-                              ))
-                          : const Icon(Icons.info),
-                      title: Text(
-                          "${addrc.addresses[idx].recipient} ${addrc.addresses[idx].phoneNumber}"),
-                      subtitle: Row(
-                        children: [
-                          Text(
-                            "${addrc.addresses[idx].province.fullname} ${addrc.addresses[idx].detail}",
-                          ),
-                          const SizedBox(width: 8),
-                          addrc.addresses[idx].isDefault
-                              ? ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(8)),
-                                  child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4, vertical: 1),
-                                      decoration: BoxDecoration(
-                                          color: context
-                                              .theme.colorScheme.surfaceVariant,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(8))),
-                                      child: Text(
-                                        "默认",
-                                        style: TextStyle(
-                                            color: context.theme.colorScheme
-                                                .onSurfaceVariant),
-                                      )))
-                              : const SizedBox.shrink(),
-                        ],
+              child: ListTile(
+                  leading: addrc.isSelectMode.value
+                      ? Obx(() => Checkbox(
+                            value: addrc.addresses[idx].selected,
+                            onChanged: (value) =>
+                                addrc.toggleAddressSelect(idx, value!),
+                          ))
+                      : const Icon(Icons.info),
+                  title: Text(
+                      "${addrc.addresses[idx].recipient} ${addrc.addresses[idx].phoneNumber}"),
+                  subtitle: Row(
+                    children: [
+                      Text(
+                        "${addrc.addresses[idx].province.fullname} ${addrc.addresses[idx].detail}",
                       ),
-                      trailing: addrc.isSelectMode.value
-                          ? const SizedBox.shrink()
-                          : addressPopupMenuButton(addrc.addresses[idx])),
-                ))));
+                      const SizedBox(width: 8),
+                      addrc.addresses[idx].isDefault
+                          ? ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4, vertical: 1),
+                                  decoration: BoxDecoration(
+                                      color: context
+                                          .theme.colorScheme.surfaceVariant,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(8))),
+                                  child: Text(
+                                    "默认",
+                                    style: TextStyle(
+                                        color: context.theme.colorScheme
+                                            .onSurfaceVariant),
+                                  )))
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+                  trailing: addrc.isSelectMode.value
+                      ? const SizedBox.shrink()
+                      : addressPopupMenuButton(addrc.addresses[idx]),
+                  onTap: () {
+                    if (addrc.isSelectMode.value) {
+                      addrc.toggleAddressSelect(
+                          idx, !addrc.addresses[idx].selected);
+                    }
+                  },
+                  onLongPress: () {
+                    addrc.isSelectMode.value = true;
+                    addrc.toggleAddressSelect(idx, true);
+                  }),
+            ),
+          ),
+        ));
 
     return Obx(() => Scaffold(
           appBar: AppBar(
@@ -113,7 +125,7 @@ class AddressBookPage extends StatelessWidget {
             leading: addrc.isSelectMode.value
                 ? IconButton(
                     icon: const Icon(Icons.close),
-                    onPressed: () => addrc.isSelectMode.value = false)
+                    onPressed: () => addrc.setSelectMode(false))
                 : IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => Get.back(),

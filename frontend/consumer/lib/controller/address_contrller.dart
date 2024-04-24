@@ -21,6 +21,15 @@ class AddressController extends GetxController {
     return defaultAddress.isEmpty ? null : defaultAddress.first;
   }
 
+  void setSelectMode(bool enable) {
+    if (!enable) {
+      for (var e in addresses) {
+        e.selected = false;
+      }
+    }
+    isSelectMode.value = enable;
+  }
+
   Future<void> fetchAddresses() async {
     addresses.value = await addrp.getAddresses();
     addresses.refresh();
