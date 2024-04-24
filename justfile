@@ -1,5 +1,11 @@
 set dotenv-load
 
+backend_version := ```
+	grep -Eo $'version = \'[A-Za-z0-9_.-]+\'' backend/build.gradle |
+	egrep -Eo $'\'[A-Za-z0-9_.-]+\'' |
+	sed $'s/\'//g'
+```
+
 default:
 	just --list
 
@@ -11,7 +17,7 @@ sync:
 	cd {{justfile_directory()}}/backend;\
 	./gradlew build
 
-deploy: deploy-customer-frontend deploy-management-frontend
+deploy: deploy-customer-frontend deploy-management-frontend deploy-backend
 
 build: build-backend build-customer-frontend build-management-frontend
 
@@ -44,3 +50,6 @@ deploy-customer-frontend:
 
 deploy-management-frontend:
 	rsync -rvucP {{justfile_directory()}}/frontend/management/build/web/* $PRODUCTION_HOST:/var/www/simple_mall/management
+
+deploy-backend:
+	rsync -rvucP {{justfile_directory()}}/backend/build/libs/mall-{{backend_version}}.jar
