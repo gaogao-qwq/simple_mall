@@ -11,7 +11,6 @@ import com.gaogaoqwq.mall.view.GoodDetailView;
 import com.gaogaoqwq.mall.view.GoodInfoView;
 import com.gaogaoqwq.mall.view.GoodSwiperView;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +20,6 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/good", produces = "application/json")
-@Slf4j
 public class GoodController {
 
     final private GoodService goodService;
