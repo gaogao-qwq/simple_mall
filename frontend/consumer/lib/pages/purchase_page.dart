@@ -93,7 +93,7 @@ class PurchasePage extends StatelessWidget {
                     const Text("¥", style: TextStyle(color: Colors.red)),
                     const SizedBox(width: 2),
                     Text(
-                      "${selectedCartItem.map((e) => Decimal.parse(e.price) * Decimal.fromInt(e.count)).fold(Decimal.fromInt(0), (prev, curr) => prev + curr)}",
+                      scc.totalPrice.toStringAsFixed(2),
                       style: const TextStyle(color: Colors.red),
                       textScaler: const TextScaler.linear(2),
                     ),
