@@ -9,6 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class CountView {
 
-    private long count;
+    private Long count;
 
 }
