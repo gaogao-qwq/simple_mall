@@ -132,15 +132,23 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void removeAddresses(User user, List<String> addressIds) {
         List<String> userAddressIds = user.getAddresses().stream()
+                .filter(e -> addressIds.contains(e.getId()))
                 .map(e -> e.getId()).toList();
-        addressIds = addressIds.stream()
-                .filter(e -> {
-                    if (!userAddressIds.contains(e)) {
-                        throw new AddressNotFoundException(e);
-                    }
-                    return true;
-                }).toList();
-        addressRepo.deleteByIdIn(addressIds);
+        if (userAddressIds.contains(user.getDefaultAddress().getId())) {
+            if (user.getAddresses().size() > userAddressIds.size()) {
+                Address addr = user.getAddresses().stream()
+                        .filter(e -> !userAddressIds.contains(e.getId()))
+                        .toList().get(0);
+                user.setDefaultAddress(addr);
+            } else {
+                user.setDefaultAddress(null);
+            }
+        }
+        if (userAddressIds.isEmpty()) {
+            throw new AddressNotFoundException(addressIds);
+        }
+        userRepo.save(user);
+        addressRepo.deleteByIdIn(userAddressIds);
     }
 
 }

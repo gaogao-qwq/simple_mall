@@ -119,6 +119,14 @@ public class CustomerController {
         return R.successBuilder().build();
     }
 
+    @PostMapping("/address/delete")
+    public R removeAddresses(@RequestBody List<String> addressIds) {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        customerService.removeAddresses(user, addressIds);
+        return R.successBuilder().build();
+    }
+
     @DeleteMapping("/cart")
     public R RemoveCartItem(@RequestParam(name = "cart_item_id") String cartItemId) {
         final String username = SecurityContextHolder.getContext().getAuthentication().getName();
