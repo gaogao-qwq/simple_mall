@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:consumer/components/mall_navigation_bar.dart';
 import 'package:consumer/components/mall_navigation_rail.dart';
+import 'package:consumer/controller/address_contrller.dart';
 import 'package:consumer/controller/shopping_cart_controller.dart';
 import 'package:consumer/controller/user_detail_controller.dart';
 import 'package:consumer/enum/layout_size.dart';
+import 'package:consumer/pages/address_book_page.dart';
 import 'package:consumer/pages/auth_page.dart';
 import 'package:consumer/pages/good_detail_page.dart';
 import 'package:consumer/pages/purchase_page.dart';
@@ -184,6 +186,62 @@ class ShoppingCartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final udc = Get.put(UserDetailController());
     final scc = Get.put(ShoppingCartController());
+    final addrc = Get.put(AddressController());
+
+    Widget addressCard = Obx(
+      () => Card(
+          margin: const EdgeInsets.all(2),
+          child: addrc.defaultAddress == null
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        const Text("未设置默认收货地址",
+                            textScaler: TextScaler.linear(1.5)),
+                        const SizedBox(height: 12),
+                        FilledButton(
+                          onPressed: () => Get.to(const AddressBookPage()),
+                          child: const Text("选择默认地址",
+                              textScaler: TextScaler.linear(1.25)),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : InkWell(
+                  onTap: () => Get.to(const AddressBookPage()),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("默认收货地址",
+                            textScaler: TextScaler.linear(1.5)),
+                        Row(
+                          children: [
+                            const Icon(Icons.person),
+                            const SizedBox(width: 8),
+                            Text(addrc.defaultAddress!.recipient,
+                                textScaler: const TextScaler.linear(1.25)),
+                            const SizedBox(width: 8),
+                            Text(addrc.defaultAddress!.phoneNumber)
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.local_shipping),
+                            const SizedBox(width: 8),
+                            Text(addrc.defaultAddress!.province.fullname),
+                            const SizedBox(width: 8),
+                            Text(addrc.defaultAddress!.detail),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )),
+    );
 
     Widget guestPlaceholder = Center(
       child: Column(
@@ -218,6 +276,7 @@ class ShoppingCartPage extends StatelessWidget {
           )
         : ListView(
             children: [
+              addressCard,
               ...List.generate(
                   scc.cartList.length, (idx) => CartListItem(idx: idx)),
               const SizedBox(height: 128),
@@ -270,7 +329,9 @@ class ShoppingCartPage extends StatelessWidget {
                         minimumSize: const Size.square(52),
                       ),
                       onPressed: () {
-                        Get.to(const PurchasePage());
+                        if (addrc.selectCount == 0) {
+                          Get.rawSnackbar(title: "Oops", message: "没有选择要结算的商品");
+                        }
                       },
                       child: const Text("结算",
                           textScaler: TextScaler.linear(1.25))),
@@ -285,7 +346,7 @@ class ShoppingCartPage extends StatelessWidget {
     Widget cartWidget = Stack(
       children: [
         cartListView,
-        cartBar,
+        if (scc.cartList.isNotEmpty) cartBar,
       ],
     );
 

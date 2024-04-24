@@ -16,6 +16,11 @@ class AddressController extends GetxController {
 
   int get selectCount => addresses.where((e) => e.selected).length;
 
+  Address? get defaultAddress {
+    var defaultAddress = addresses.where((e) => e.isDefault);
+    return defaultAddress.isEmpty ? null : defaultAddress.first;
+  }
+
   Future<void> fetchAddresses() async {
     addresses.value = await addrp.getAddresses();
     addresses.refresh();
@@ -51,5 +56,4 @@ class AddressController extends GetxController {
     }).toList();
     addresses.refresh();
   }
-
 }
