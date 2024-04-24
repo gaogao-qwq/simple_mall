@@ -49,8 +49,21 @@ class AddressController extends GetxController {
     var response = await addrp.removeAddress(addressId);
     if (response == null || response.success == false) {
       Get.rawSnackbar(title: "Oops", message: "删除收货地址失败");
+      return;
     }
     addresses.removeWhere((e) => e.id == addressId);
+    addresses.refresh();
+  }
+
+  Future<void> removeSelectedAddresses() async {
+    List<String> addressIds =
+        addresses.where((e) => e.selected).map((e) => e.id).toList();
+    var response = await addrp.removeAddresses(addressIds);
+    if (response == null || response.success == false) {
+      Get.rawSnackbar(title: "Oops", message: "删除收货地址失败");
+      return;
+    }
+    addresses.removeWhere((e) => addressIds.contains(e.id));
     addresses.refresh();
   }
 
@@ -58,11 +71,11 @@ class AddressController extends GetxController {
     var response = await addrp.setDefaultAddress(addressId);
     if (response == null || response.success == false) {
       Get.rawSnackbar(title: "Oops", message: "设置默认收货地址失败");
+      return;
     }
-    addresses.value = addresses.map((e) {
+    for (var e in addresses) {
       e.isDefault = e.id == addressId ? true : false;
-      return e;
-    }).toList();
+    }
     addresses.refresh();
   }
 }

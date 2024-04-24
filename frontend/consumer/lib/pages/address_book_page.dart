@@ -135,7 +135,7 @@ class AddressBookPage extends StatelessWidget {
                   ? IconButton(
                       icon: const Icon(Icons.delete),
                       tooltip: "删除选中地址",
-                      onPressed: () {},
+                      onPressed: () => addrc.removeSelectedAddresses(),
                     )
                   : manageAddressPopupButton
             ],

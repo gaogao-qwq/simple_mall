@@ -46,6 +46,12 @@ class AddressProvider extends GetConnect {
         .body;
   }
 
+  Future<ApiResponse?> removeAddresses(List<String> addressIds) async {
+    return (await post("/v1/customer/address/delete", addressIds,
+            decoder: (data) => ApiResponse.fromJson(data)))
+        .body;
+  }
+
   @override
   void onInit() {
     httpClient.baseUrl = Env.apiUri;
