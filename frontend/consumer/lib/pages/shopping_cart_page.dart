@@ -314,7 +314,7 @@ class ShoppingCartPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     children: [
                       Obx(() => Text(
-                          "已选${scc.cartList.where((v) => v.selected == true).length}件，合计：")),
+                          "已选${scc.selectCount}件，合计：")),
                       const Text("¥", style: TextStyle(color: Colors.red)),
                       Obx(() => Text(
                             scc.totalPrice.toStringAsFixed(2),
