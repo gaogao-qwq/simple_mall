@@ -1,5 +1,8 @@
 package com.gaogaoqwq.mall.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum OrderState {
 
     AWAIT_PAYMENT("等待付款"),
@@ -16,6 +19,10 @@ public enum OrderState {
 
     OrderState(String name) {
         this.name = name;
+    }
+
+    public boolean isCountedSales() {
+        return this.equals(ORDER_COMPLETE);
     }
 
 }
