@@ -20,7 +20,12 @@ class ShoppingCartController extends GetxController {
       .map((e) => Decimal.tryParse(e.price)! * Decimal.fromInt(e.count))
       .fold(Decimal.zero, (prev, curr) => prev + curr);
 
+  List<CartItem> get selectedCartItems =>
+      cartList.where((e) => e.selected == true).toList();
+
   bool get isSelectAll => cartList.every((e) => e.selected == true);
+
+  int get selectCount => cartList.where((e) => e.selected).length;
 
   void toggleSelect(int index, bool select) {
     cartList[index].selected = select;

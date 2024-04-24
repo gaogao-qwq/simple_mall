@@ -329,9 +329,11 @@ class ShoppingCartPage extends StatelessWidget {
                         minimumSize: const Size.square(52),
                       ),
                       onPressed: () {
-                        if (addrc.selectCount == 0) {
+                        if (scc.selectCount == 0) {
                           Get.rawSnackbar(title: "Oops", message: "没有选择要结算的商品");
+                          return;
                         }
+                        Get.to(const PurchasePage());
                       },
                       child: const Text("结算",
                           textScaler: TextScaler.linear(1.25))),

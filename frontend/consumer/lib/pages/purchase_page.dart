@@ -12,8 +12,7 @@ class PurchasePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scc = Get.put(ShoppingCartController());
-    final selectedCartItem =
-        scc.cartList.where((e) => e.selected == true).toList();
+    final selectedCartItem = scc.selectedCartItems;
 
     Widget purchaseGoddListView = ListView.builder(
       itemCount: selectedCartItem.length,
