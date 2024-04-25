@@ -11,10 +11,12 @@ import com.gaogaoqwq.mall.entity.Address;
 import com.gaogaoqwq.mall.entity.Cart;
 import com.gaogaoqwq.mall.entity.CartItem;
 import com.gaogaoqwq.mall.entity.Good;
+import com.gaogaoqwq.mall.entity.GoodOrder;
 import com.gaogaoqwq.mall.entity.User;
 import com.gaogaoqwq.mall.exception.AddressNotFoundException;
 import com.gaogaoqwq.mall.exception.CartItemNotFoundException;
 import com.gaogaoqwq.mall.exception.CartNotFoundException;
+import com.gaogaoqwq.mall.exception.OrderNotFoundException;
 import com.gaogaoqwq.mall.repository.AddressRepository;
 import com.gaogaoqwq.mall.repository.CartItemRepository;
 import com.gaogaoqwq.mall.repository.CartRepository;
@@ -149,6 +151,16 @@ public class CustomerServiceImpl implements CustomerService {
         }
         userRepo.save(user);
         addressRepo.deleteByIdIn(userAddressIds);
+    }
+
+    @Override
+    public GoodOrder getGoodOrderById(User user, String id) {
+        List<GoodOrder> orders = user.getGoodOrders().stream()
+                .filter(e -> e.getId().equals(id)).toList();
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException(user, id);
+        }
+        return orders.get(0);
     }
 
 }

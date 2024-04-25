@@ -32,6 +32,15 @@ public class GoodOrder {
     @Temporal(TemporalType.DATE)
     private Date createDate = Date.from(Instant.now());
 
+    @Column(name = "recipient", nullable = false)
+    private String recipient;
+
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
+
+    @Column(name = "address", nullable = false)
+    private String address;
+
     @ManyToOne
     @JoinColumn(name = "good_id", nullable = false)
     private Good good;

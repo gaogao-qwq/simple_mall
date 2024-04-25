@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gaogaoqwq.mall.dto.AddressDto;
 import com.gaogaoqwq.mall.entity.CartItem;
 import com.gaogaoqwq.mall.entity.Good;
+import com.gaogaoqwq.mall.entity.GoodOrder;
 import com.gaogaoqwq.mall.entity.User;
 import com.gaogaoqwq.mall.exception.GoodNotFoundException;
 import com.gaogaoqwq.mall.response.R;
@@ -26,6 +27,8 @@ import com.gaogaoqwq.mall.service.UserService;
 import com.gaogaoqwq.mall.service.impl.MinioServiceImpl;
 import com.gaogaoqwq.mall.view.AddressView;
 import com.gaogaoqwq.mall.view.CartItemView;
+import com.gaogaoqwq.mall.view.GoodOrderDetailView;
+import com.gaogaoqwq.mall.view.GoodOrderInfoView;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -81,6 +84,23 @@ public class CustomerController {
         final User user = (User) userService.loadUserByUsername(username);
         AddressView view = AddressView.fromAddress(user.getDefaultAddress());
         return R.successBuilder().data(view).build();
+    }
+
+    @GetMapping("/orders")
+    public R getOrders() {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        List<GoodOrderInfoView> views = user.getGoodOrders().stream()
+                .map(GoodOrderInfoView::fromGoodOrder).toList();
+        return R.successBuilder().data(views).build();
+    }
+
+    @GetMapping("/order/{id}")
+    public R getOrder(@PathVariable String id) {
+        final String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = (User) userService.loadUserByUsername(username);
+        final GoodOrder order = customerService.getGoodOrderById(user, id);
+        return R.successBuilder().data(GoodOrderDetailView.fromGoodOrder(order)).build();
     }
 
     @PutMapping("/cart")

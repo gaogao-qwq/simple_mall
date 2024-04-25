@@ -5,6 +5,7 @@ import java.util.List;
 import com.gaogaoqwq.mall.dto.AddressDto;
 import com.gaogaoqwq.mall.entity.CartItem;
 import com.gaogaoqwq.mall.entity.Good;
+import com.gaogaoqwq.mall.entity.GoodOrder;
 import com.gaogaoqwq.mall.entity.User;
 
 public interface CustomerService {
@@ -24,5 +25,7 @@ public interface CustomerService {
     public void setDefaultAddress(User user, String addressId);
 
     public void removeAddresses(User user, List<String> addressIds);
+
+    public GoodOrder getGoodOrderById(User user, String id);
 
 }
