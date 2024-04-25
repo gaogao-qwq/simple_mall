@@ -19,8 +19,8 @@ flowchart LR
     redis[(Redis 缓存)]
     oos[(MinIO/AWS/COS 对象存储)]
     %% 连接节点
-    customer_frontend -- Http --- backend
-    admin_frontend -- Http --- backend
+    customer_frontend -- http --- backend
+    admin_frontend -- http --- backend
     backend -- JPA/Hibernate --- db
     backend -- Jedis --- redis
     backend -- http --- oos
@@ -41,6 +41,7 @@ flowchart LR
             good_c(["商品相关接口"])
             customer_c(["客户操作相关接口"])
             admin_c(["管理员操作相关接口"])
+            more_1(["......"])
         end
         subgraph service["Services 业务"]
             direction TB
@@ -48,6 +49,7 @@ flowchart LR
             good_s(["商品相关业务"])
             customer_s(["客户相关业务"])
             admin_s(["管理员相关业务"])
+            more_2(["......"])
         end
         subgraph repository["Repository 仓储"]
             direction TB
@@ -57,6 +59,7 @@ flowchart LR
             good_category_r(["商品分类仓储"])
             user_r(["用户仓储"])
             role_r(["角色仓储"])
+            more_3(["......"])
         end
     end
     %% 连接节点
@@ -82,6 +85,7 @@ flowchart LR
             cart_pg(["购物车页"])
             search_pg(["搜索页"])
             my_pg(["'我的"'页])
+            more_1(["......"])
         end
         subgraph controller["Controllers 控制器"]
             direction TB
@@ -89,6 +93,7 @@ flowchart LR
             shopping_cart_c(["购物车控制器"])
             user_detail_c(["用户信息控制器"])
             navigation_c(["底部导航栏控制器"])
+            more_2(["......"])
         end
         subgraph provider["Providers 提供者"]
             direction TB
@@ -96,6 +101,7 @@ flowchart LR
             cart_p(["购物车内容提供者"])
             good_p(["商品信息提供者"])
             order_p(["订单信息提供者"])
+            more_3(["......"])
         end
     end
     %% 连接节点
