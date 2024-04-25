@@ -2,7 +2,7 @@ set dotenv-load
 
 backend_version := ```
 	grep -Eo $'version = \'[A-Za-z0-9_.-]+\'' backend/build.gradle |
-	egrep -Eo $'\'[A-Za-z0-9_.-]+\'' |
+	grep -Eo $'\'[A-Za-z0-9_.-]+\'' |
 	sed $'s/\'//g'
 ```
 
