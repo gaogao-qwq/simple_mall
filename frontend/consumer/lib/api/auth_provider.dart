@@ -7,7 +7,7 @@ import 'package:consumer/env.dart';
 import 'package:get/get.dart';
 
 class AuthProvider extends GetConnect {
-  final uc = Get.put(UserDetailController());
+  final udc = Get.put(UserDetailController());
 
   @override
   void onInit() {

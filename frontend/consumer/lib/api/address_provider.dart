@@ -7,6 +7,16 @@ import 'package:get/get.dart';
 class AddressProvider extends GetConnect {
   final udc = Get.put(UserDetailController());
 
+  @override
+  void onInit() {
+    httpClient.baseUrl = Env.apiUri;
+    httpClient.addRequestModifier<dynamic>((request) {
+      if (udc.accessToken.isEmpty) return request;
+      request.headers['Authorization'] = 'Bearer ${udc.accessToken}';
+      return request;
+    });
+  }
+
   Future<ApiResponse?> addAddress(Address address) async {
     return (await post("/v1/customer/address", address.toJson(),
             decoder: (data) => ApiResponse.fromJson(data)))
@@ -52,13 +62,4 @@ class AddressProvider extends GetConnect {
         .body;
   }
 
-  @override
-  void onInit() {
-    httpClient.baseUrl = Env.apiUri;
-    httpClient.addRequestModifier<dynamic>((request) {
-      if (udc.accessToken.isEmpty) return request;
-      request.headers['Authorization'] = 'Bearer ${udc.accessToken}';
-      return request;
-    });
-  }
 }

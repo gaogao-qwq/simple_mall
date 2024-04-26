@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 
 class CartProvider extends GetConnect {
   final udc = Get.put(UserDetailController());
-  final uc = Get.put(UserDetailController());
 
   @override
   void onInit() {
