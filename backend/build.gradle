@@ -40,8 +40,8 @@ dependencies {
 	// spring boot test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    // mysql connector
-    implementation 'com.mysql:mysql-connector-j:8.2.0'
+    // mariadb connector
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.0'
     // java jWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-gson:0.12.3'
