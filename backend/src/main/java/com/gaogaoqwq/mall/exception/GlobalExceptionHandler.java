@@ -40,7 +40,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<R> handleException(Exception e) {
-        new RuntimeException("");
         log.warn("Unhandled {}: {}.", e.getClass().getName(), e.getMessage());
         e.printStackTrace();
         return new ResponseEntity<>(R.failureBuilder()
