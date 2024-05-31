@@ -45,7 +45,7 @@ public class User implements UserDetails {
 
     @Builder.Default
     @Column(name = "create_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate = Date.from(Instant.now());
 
     @ManyToOne

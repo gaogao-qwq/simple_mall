@@ -29,7 +29,7 @@ public class GoodOrder {
 
     @Builder.Default
     @Column(name = "create_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate = Date.from(Instant.now());
 
     @Column(name = "recipient", nullable = false)
