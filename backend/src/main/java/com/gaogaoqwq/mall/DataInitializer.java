@@ -11,8 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.text.ParseException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -44,17 +46,18 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initRole() {
-        if (roleRepo.count() > 0) return;
+        if (roleRepo.count() > 0)
+            return;
 
         var roles = List.of(
                 Role.builder().name("ROLE_" + RoleName.ADMIN).description("管理员").editable(false).build(),
-                Role.builder().name("ROLE_" + RoleName.CUSTOMER).description("普通用户").editable(false).build()
-        );
+                Role.builder().name("ROLE_" + RoleName.CUSTOMER).description("普通用户").editable(false).build());
         roleRepo.saveAll(roles);
     }
 
     private void initUser() {
-        if (userRepo.count() > 0) return;
+        if (userRepo.count() > 0)
+            return;
         var adminRole = roleRepo.findByName("ROLE_" + RoleName.ADMIN).get();
         var customerRole = roleRepo.findByName("ROLE_" + RoleName.CUSTOMER).get();
         var users = List.of(
@@ -62,30 +65,30 @@ public class DataInitializer implements CommandLineRunner {
                         .username("root")
                         .password(passwordEncoder.encode("root"))
                         .gender(Gender.MALE)
-                        .createDate(Date.valueOf("2023-12-31"))
+                        .createDate(Date.from(Instant.parse("2023-12-31T00:00:00.00Z")))
                         .role(adminRole)
                         .enable(true).build(),
                 User.builder()
                         .username("user1")
                         .password(passwordEncoder.encode("user1"))
                         .gender(Gender.MALE)
-                        .createDate(Date.valueOf("2024-02-21"))
+                        .createDate(Date.from(Instant.parse("2024-02-21T00:00:00.00Z")))
                         .role(customerRole)
                         .enable(true).build(),
                 User.builder()
                         .username("user2")
                         .password(passwordEncoder.encode("user2"))
                         .gender(Gender.FEMALE)
-                        .createDate(Date.valueOf("2023-01-14"))
+                        .createDate(Date.from(Instant.parse("2023-01-14T00:00:00.00Z")))
                         .role(customerRole)
                         .enable(true)
-                        .build()
-        );
+                        .build());
         userRepo.saveAll(users);
     }
 
     private void initUserCart() {
-        if (userCartRepo.count() > 0) return;
+        if (userCartRepo.count() > 0)
+            return;
         List<User> users = userRepo.findAll();
         List<Cart> userCarts = new ArrayList<Cart>();
         users.forEach(u -> {
@@ -95,19 +98,20 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initGoodCategory() {
-        if (goodCategoryRepo.count() > 0) return;
+        if (goodCategoryRepo.count() > 0)
+            return;
         var goodCategories = List.of(
                 GoodCategory.builder().name("家电").build(),
                 GoodCategory.builder().name("3C数码").build(),
                 GoodCategory.builder().name("图书").build(),
                 GoodCategory.builder().name("服装").build(),
-                GoodCategory.builder().name("食品").build()
-        );
+                GoodCategory.builder().name("食品").build());
         goodCategoryRepo.saveAll(goodCategories);
     }
 
     private void initGoodSubCategory() {
-        if (goodSubCategoryRepo.count() > 0) return;
+        if (goodSubCategoryRepo.count() > 0)
+            return;
         var homeAppliances = goodCategoryRepo.getReferenceById(1L);
         var digitalProducts = goodCategoryRepo.getReferenceById(2L);
         var books = goodCategoryRepo.getReferenceById(3L);
@@ -129,13 +133,13 @@ public class DataInitializer implements CommandLineRunner {
                 GoodSubCategory.builder().name("新鲜水果").category(clothes).build(),
                 GoodSubCategory.builder().name("蔬菜鲜品").category(foods).build(),
                 GoodSubCategory.builder().name("肉禽蛋品").category(foods).build(),
-                GoodSubCategory.builder().name("酒水副食").category(foods).build()
-        );
+                GoodSubCategory.builder().name("酒水副食").category(foods).build());
         goodSubCategoryRepo.saveAll(goodSubCategories);
     }
 
     private void initGood() {
-        if (goodRepo.existsById(1L)) return;
+        if (goodRepo.existsById(1L))
+            return;
         var airConditioner = goodSubCategoryRepo.getReferenceById(1L);
         var refrigerator = goodSubCategoryRepo.getReferenceById(2L);
         var tv = goodSubCategoryRepo.getReferenceById(3L);
@@ -193,7 +197,8 @@ public class DataInitializer implements CommandLineRunner {
                         .stock(100).build(),
                 Good.builder()
                         .name("微星游戏本")
-                        .description("微星（MSI）游戏本 GF65 Thin 10UE-014CN 15.6英寸 144Hz高刷新率 11代酷睿i7 RTX3060 6G独显 16G 512G固态笔记本电脑")
+                        .description(
+                                "微星（MSI）游戏本 GF65 Thin 10UE-014CN 15.6英寸 144Hz高刷新率 11代酷睿i7 RTX3060 6G独显 16G 512G固态笔记本电脑")
                         .price(BigDecimal.valueOf(6999.00))
                         .subCategory(computer)
                         .previewImgUrl("goods/laptop1.jpg")
@@ -209,7 +214,8 @@ public class DataInitializer implements CommandLineRunner {
                         .stock(300).build(),
                 Good.builder()
                         .name("小米14Pro")
-                        .description("小米（MI）14Pro 5G手机 8GB+256GB 钛银黑 骁龙888 120Hz高刷新率 5000万像素超广角三摄 120W有线闪充 67W无线闪充 10W反向充电")
+                        .description(
+                                "小米（MI）14Pro 5G手机 8GB+256GB 钛银黑 骁龙888 120Hz高刷新率 5000万像素超广角三摄 120W有线闪充 67W无线闪充 10W反向充电")
                         .price(BigDecimal.valueOf(5499.00))
                         .subCategory(phone)
                         .previewImgUrl("goods/phone1.jpg")
@@ -262,13 +268,13 @@ public class DataInitializer implements CommandLineRunner {
                         .subCategory(drink)
                         .previewImgUrl("goods/liqueur1.jpg")
                         .purchaseLimit(100)
-                        .stock(2130).build()
-        );
+                        .stock(2130).build());
         goodRepo.saveAll(goods);
     }
 
     private void initGoodSwiper() {
-        if (goodSwiperRepo.count() > 0) return;
+        if (goodSwiperRepo.count() > 0)
+            return;
 
         var goodSwiper = List.of(
                 GoodSwiper.builder()
@@ -282,13 +288,13 @@ public class DataInitializer implements CommandLineRunner {
                 GoodSwiper.builder()
                         .swiperImgUrl("swiper/phone1_swiper.jpeg")
                         .good(goodRepo.getReferenceById(14L))
-                        .build()
-        );
+                        .build());
         goodSwiperRepo.saveAll(goodSwiper);
     }
 
     private void initGoodImage() {
-        if (goodImageRepo.count() > 0) return;
+        if (goodImageRepo.count() > 0)
+            return;
 
         var goodImages = List.of(
                 GoodImage.builder()
@@ -314,51 +320,78 @@ public class DataInitializer implements CommandLineRunner {
                 GoodImage.builder()
                         .imageUrl("goods/laptop_detail2.jpg")
                         .good(goodRepo.getReferenceById(6L))
-                        .build()
-        );
+                        .build());
         goodImageRepo.saveAll(goodImages);
     }
 
     void initGoodOrder() {
-        if (goodOrderRepo.count() > 0) return;
+        if (goodOrderRepo.count() > 0)
+            return;
 
         var goodOrders = List.of(
-            GoodOrder.builder()
-            .good(goodRepo.getReferenceById(1L))
-            .state(OrderState.ORDER_COMPLETE)
-            .user(userRepo.getReferenceById(2L))
-            .build(),
-            GoodOrder.builder()
-            .good(goodRepo.getReferenceById(2L))
-            .state(OrderState.ORDER_COMPLETE)
-            .user(userRepo.getReferenceById(2L))
-            .build(),
-            GoodOrder.builder()
-            .good(goodRepo.getReferenceById(3L))
-            .state(OrderState.ORDER_COMPLETE)
-            .user(userRepo.getReferenceById(2L))
-            .build(),
-            GoodOrder.builder()
-            .good(goodRepo.getReferenceById(4L))
-            .state(OrderState.ORDER_COMPLETE)
-            .user(userRepo.getReferenceById(2L))
-            .build(),
-            GoodOrder.builder()
-            .good(goodRepo.getReferenceById(5L))
-            .state(OrderState.ORDER_COMPLETE)
-            .user(userRepo.getReferenceById(3L))
-            .build(),
-            GoodOrder.builder()
-            .good(goodRepo.getReferenceById(6L))
-            .state(OrderState.ORDER_COMPLETE)
-            .user(userRepo.getReferenceById(3L))
-            .build(),
-            GoodOrder.builder()
-            .good(goodRepo.getReferenceById(7L))
-            .state(OrderState.AWAIT_DELIVERY)
-            .user(userRepo.getReferenceById(3L))
-            .build()
-        );
+                GoodOrder.builder()
+                        .good(goodRepo.getReferenceById(1L))
+                        .state(OrderState.ORDER_COMPLETE)
+                        .user(userRepo.getReferenceById(2L))
+                        .address("广东省广州市越秀区环市东路")
+                        .phoneNumber("1234567890")
+                        .recipient("张三")
+                        .createDate(Date.from(Instant.parse("2023-09-01T00:00:00.00Z")))
+                        .build(),
+                GoodOrder.builder()
+                        .good(goodRepo.getReferenceById(2L))
+                        .state(OrderState.ORDER_COMPLETE)
+                        .user(userRepo.getReferenceById(2L))
+                        .address("广东省广州市越秀区环市东路")
+                        .phoneNumber("1234567890")
+                        .recipient("张三")
+                        .createDate(Date.from(Instant.parse("2023-09-01T00:00:00.00Z")))
+                        .build(),
+                GoodOrder.builder()
+                        .good(goodRepo.getReferenceById(3L))
+                        .state(OrderState.ORDER_COMPLETE)
+                        .user(userRepo.getReferenceById(2L))
+                        .address("广东省广州市越秀区环市东路")
+                        .phoneNumber("1234567890")
+                        .recipient("张三")
+                        .createDate(Date.from(Instant.parse("2023-09-01T00:00:00.00Z")))
+                        .build(),
+                GoodOrder.builder()
+                        .good(goodRepo.getReferenceById(4L))
+                        .state(OrderState.ORDER_COMPLETE)
+                        .user(userRepo.getReferenceById(2L))
+                        .address("广东省广州市越秀区环市东路")
+                        .phoneNumber("1234567890")
+                        .recipient("张三")
+                        .createDate(Date.from(Instant.parse("2023-10-23T00:00:00.00Z")))
+                        .build(),
+                GoodOrder.builder()
+                        .good(goodRepo.getReferenceById(5L))
+                        .state(OrderState.ORDER_COMPLETE)
+                        .user(userRepo.getReferenceById(3L))
+                        .address("北京市朝阳区翻斗乐园")
+                        .phoneNumber("0987654321")
+                        .recipient("胡图图")
+                        .createDate(Date.from(Instant.parse("2023-11-11T00:00:00.00Z")))
+                        .build(),
+                GoodOrder.builder()
+                        .good(goodRepo.getReferenceById(6L))
+                        .state(OrderState.ORDER_COMPLETE)
+                        .user(userRepo.getReferenceById(3L))
+                        .address("北京市朝阳区翻斗乐园")
+                        .phoneNumber("0987654321")
+                        .recipient("胡图图")
+                        .createDate(Date.from(Instant.parse("2023-11-11T00:00:00.00Z")))
+                        .build(),
+                GoodOrder.builder()
+                        .good(goodRepo.getReferenceById(7L))
+                        .state(OrderState.AWAIT_DELIVERY)
+                        .user(userRepo.getReferenceById(3L))
+                        .address("北京市朝阳区翻斗乐园")
+                        .phoneNumber("0987654321")
+                        .recipient("胡图图")
+                        .createDate(Date.from(Instant.parse("2023-11-11T00:00:00.00Z")))
+                        .build());
 
         goodOrderRepo.saveAll(goodOrders);
     }
