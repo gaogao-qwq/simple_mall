@@ -52,6 +52,26 @@ public class GoodController {
                 .build();
     }
 
+    @GetMapping("/search")
+    public R fuzzySearchGoodName(@RequestParam String name) {
+        List<Good> goods = goodService.fuzzySearchGoodName(name);
+        List<GoodInfoView> views = goods.stream()
+                .map(GoodInfoView::fromGood)
+                .toList();
+        views = views.stream().map(e -> {
+            try {
+                e.setImgUrl(minioService.getObjectUrl(e.getImgUrl()));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                e.setImgUrl(String.valueOf(""));
+            }
+            return e;
+        }).toList();
+        return R.successBuilder()
+                .data(views)
+                .build();
+    }
+
     @GetMapping("/count")
     public R goodCount() {
         return R.successBuilder()
