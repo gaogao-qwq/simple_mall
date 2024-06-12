@@ -81,22 +81,23 @@ public class GoodManagementController {
     public R goodSalesSum(@RequestParam(required = false) Optional<String> from,
             @RequestParam(required = false) Optional<String> to) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Optional<Date> fromInstant = Optional.empty();
-        Optional<Date> toInstant = Optional.empty();
-        if (from.isPresent()) {
+
+        Optional<Date> fromInstant = from.flatMap(str -> {
             try {
-                fromInstant = Optional.of(formatter.parse(from.get()));
+                return Optional.of(formatter.parse(str));
             } catch (ParseException e) {
-                fromInstant = Optional.empty();
+                return Optional.empty();
             }
-        }
-        if (to.isPresent()) {
+        });
+
+        Optional<Date> toInstant = to.flatMap(str -> {
             try {
-                toInstant = Optional.of(formatter.parse(to.get()));
+                return Optional.of(formatter.parse(str));
             } catch (ParseException e) {
-                toInstant = Optional.empty();
+                return Optional.empty();
             }
-        }
+        });
+
         return R.successBuilder()
                 .data(Map.of("sales", goodService.getGoodSalesSum(fromInstant, toInstant)))
                 .build();
