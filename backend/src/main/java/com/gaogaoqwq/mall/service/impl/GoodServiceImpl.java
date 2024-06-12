@@ -120,6 +120,11 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
+    public List<Good> fuzzySearchGoodName(String name) {
+        return goodRepo.findByNameContaining(name);
+    }
+
+    @Override
     public void addGood(Good good) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addGood'");

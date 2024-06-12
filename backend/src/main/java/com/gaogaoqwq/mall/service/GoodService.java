@@ -16,6 +16,8 @@ public interface GoodService {
 
     long getGoodCount();
 
+    List<Good> fuzzySearchGoodName(String name);
+
     List<GoodSwiper> getGoodSwiper();
 
     Optional<Good> getGoodById(Long id);
