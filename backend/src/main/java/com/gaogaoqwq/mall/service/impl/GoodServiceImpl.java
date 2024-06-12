@@ -126,8 +126,7 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public void addGood(Good good) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addGood'");
+        goodRepo.save(good);
     }
 
     @Override

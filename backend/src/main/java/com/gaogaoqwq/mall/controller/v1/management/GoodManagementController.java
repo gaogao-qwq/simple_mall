@@ -1,6 +1,7 @@
 package com.gaogaoqwq.mall.controller.v1.management;
 
 import com.gaogaoqwq.mall.dto.management.GoodDto;
+import com.gaogaoqwq.mall.entity.Good;
 import com.gaogaoqwq.mall.response.R;
 import com.gaogaoqwq.mall.service.GoodService;
 import com.gaogaoqwq.mall.view.CountView;
@@ -112,7 +113,8 @@ public class GoodManagementController {
 
     @PostMapping("/good")
     public R addGood(@RequestBody GoodDto dto) {
-        throw new UnsupportedOperationException("Unimplemented method 'addGood'");
+        goodService.addGood(Good.fromGoodDto(dto));
+        return R.successBuilder().build();
     }
 
     @PutMapping("/good")
