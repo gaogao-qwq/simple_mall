@@ -36,9 +36,7 @@ public class UserManagementController {
     @GetMapping("/list")
     public R getUserList(@RequestParam int page,
             @RequestParam(required = false) Optional<Integer> size) {
-        if (size.isEmpty())
-            size = Optional.of(10);
-        var users = userService.getUserListByPage(page, size.get());
+        var users = userService.getUserListByPage(page, size.orElse(10));
         var views = users.stream()
                 .map(UserInfoView::fromUser).toList();
         return R.successBuilder().data(views).build();
