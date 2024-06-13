@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/v1/customer/**").hasRole(RoleName.CUSTOMER)
                         .requestMatchers("/v1/good-management/**").hasRole(RoleName.ADMIN)
                         .requestMatchers("/v1/user-management/**").hasRole(RoleName.ADMIN)
+                        .requestMatchers("/v1/category-management/**").hasRole(RoleName.ADMIN)
                         .requestMatchers("/v1/overview/**").hasRole(RoleName.ADMIN)
                 )
                 .build();
