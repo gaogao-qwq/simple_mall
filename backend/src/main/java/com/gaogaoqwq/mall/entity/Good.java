@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.gaogaoqwq.mall.dto.management.GoodDto;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -55,5 +57,14 @@ public class Good {
 
     @OneToMany(mappedBy = "good", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<CartItem> cartItems;
+
+    public static Good fromGoodDto(final GoodDto dto) {
+        return Good.builder()
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .price(dto.getPrice())
+                .stock(dto.getStock())
+                .build();
+    }
 
 }
