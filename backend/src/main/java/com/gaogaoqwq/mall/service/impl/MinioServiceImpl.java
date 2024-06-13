@@ -49,4 +49,20 @@ public class MinioServiceImpl implements OSSService {
         }
     }
 
+    @Override
+    public String getObjectUploadUrl(String key) {
+        try {
+            return minioConfig.getMinioClient()
+                    .getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
+                            .method(Method.PUT)
+                            .bucket(minioConfig.getBucketName())
+                            .object(key)
+                            .expiry(5, TimeUnit.MINUTES)
+                            .build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return String.valueOf("");
+        }
+    }
+
 }

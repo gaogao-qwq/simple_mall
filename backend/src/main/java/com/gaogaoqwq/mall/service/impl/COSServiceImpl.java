@@ -25,4 +25,10 @@ public class COSServiceImpl implements OSSService {
                 .toString();
     }
 
+    @Override
+    public String getObjectUploadUrl(String key) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getObjectUploadUrl'");
+    }
+
 }
